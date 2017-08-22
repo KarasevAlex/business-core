@@ -3,14 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Business-core</title>
-	<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="font-awesome-4.7.0/font-awesome-4.7.0/fonts/fontawesome-webfont.svg">
-	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/font-awesome-4.7.0/font-awesome-4.7.0/fonts/fontawesome-webfont.svg">
+	<link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 	<header class="header">
 		<div class="container">
-			<img src="./img/logo.jpg" alt="">
+			<img src="/static/img/logo.jpg" alt="">
 		</div>
 		<nav  class="navbar navbar-default" role="navigation">
 			<div class="container clearfix">
@@ -53,8 +53,8 @@
 			</div>
 			<div class="clearfix">
 				<ul class="nav nav-tabs pull-left nav-justified">
-					<li class="active"><a href="#periods" data-toggle="tab">Решения</a></li>
-					<li><a href="#solutions" data-toggle="tab">Отчеты</a></li>
+					<li class="active"><a href="#periods" data-toggle="tab">Периоды</a></li>
+					<li><a href="#solutions" data-toggle="tab">Решения</a></li>
 					<li><a href="#graphics" data-toggle="tab">Графики</a></li>
 				</ul>
 				
@@ -63,124 +63,100 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 			  <div class="tab-pane active" id="periods">
-			  	<form action="">
-			  		<div class="row visible-md visible-lg">
-			  			<div class="col-md-2 col-md-offset-3 center-text"><h4>Текущий период</h4></div>
-			  			<div class="col-md-2 center-text"><h4>Прошлый период</h4></div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item"><span class="glyphicon glyphicon-info-sign"></span> Цена</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
+			  	<div class="period row">
+			  		<h4 class="period__name col-md-2">Период 1</h4>
+			  		<form action="" class="col-md-4 row">
+						<input type="hidden" value="1">
+						<div class="col-md-4">
+							<label>
+								<input type="checkbox" name="isBegin">
+								Начало
+							</label>
+						</div>	
+			  			<div class="col-md-8">
+			  				<input type="time" name="begin" value="12:00" class="form-control">
 			  			</div>
-			  			<div class="col-md-2 previous">45</div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3"><h4 class="resolve-item">НИОКР</h4></div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Снижение себестоимости</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
+			  			<div class="col-md-4">
+							<label>
+								<input type="radio" name="isPeriodTime" value="true">
+								Период
+							</label>
+						</div>	
+			  			<div class="col-md-8">
+			  				<input type="time" name="period" value="00:15" class="form-control">
 			  			</div>
-			  			<div class="col-md-2 previous">4</div>
-			  			<div class="col-md-2 resolve-item">Себестоимость</div>
-			  			<div class="col-md-2 previous">213</div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Повышение качества</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
+			  			<div class="col-md-4">
+							<label>
+								<input type="radio" name="isPeriodTime" value="false">
+								Конец
+							</label>
+						</div>	
+			  			<div class="col-md-8">
+			  				<input type="time" name="end" value="12:15" class="form-control">
 			  			</div>
-			  			<div class="col-md-2 previous">2424</div>
-			  			<div class="col-md-2 resolve-item">Качество</div>
-			  			<div class="col-md-2 previous">2134</div>
+			  			
+			  			
+			  			<div class="col-md-12"><button type="submit" class="btn btn-default">Сохранить</button></div>
+			  		</form>
+			  		<div class="col-md-4 col-md-offset-2">
+			  			<button class="btn btn-default btn-lg" disabled>Старт</button>
+			  			<button class="btn btn-default btn-lg">Стоп</button>
 			  		</div>
-			  		<div class="row">
-						<div class="col-md-3"><h4 class="resolve-item">Заводы</h4></div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Северная Америка</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
+			  	</div>
+			  	<div class="period row">
+			  		<h4 class="period__name col-md-2">Период 2</h4>
+			  		<form action="" class="col-md-4 row">
+						<input type="hidden" value="2">
+						<div class="col-md-4">
+							<label>
+								<input type="checkbox" name="isBegin">
+								Начало
+							</label>
+						</div>	
+			  			<div class="col-md-8">
+			  				<input type="time" name="begin" value="12:00" class="form-control">
 			  			</div>
-			  			<div class="col-md-2 previous">23</div>
-			  			<div class="col-md-2 resolve-item">Изменение размеров</div>
-			  			<div class="col-md-2 previous">234</div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Европа</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
+			  			<div class="col-md-4">
+							<label>
+								<input type="radio" name="isPeriodTime" value="true">
+								Период
+							</label>
+						</div>	
+			  			<div class="col-md-8">
+			  				<input type="time" name="period" value="00:15" class="form-control">
 			  			</div>
-			  			<div class="col-md-2 previous">43</div>
-			  			<div class="col-md-2 resolve-item">Изменение размеров</div>
-			  			<div class="col-md-2 previous">655</div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Азия</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
+			  			<div class="col-md-4">
+							<label>
+								<input type="radio" name="isPeriodTime" value="false">
+								Конец
+							</label>
+						</div>	
+			  			<div class="col-md-8">
+			  				<input type="time" name="end" value="12:15" class="form-control">
 			  			</div>
-			  			<div class="col-md-2 previous">234</div>
-			  			<div class="col-md-2 resolve-item">Изменение размеров</div>
-			  			<div class="col-md-2 previous">42</div>
+			  			
+			  			
+			  			<div class="col-md-12"><button type="submit" class="btn btn-default">Сохранить</button></div>
+			  		</form>
+			  		<div class="col-md-4 col-md-offset-2">
+			  			<button class="btn btn-default btn-lg" disabled>Старт</button>
+			  			<button class="btn btn-default btn-lg">Стоп</button>
 			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3"><h4 class="resolve-item">Продвижение</h4></div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Северная Америка</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
-			  			</div>
-			  			<div class="col-md-2 previous">123</div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Европа</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
-			  			</div>
-			  			<div class="col-md-2 previous">0</div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Азия</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
-			  			</div>
-			  			<div class="col-md-2 previous">0</div>
-			  		</div>
-			  		<div class="row">
-			  			<div class="col-md-3 resolve-item">Израсходованный бюджет</div>
-			  			<div class="col-md-2">
-			  				<input class="form-control" type="text">
-			  			</div>
-			  			<div class="col-md-2 previous">333</div>
-			  			<div class="col-md-2 resolve-item">Доступный бюджет</div>
-			  			<div class="col-md-2 previous">333</div>
-			  		</div>
-			  		<div class="alert alert-warning">
-						<h4>ПРЕДУПРЕЖДЕНИЕ!</h4> 
-						<p>Решение сохранено. Вы израсходовали не весь доступный бюджет. Вы могли бы увеличить свои расходы</p>
-			  		</div>
-					<div class="alert alert-danger">
-						<h4>Предупреждение!</h4>
-						<p>Решение не сохранено. Ваши затраты превышают допустимый бюджет.</p>
-					</div>
-			  		<button class="btn btn-primary center-block">Принять решение</button>
-			  	</form>
+			  	</div>
+			  	<button class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-plus"></span> Добавить период</button>
 			  </div>
 			  <div class="tab-pane" id="solutions">
 			  	<div class="clearfix">
 			  		<a href="" class="pull-right glyphicon glyphicon-print print"></a>
 			  		<a href="" class="pull-right excel"></a>
 			  	</div>
-			  	<div class="table-wrapper table-responsive">
+			  	<div class="table-responsive ">
 			  		<table class="table table-condensed table-striped table-hover">
 			  			<thead>
 							<tr>
-								<th>Параметр</th>
-								<th colspan="2">Общие данные по рынку (среднее/общее)</th>
+								<th>Компания</th>
+								<th>1</th>
+								<th>2</th>
 								<th>3</th>
 								<th>4</th>
 								<th>1</th>
@@ -198,6 +174,63 @@
 							</tr>
 			  			</thead>
 			  			<tbody>
+							<tr>
+								<th>Название</th>
+								<td>Название1</td>
+								<td>Название2</td>
+								<td>Название3</td>
+								<td>Название4</td>
+								<td>Название1</td>
+								<td>Название2</td>
+								<td>Название3</td>
+								<td>Название4</td>
+								<td>Название1</td>
+								<td>Название2</td>
+								<td>Название3</td>
+								<td>Название4</td>
+								<td>Название1</td>
+								<td>Название2</td>
+								<td>Название3</td>
+								<td>Название4</td>
+							</tr>
+							<tr>
+								<th>Логин</th>
+								<td>g12c1</td>
+								<td>g12c2</td>
+								<td>g12c3</td>
+								<td>g12c4</td>
+								<td>g12c1</td>
+								<td>g12c2</td>
+								<td>g12c3</td>
+								<td>g12c4</td>
+								<td>g12c1</td>
+								<td>g12c2</td>
+								<td>g12c3</td>
+								<td>g12c4</td>
+								<td>g12c1</td>
+								<td>g12c2</td>
+								<td>g12c3</td>
+								<td>g12c4</td>
+							</tr>
+							<tr>
+								<th>Пароль</th>
+								<td>g12wrfe2</td>
+								<td>g1232rwd</td>
+								<td>g129p89</td>
+								<td>g124tyh</td>
+								<td>g12wrfe2</td>
+								<td>g1232rwd</td>
+								<td>g129p89</td>
+								<td>g124tyh</td>
+								<td>g12wrfe2</td>
+								<td>g1232rwd</td>
+								<td>g129p89</td>
+								<td>g124tyh</td>
+								<td>g12wrfe2</td>
+								<td>g1232rwd</td>
+								<td>g129p89</td>
+								<td>g124tyh</td>
+							</tr>
 							<tr>
 								<th>Цена продукции</th>
 								<td>Название1</td>
@@ -502,7 +535,7 @@
 								<td></td>
 								<td></td>
 							</tr>
-							<tr class="warning">
+							<tr>
 								<th>Прибыль в отчетном периоде</th>
 								<td></td>
 								<td></td>
@@ -521,8 +554,65 @@
 								<td></td>
 								<td></td>
 							</tr>
-							<tr class="warning">
+							<tr>
 								<th>Общий объем прибыли</th>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Бюджет</th>
+								<td></td>
+								<td><span class="glyphicon glyphicon-ok"></span></td>
+								<td></td>
+								<td><span class="error">90</span></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Готовность</th>
+								<td><span class="glyphicon glyphicon-remove"></span></td>
+								<td><span class="glyphicon glyphicon-ok"></span></td>
+								<td><span class="glyphicon glyphicon-remove"></span></td>
+								<td><span class="glyphicon glyphicon-ok"></span></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Место</th>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -609,6 +699,6 @@
   src="http://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
-	<script src="./bootstrap/js/bootstrap.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
