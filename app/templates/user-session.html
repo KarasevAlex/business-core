@@ -1,0 +1,562 @@
+<main>
+	<div class="container">
+		<div class="well clearfix session-panel">
+			<a href="" class="btn btn-default pull-left">Текущий период</a>
+			<div class="pull-left period-nav">
+				<a href="" class="glyphicon glyphicon-chevron-left"></a>
+				<span>3</span>
+				<a href="" class="glyphicon glyphicon-chevron-right"></a>
+			</div>
+			<p class="pull-right info">Период: <span>3</span></p>
+			<p class="pull-right info">Осталось: <span>00:00:00</span></p>
+
+		</div>
+		<div class="clearfix">
+			<ul class="nav nav-tabs pull-left nav-justified">
+				<li class="active"><a href="#periods" data-toggle="tab">Решения</a></li>
+				<li><a href="#solutions" data-toggle="tab">Отчеты</a></li>
+				<li><a href="#graphics" data-toggle="tab">Графики</a></li>
+			</ul>
+
+		</div>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+		  <div class="tab-pane active" id="periods">
+			<form action="">
+				<div class="row visible-md visible-lg">
+					<div class="col-md-2 col-md-offset-3 center-text"><h4>Текущий период</h4></div>
+					<div class="col-md-2 center-text"><h4>Прошлый период</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item"><span class="glyphicon glyphicon-info-sign"></span> Цена</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">45</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3"><h4 class="resolve-item">НИОКР</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Снижение себестоимости</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">4</div>
+					<div class="col-md-2 resolve-item">Себестоимость</div>
+					<div class="col-md-2 previous">213</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Повышение качества</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">2424</div>
+					<div class="col-md-2 resolve-item">Качество</div>
+					<div class="col-md-2 previous">2134</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3"><h4 class="resolve-item">Заводы</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Северная Америка</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">23</div>
+					<div class="col-md-2 resolve-item">Изменение размеров</div>
+					<div class="col-md-2 previous">234</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Европа</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">43</div>
+					<div class="col-md-2 resolve-item">Изменение размеров</div>
+					<div class="col-md-2 previous">655</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Азия</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">234</div>
+					<div class="col-md-2 resolve-item">Изменение размеров</div>
+					<div class="col-md-2 previous">42</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3"><h4 class="resolve-item">Продвижение</h4></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Северная Америка</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">123</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Европа</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">0</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Азия</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">0</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 resolve-item">Израсходованный бюджет</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text">
+					</div>
+					<div class="col-md-2 previous">333</div>
+					<div class="col-md-2 resolve-item">Доступный бюджет</div>
+					<div class="col-md-2 previous">333</div>
+				</div>
+				<div class="alert alert-warning">
+					<h4>ПРЕДУПРЕЖДЕНИЕ!</h4>
+					<p>Решение сохранено. Вы израсходовали не весь доступный бюджет. Вы могли бы увеличить свои расходы</p>
+				</div>
+				<div class="alert alert-danger">
+					<h4>Предупреждение!</h4>
+					<p>Решение не сохранено. Ваши затраты превышают допустимый бюджет.</p>
+				</div>
+				<button class="btn btn-primary center-block">Принять решение</button>
+			</form>
+		  </div>
+		  <div class="tab-pane" id="solutions">
+			<div class="clearfix">
+				<a href="" class="pull-right glyphicon glyphicon-print print"></a>
+				<a href="" class="pull-right excel"></a>
+			</div>
+			<div class="table-wrapper table-responsive">
+				<table class="table table-condensed table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Параметр</th>
+							<th colspan="2">Общие данные по рынку (среднее/общее)</th>
+							<th>3</th>
+							<th>4</th>
+							<th>1</th>
+							<th>2</th>
+							<th>3</th>
+							<th>4</th>
+							<th>1</th>
+							<th>2</th>
+							<th>3</th>
+							<th>4</th>
+							<th>1</th>
+							<th>2</th>
+							<th>3</th>
+							<th>4</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>Цена продукции</th>
+							<td>Название1</td>
+							<td>Название2</td>
+							<td>Название3</td>
+							<td>Название4</td>
+							<td>Название1</td>
+							<td>Название2</td>
+							<td>Название3</td>
+							<td>Название4</td>
+							<td>Название1</td>
+							<td>Название2</td>
+							<td>Название3</td>
+							<td>Название4</td>
+							<td>Название1</td>
+							<td>Название2</td>
+							<td>Название3</td>
+							<td>Название4</td>
+						</tr>
+						<tr>
+							<th>Размер завода в СА</th>
+							<td>g12c1</td>
+							<td>g12c2</td>
+							<td>g12c3</td>
+							<td>g12c4</td>
+							<td>g12c1</td>
+							<td>g12c2</td>
+							<td>g12c3</td>
+							<td>g12c4</td>
+							<td>g12c1</td>
+							<td>g12c2</td>
+							<td>g12c3</td>
+							<td>g12c4</td>
+							<td>g12c1</td>
+							<td>g12c2</td>
+							<td>g12c3</td>
+							<td>g12c4</td>
+						</tr>
+						<tr>
+							<th>Размер завода в Европе</th>
+							<td>g12wrfe2</td>
+							<td>g1232rwd</td>
+							<td>g129p89</td>
+							<td>g124tyh</td>
+							<td>g12wrfe2</td>
+							<td>g1232rwd</td>
+							<td>g129p89</td>
+							<td>g124tyh</td>
+							<td>g12wrfe2</td>
+							<td>g1232rwd</td>
+							<td>g129p89</td>
+							<td>g124tyh</td>
+							<td>g12wrfe2</td>
+							<td>g1232rwd</td>
+							<td>g129p89</td>
+							<td>g124tyh</td>
+						</tr>
+						<tr>
+							<th>Размер завода в Азии</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Затраты на продвижение в СА</th>
+							<td></td>
+							<td><span class="glyphicon glyphicon-ok"></span></td>
+							<td></td>
+							<td><span class="error">90</span></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Затраты на продвижение в Европе</th>
+							<td><span class="glyphicon glyphicon-remove"></span></td>
+							<td><span class="glyphicon glyphicon-ok"></span></td>
+							<td><span class="glyphicon glyphicon-remove"></span></td>
+							<td><span class="glyphicon glyphicon-ok"></span></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Затраты на продвижение в Азии</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Себестоимость</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Качество</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Спрос в СА</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Спрос в Европе</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Спрос в Азии</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Объем продаж в СА</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Объем продаж в Европе</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Объем продаж в Азии</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Общий объем продаж</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr class="warning">
+							<th>Прибыль в отчетном периоде</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr class="warning">
+							<th>Общий объем прибыли</th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		  </div>
+		  <div class="tab-pane" id="graphics">
+			<ul class="nav nav-pills ">
+			  <li class="active"><a href="#costSS" data-toggle="tab">Цены с/с</a></li>
+			  <li><a href="#quality" data-toggle="tab">Качество</a></li>
+			  <li><a href="#promotion" data-toggle="tab">Продвижение</a></li>
+			  <li><a href="#demand" data-toggle="tab">Спрос</a></li>
+			  <li><a href="#factories" data-toggle="tab">Заводы</a></li>
+			  <li><a href="#sales" data-toggle="tab">Продажи</a></li>
+			  <li><a href="#profit" data-toggle="tab">Прибыль</a></li>
+			  <li><a href="#accrued-profit" data-toggle="tab">Накопленная прибыль</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="costSS">...</div>
+				<div class="tab-pane" id="quality">Качество</div>
+				<div class="tab-pane" id="promotion">Продвижение</div>
+				<div class="tab-pane" id="demand">demand</div>
+				<div class="tab-pane" id="factories">factories</div>
+				<div class="tab-pane" id="sales">sales</div>
+				<div class="tab-pane" id="profit">profit</div>
+				<div class="tab-pane" id="accrued-profit">accrued-profit</div>
+			  </div>
+		  </div>
+		</div>
+	</div>
+</main>
+<!-- Modal -->
+<div class="modal fade" id="enterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="myModalLabel">Авторизация</h4>
+	  </div>
+	  <form action="">
+		  <div class="modal-body">
+			<div class="alert alert-danger">
+				Неверный пароль
+			</div>
+			<div class="form-group">
+				<label for="login">Логин</label>
+				<input type="text" class="form-control" id="login" placeholder="Ваш логин" name="login" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Пароль</label>
+				<input type="password" class="form-control" id="password" placeholder="Ваш пароль" name="password" required>
+			</div>
+			<p><a href="">Востановить пароль</a></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			<button type="submit" class="btn btn-primary">Войти</button>
+		  </div>
+	  </form>
+	</div>
+  </div>
+</div>

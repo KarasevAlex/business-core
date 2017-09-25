@@ -1,0 +1,88 @@
+<main>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<ul class="nav nav-pills nav-stacked">
+					  <li class="active"><a href="">Галерея</a></li>
+				</ul>
+			</div>
+			<div class="col-md-9">
+				<div class="page-header">
+					<button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newAlbumModal"><span class="glyphicon glyphicon-plus"></span> Добавить альбом</button>
+				  <h1>Фотографии последних событий</h1>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="album-manage">
+							<button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal">&times;</button>
+							<a class="glyphicon glyphicon-arrow-up"></a>
+							<a class="glyphicon glyphicon-arrow-down"></a>
+						</div>
+						<img src="static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+						<h4><a href="">Заголовок альбома</a></h4>
+					</div>
+					<div class="col-md-6">
+						<img src="static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+						<h4><a href="">Заголовок альбома</a></h4>
+					</div>
+					<div class="col-md-6">
+						<img src="static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+						<h4><a href="">Заголовок альбома</a></h4>
+					</div>
+				</div>
+				<ul class="pagination">
+				  <li><a href="#">&laquo;</a></li>
+				  <li class="active"><a href="#">1</a></li>
+				  <li><a href="#">2</a></li>
+				  <li><a href="#">3</a></li>
+				  <li><a href="#">4</a></li>
+				  <li><a href="#">5</a></li>
+				  <li><a href="#">&raquo;</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="newAlbumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="myModalLabel">Создать новость</h4>
+	  </div>
+	  <form action="">
+		  <div class="modal-body">
+			<div class="form-group">
+				<label>Название альбома</label>
+				<textarea class="form-control"></textarea>
+			</div>
+			<input type="file" multiple>
+		  </div>
+		  <div class="modal-footer">
+			<button type="reset" class="btn btn-default" data-dismiss="modal">Отменить</button>
+			<button type="submit" class="btn btn-primary">Создать</button>
+		  </div>
+	  </form>
+	</div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="deleteAlbumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="myModalLabel">Подтверждение</h4>
+	  </div>
+	  <div class="modal-body">
+		Вы точно хотите удалить альбом ?
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+		<button type="submit" class="btn btn-primary">Удалить</button>
+	  </div>
+	</div>
+  </div>
+</div>

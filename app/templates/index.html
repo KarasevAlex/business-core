@@ -1,0 +1,70 @@
+
+<main>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="">Краткое описание</a></li>
+					  <li class="active"><a href="">Наша команда</a></li>
+					  <li><a href="">Образовательным учреждениям</a></li>
+					  <li><a href="">Учащимся</a></li>
+					  <li><a href="">Нас рекомендуют</a></li>
+					  <li><a href="">Партнеры</a></li>
+				</ul>
+			</div>
+			<div class="col-md-9">
+				<div class="page-header">
+				  <h1>Наша команда</h1>
+				</div>
+				<div class="content-area">
+					<button class=" btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button>
+					<div class="media">
+					  <a class="pull-left" href="#">
+						<img class="media-object" src="static/img/p1.jpg" alt="...">
+					  </a>
+					  <div class="media-body">
+						<h4 class="media-heading">Чуваев Алексей</h4>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, enim.</p>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="enterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="myModalLabel">Авторизация</h4>
+	  </div>
+	  <form method="post" action="/login">
+		  {{ form.csrf_token }}
+		  <div class="modal-body">
+			<div class="alert alert-danger">
+				Неверный пароль
+			</div>
+			<div class="form-group">
+				{{ form.login.label}}
+				{{ form.login(class_="form-control")}}
+				<!--<input type="text" class="form-control" id="login" placeholder="Ваш логин" name="login" required>-->
+			</div>
+			<div class="form-group">
+				{{ form.password.label}}
+				{{ form.password(class_="form-control")}}
+				<!--<input type="password" class="form-control" id="password" placeholder="Ваш пароль" name="password" required>-->
+			</div>
+			<p><a href="">Востановить пароль</a></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			{{ form.submit(class_="btn btn-primary")}}
+			<!--<button type="submit" class="btn btn-primary">Войти</button>-->
+		  </div>
+	  </form>
+	</div>
+  </div>
+</div>
