@@ -29,7 +29,7 @@ def index_():
         user = User.query.filter_by(username=form.login.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=True)
-            return redirect('/2')
+            return redirect('/admin')
         flash('Invalid login or password')
     return render_template('index.html', form=form)
 
@@ -41,8 +41,10 @@ def logout():
 
 
 @login_required
-@main.route('/2')
+@main.route('/admin', methods=['POST', 'GET'])
 def index2():
+    if request.method == "POST":
+        t=request.form
     return render_template('layout.html',
                            header=render_template('header.html'),
                            main=render_template('admin-list.html'),

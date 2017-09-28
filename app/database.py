@@ -4,10 +4,6 @@ from datetime import datetime
 from flask import current_app, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class Permission:
-    PLAYER = 0x01
-    ADMINISTER = 0x02
-
 
 @loginManager.user_loader
 def load_user(user_id):
@@ -65,6 +61,9 @@ class Games(db.Model):
     numberOfCompanies = db.Column(db.Integer)
     # Количество периодов
     numberOfPeriod = db.Column(db.Integer)
+    # Начало и время периода
+    game_start = db.Column(db.DateTime)
+    period_time = db.Column(db.Time)
     # Объем Рынков
     # СА
     volume_of_markets_sa = db.Column(db.Integer)
