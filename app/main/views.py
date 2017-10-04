@@ -1,18 +1,20 @@
 from . import main
 from .. import db
+from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form
-from ..database import User
+from ..database import User, Games, Period
 from flask import render_template, request, flash,redirect
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 
 @main.route('/create_database', methods=['GET', 'POST'])
 def create_database():
-    try:
-        db.create_all()
-        return "succed"
-    except:
-        return "fail"
+    # try:
+    db.create_all()
+    db.session.add(User(username='Admin', password='Admin', role=1))
+    return "succed"
+    # except Exception as e:
+    #     return "fail"
 
 @main.route('/', methods=['POST','GET'])
 def index():
@@ -27,28 +29,48 @@ def index_():
     form = Login_form()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.login.data).first()
-        if user is not None and user.verify_password(form.password.data):
-            login_user(user, remember=True)
-            return redirect('/admin')
+        if user is not None:
+            if user.verify_password(form.password.data):
+                if user.role == 3:
+                    login_user(user, remember=True)
+                    return redirect('/play')
+                else:
+                    login_user(user, remember=True)
+                    return redirect('/game')
         flash('Invalid login or password')
     return render_template('index.html', form=form)
 
 @main.route('/logout')
 @login_required
 def logout():
+    е = current_user
     logout_user()
     return redirect('/')
 
 
+@main.route('/game', methods=['POST', 'GET'])
 @login_required
-@main.route('/admin', methods=['POST', 'GET'])
+@admin_required
 def index2():
     if request.method == "POST":
-        t=request.form
+        Games.create(request.form)
+    games = Games.query.all()
     return render_template('layout.html',
                            header=render_template('header.html'),
-                           main=render_template('admin-list.html'),
+                           main=render_template('admin-list.html', games=games),
                            footer=render_template('footer.html'))
+
+
+@main.route('/game/<int:id>')
+@login_required
+def session_admin(id):
+    games = Games.query.filter_by(id=id)
+    periods = Period.query.filter_by(game_id=id)
+    return render_template('layout.html',
+                           header=render_template('header.html'),
+                           main=render_template('admin-session.html', games=games, periods=periods),
+                           footer=render_template('footer.html'))
+
 
 @main.route('/3')
 def index3():
@@ -93,10 +115,20 @@ def index9():
                            main=render_template('partners.html'),
                            footer=render_template('footer.html'))
 
-@main.route('/9')
+
+@main.route('/flush')
+def flush():
+    db.session.flush()
+    return "True"
+
+@main.route('/play')
+@login_required
+@gamer_required
 def index10():
+    game = Games.getGame(current_user.game_id)
+    period = Period.getActivePeriod(current_user.game_id)
     return render_template('layout.html',
                            header=render_template('header.html'),
-                           main=render_template('user-session.html'),
+                           main=render_template('user-session.html', period=period, game=game),
                            footer=render_template('footer.html'))
 

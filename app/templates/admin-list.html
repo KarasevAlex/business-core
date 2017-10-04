@@ -5,7 +5,7 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<h2>Новая игра</h2>
-						<form action="/admin" method="post" role="form" class="new-game">
+						<form action="/game" method="post" role="form" class="new-game">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
@@ -25,12 +25,12 @@
 									<div class="form-group">
 										<input type="checkbox" id="isTimeStart" name="isTimeStart">
 										<label for="isTimeStart">Начать в</label>
-										<input type="time" class="form-control" id="time-start" placeholder="Время начала" name="time-start" disabled>
+										<input type="time" class="form-control" id="time-start" placeholder="Время начала" name="time-start" value="00:15">
 									</div>
 									<div class="form-group">
 										<input type="checkbox" id="isTimeDuration" name="isTimeDuration">
 										<label for="isTimeDuration">Длина периода</label>
-										<input type="time" class="form-control" id="time-duration" placeholder="Длина периода" name="time-duration" value="00:15" disabled>
+										<input type="time" class="form-control" id="time-duration" placeholder="Длина периода" name="time-duration" value="00:15">
 									</div>
 								</div>
 							</div>
@@ -38,17 +38,17 @@
 							<div class="row">
 								<div class="col-md-9">
 									<div class="form-group">
-										<input type="checkbox" id="isSizeNA" name="isSizeNA" checked>
+										<input type="checkbox" id="isSizeNA" name="isSizeNA"  value="true" checked>
 										<label for="isSizeNA">СА</label>
 										<input type="number" class="form-control" id="sizeNA" placeholder="Объём рынка СА" name="sizeNA" required min="0">
 									</div>
 									<div class="form-group">
-										<input type="checkbox" id="isSizeEurope" name="isSizeEurope" checked>
+										<input type="checkbox" id="isSizeEurope" name="isSizeEurope" value="true" checked>
 										<label for="isSizeEurope">Европа</label>
 										<input type="number" class="form-control" id="sizeEurope" placeholder="Объём рынка Европы" name="sizeEurope" required min="0">
 									</div>
 									<div class="form-group">
-										<input type="checkbox" id="isSizeAsia" name="isSizeAsia" checked>
+										<input type="checkbox" id="isSizeAsia" name="isSizeAsia" value="true" checked>
 										<label for="isSizeAsia">Азия</label>
 										<input type="number" class="form-control" id="sizeAsia" placeholder="Объём рынка Азии" name="sizeAsia" required min="0">
 									</div>
@@ -68,7 +68,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-1">
-									<input type="checkbox" id="cost" name="cost">
+									<input type="checkbox" id="cost" name="cost" value="false">
 								</div>
 								<div class="col-md-4">
 									<label for="cost">Цена</label>
@@ -85,7 +85,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-1">
-									<input type="checkbox" id="niokrSS" name="niokrSS">
+									<input type="checkbox" id="niokrSS" name="niokrSS"  value="false">
 								</div>
 								<div class="col-md-4">
 									<label for="niokrSS">НИОКР (с/с)</label>
@@ -102,7 +102,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-1">
-									<input type="checkbox" id="niokrQuality" name="niokrQuality">
+									<input type="checkbox" id="niokrQuality" name="niokrQuality" value="false">
 								</div>
 								<div class="col-md-4">
 									<label for="niokrQuality">НИОКР (качество)</label>
@@ -120,7 +120,7 @@
 							<h4>Заводы</h4>
 							<div class="row">
 								<div class="col-md-1">
-									<input type="checkbox" id="NAFactory" name="NAFactory">
+									<input type="checkbox" id="NAFactory" name="NAFactory"  value="false">
 								</div>
 								<div class="col-md-4">
 									<label for="NAFactory">СА</label>
@@ -172,7 +172,7 @@
 							<h4>Продвижение</h4>
 							<div class="row">
 								<div class="col-md-1">
-									<input type="checkbox" id="NAPromotion" name="NAPromotion">
+									<input type="checkbox" id="NAPromotion" name="NAPromotion" value="True">
 								</div>
 								<div class="col-md-4">
 									<label for="NAPromotion">СА</label>
@@ -331,31 +331,14 @@
 			</div>
 			<div class="col-md-5">
 				<h2>Список игр</h2>
-				<div class="well clearfix">
+				{% for game in games%}
+
+					<div class="well clearfix">
 					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
-					<h4 class="game__name"><a href="">Название игры <br><small>ID игры</small></a></h4>
+					<h4 class="game__name"><a href="game/{{game.id}}">{{ game.title }} <br><small>ID игры - {{ game.id }}</small></a></h4>
 					<span class="game__time">00:00</span>
 				</div>
-				<div class="well clearfix">
-					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
-					<h4 class="game__name"><a href="">Название игры <br><small>ID игры</small></a></h4>
-					<span class="game__time">00:00</span>
-				</div>
-				<div class="well clearfix">
-					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
-					<h4 class="game__name"><a href="">Название игры <br><small>ID игры</small></a></h4>
-					<span class="game__time">00:00</span>
-				</div>
-				<div class="well clearfix">
-					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
-					<h4 class="game__name"><a href="">Название игры <br><small>ID игры</small></a></h4>
-					<span class="game__time">00:00</span>
-				</div>
-				<div class="well clearfix">
-					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
-					<h4 class="game__name"><a href="">Название игры <br><small>ID игры</small></a></h4>
-					<span class="game__time">00:00</span>
-				</div>
+				{% endfor%}
 				<ul class="pagination">
 				  <li><a href="#">&laquo;</a></li>
 				  <li class="active"><a href="#">1</a></li>

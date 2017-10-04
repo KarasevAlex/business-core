@@ -28,6 +28,8 @@
 					<div class="col-md-2 col-md-offset-3 center-text"><h4>Текущий период</h4></div>
 					<div class="col-md-2 center-text"><h4>Прошлый период</h4></div>
 				</div>
+				{{ game }}
+				{% if game.cost_active%}
 				<div class="row">
 					<div class="col-md-3 resolve-item"><span class="glyphicon glyphicon-info-sign"></span> Цена</div>
 					<div class="col-md-2">
@@ -35,9 +37,11 @@
 					</div>
 					<div class="col-md-2 previous">45</div>
 				</div>
+				{% endif %}
 				<div class="row">
 					<div class="col-md-3"><h4 class="resolve-item">НИОКР</h4></div>
 				</div>
+				{% if game.niokrSS_active %}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Снижение себестоимости</div>
 					<div class="col-md-2">
@@ -47,6 +51,8 @@
 					<div class="col-md-2 resolve-item">Себестоимость</div>
 					<div class="col-md-2 previous">213</div>
 				</div>
+				{% endif %}
+				{% if game.niokrQuality_active %}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Повышение качества</div>
 					<div class="col-md-2">
@@ -56,9 +62,12 @@
 					<div class="col-md-2 resolve-item">Качество</div>
 					<div class="col-md-2 previous">2134</div>
 				</div>
+				{% endif %}
 				<div class="row">
 					<div class="col-md-3"><h4 class="resolve-item">Заводы</h4></div>
 				</div>
+				{% if game.isSizeNA %}
+				{% if game.NAFactory_active%}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Северная Америка</div>
 					<div class="col-md-2">
@@ -68,6 +77,10 @@
 					<div class="col-md-2 resolve-item">Изменение размеров</div>
 					<div class="col-md-2 previous">234</div>
 				</div>
+				{% endif %}
+				{% endif %}
+				{% if game.isSizeEurope %}
+				{% if game.EuropeFactory_active %}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Европа</div>
 					<div class="col-md-2">
@@ -77,6 +90,10 @@
 					<div class="col-md-2 resolve-item">Изменение размеров</div>
 					<div class="col-md-2 previous">655</div>
 				</div>
+				{% endif %}
+				{% endif %}
+				{% if game.isSizeAsia %}
+				{% if game.AsiaFactory_active %}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Азия</div>
 					<div class="col-md-2">
@@ -86,9 +103,13 @@
 					<div class="col-md-2 resolve-item">Изменение размеров</div>
 					<div class="col-md-2 previous">42</div>
 				</div>
+				{% endif %}
+				{% endif %}
 				<div class="row">
 					<div class="col-md-3"><h4 class="resolve-item">Продвижение</h4></div>
 				</div>
+				{% if game.isSizeNA %}
+				{% if game.NAPromotion_active%}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Северная Америка</div>
 					<div class="col-md-2">
@@ -96,6 +117,10 @@
 					</div>
 					<div class="col-md-2 previous">123</div>
 				</div>
+				{% endif %}
+				{% endif %}
+				{% if game.isSizeEurope %}
+				{% if game.EuropePromotion_active %}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Европа</div>
 					<div class="col-md-2">
@@ -103,6 +128,10 @@
 					</div>
 					<div class="col-md-2 previous">0</div>
 				</div>
+				{% endif %}
+				{% endif %}
+				{% if game.isSizeAsia %}
+				{% if game.AsiaPromotion_active %}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Азия</div>
 					<div class="col-md-2">
@@ -110,6 +139,8 @@
 					</div>
 					<div class="col-md-2 previous">0</div>
 				</div>
+				{% endif %}
+				{% endif %}
 				<div class="row">
 					<div class="col-md-3 resolve-item">Израсходованный бюджет</div>
 					<div class="col-md-2">
