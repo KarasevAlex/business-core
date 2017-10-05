@@ -1,8 +1,9 @@
 from . import main
 from .. import db
+from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form
-from ..database import User, Games, Period
+from ..database import User, Games, Period, Solutions, Results
 from flask import render_template, request, flash,redirect
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -125,10 +126,42 @@ def flush():
 @login_required
 @gamer_required
 def index10():
-    game = Games.getGame(current_user.game_id)
     period = Period.getActivePeriod(current_user.game_id)
-    return render_template('layout.html',
+    if period is not None:
+        game = Games.getGame(current_user.game_id)
+
+        return render_template('layout.html',
                            header=render_template('header.html'),
                            main=render_template('user-session.html', period=period, game=game),
                            footer=render_template('footer.html'))
+    return render_template('layout.html',
+                           header=render_template('header.html'),
+                           footer=render_template('footer.html'))
+
+@main.route('/result', methods=['POST'])
+@login_required
+@gamer_required
+def result():
+    model = Modeling(current_user, request.form)
+    print(1)
+    # # Решения за другие периоды
+    # solutions = Solutions.query.filter_by(gamer_id=current_user.id).all()
+    # # Решения за прошлы периоды, нахуя только
+    # results = Results.query.filter_by(gamer_id=current_user.id).all()
+    # # исходные данные
+    # game = Games.getGame(current_user.game_id)
+    # # решение для текущего периода
+    # solution = Solutions(gamer_id=current_user.id)
+    # solution.generate(request.form, game)
+    # # Результаты по текущему периоду
+    # result = Results()
+    # Solutions.getPreviousSolutions(current_user.id, 2)
+    # result.recount(current_solution=solution,
+    #                            game=game,
+    #                            solutions=solutions,
+    #                            results=results)
+    # db.session.add(solution)
+    # db.session.add(result)
+    return "s"
+
 

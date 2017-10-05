@@ -9,7 +9,7 @@ from flask import current_app, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from random import choice
 from string import ascii_uppercase
-
+from math import fabs
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -48,7 +48,7 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
-    __mapper_args__ = {"polymorphic_identity": "gamers"}
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     role = db.Column(db.Integer)
@@ -170,42 +170,48 @@ class Games(db.Model):
     # Строительство завода
     costFactory = db.Column(db.Integer)
     amountFactory = db.Column(db.Integer)
+    plant_Construction = db.Column(db.Integer)
 
     # Накладные расходы
     costOverheads = db.Column(db.Integer)
     amountOverheads = db.Column(db.Integer)
-
+    plant_Overheads = db.Column(db.Integer)
     # Расходы на демонтаж
     costDismantling = db.Column(db.Integer)
     amountDismantling = db.Column(db.Integer)
-
+    plant_Destruction= db.Column(db.Integer)
     # Бюджет команд
     teamBudget = db.Column(db.Integer)
 
     # Начальная с/с
     startSS1 = db.Column(db.Integer)
     startSS2 = db.Column(db.Integer)
+    prime_cost_start = db.Column(db.Integer)
 
     # Начальные вложения в с/с
     startAttachmentsSS1 = db.Column(db.Integer)
     startAttachmentsSS2 = db.Column(db.Integer)
+    prime_cost_base = db.Column(db.Integer)
 
     # Начальные вложения в качество
     startAttachmentsQuality1 = db.Column(db.Integer)
     startAttachmentsQuality2 = db.Column(db.Integer)
+    quality_cost_base = db.Column(db.Integer)
 
     # Степень в формуле с/с
     exponentSS1 = db.Column(db.Integer)
     exponentSS2 = db.Column(db.Integer)
+    prime_cost_coef=db.Column(db.Integer)
 
     # Степень в формуле качества
     exponentQuality1 = db.Column(db.Integer)
     exponentQuality2 = db.Column(db.Integer)
+    quality_cost_coef = db.Column(db.Integer)
 
     # Основание в формуле цены
     baseFormulaCost1 = db.Column(db.Integer)
     baseFormulaCost2 = db.Column(db.Integer)
-
+    price_coef = db.Column(db.Integer)
     @staticmethod
     def create(form):
         try:
@@ -312,6 +318,17 @@ class Games(db.Model):
             else:
                 game.isSizeAsia = False
 
+            # Расчет базовых параметоров
+            game.prime_cost_start = int(game.startSS1) / int(game.startSS2)
+            game.prime_cost_base = int(game.startAttachmentsSS1) / int(game.startAttachmentsSS2)
+            game.quality_cost_base = int(game.startAttachmentsQuality1) / int(game.startAttachmentsQuality2)
+            game.prime_cost_coef = int(game.exponentSS1) / int(game.exponentSS2)
+            game.quality_cost_coef = int(game.exponentQuality1) / int(game.exponentQuality2)
+            game.price_coef = int(game.baseFormulaCost1) / int(game.baseFormulaCost2)
+            game.plant_Construction = int(game.costFactory) / int(game.amountFactory)
+            game.plant_Overheads = int(game.costOverheads) / int(game.amountOverheads)
+            game.plant_Destruction = int(game.costDismantling) / int(game.amountDismantling)
+
             db.session.add(game)
             db.session.commit()
             for i in range(1,int(game.team_number)+1):
@@ -360,6 +377,11 @@ class Period(db.Model):
             if current_time >= period.period_start and current_time <= period.period_end:
                 return period
 
+    @staticmethod
+    def getPreviousPeriod(period_id):
+        pass
+
+
 class Solutions(db.Model):
     __tablename__ = 'solutions'
     id = db.Column(db.Integer, primary_key=True)
@@ -376,23 +398,85 @@ class Solutions(db.Model):
     EuropePromotion = db.Column(db.Integer)
     AsiaPromotion = db.Column(db.Integer)
 
+    def __init__(self, form, game, gamer_id):
+        super().__init__()
+        self.gamer_id=f=gamer_id
+        self.period_id = form['period']
+        if 'cost' in form:
+            self.cost = form['cost']
+        else:
+            self.cost = game.cost_default
+
+        if 'niokrSS' in form:
+            self.niokrSS = form['niokrSS']
+        else:
+            self.niokrSS =game.niokrSS_default
+
+        if 'niokrQuality' in form:
+            self.niokrQuality = form['niokrQuality']
+        else:
+            self.niokrQuality =game.niokrQuality_default
+
+        if 'NAFactory' in form:
+            self.NAFactory = form['NAFactory']
+        else:
+            self.NAFactory =game.NAFactory_default
+
+        if 'EuropeFactory' in form:
+            self.EuropeFactory = form['EuropeFactory']
+        else:
+            self.EuropeFactory = game.EuropeFactory_default
+
+        if 'AsiaFactory' in form:
+            self.AsiaFactory = form['AsiaFactory']
+        else:
+            self.AsiaFactory = game.AsiaFactory_default
+
+        if 'NAPromotion' in form:
+            self.NAPromotion = form['NAPromotion']
+        else:
+            self.NAPromotion = game.NAPromotion_default
+
+        if 'EuropePromotion' in form:
+            self.EuropePromotion = form['EuropePromotion']
+        else:
+            self.EuropePromotion = game.EuropePromotion_default
+
+        if 'AsiaPromotion' in form:
+            self.AsiaPromotion = form['AsiaPromotion']
+        else:
+            self.AsiaPromotion = game.AsiaPromotion_default
+    @staticmethod
+    def getPreviousSolutions(id, current_period):
+        return db.session.query(Solutions).\
+            filter(Period.id == Solutions.period_id).\
+            filter(Solutions.gamer_id == id).\
+            filter(Period.period_number == (int(current_period)-1)).first()
+
 class Results(db.Model):
     __tablename__ = 'results'
     id = db.Column(db.Integer, primary_key=True)
     solutions_id = db.Column(db.Integer, db.ForeignKey('solutions.id'))
+    period_id = db.Column(db.Integer, db.ForeignKey('periods.id'))
+    gamer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # Расходы
     Budget = db.Column(db.Integer)
     # Спрос
     Demand_NA = db.Column(db.Integer)
+    mult_Demand_NA = db.Column(db.Integer)
     Demand_Europa = db.Column(db.Integer)
+    mult_Demand_Europa = db.Column(db.Integer)
     Demand_Asia = db.Column(db.Integer)
+    mult_Demand_Asia = db.Column(db.Integer)
     # Объем продаж
     Sales_NA = db.Column(db.Integer)
     Sales_Europa = db.Column(db.Integer)
     Sales_Asia = db.Column(db.Integer)
+    Sales = db.Column(db.Integer)
     # Себестоимость продукции
     Prime_cost = db.Column(db.Integer)
     # Прибыль в периоде
     Profit = db.Column(db.Integer)
+
 
 
