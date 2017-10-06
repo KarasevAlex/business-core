@@ -43,9 +43,6 @@ def load_user(user_id):
 #         db.session.commit()
 #
 
-
-
-
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -84,12 +81,19 @@ class User(db.Model, UserMixin):
         self.role = 3
 
 class News(db.Model):
-    __tablename__ = 'News'
+    __tablename__ = 'news'
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text)
     body = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    disabled = db.Column(db.Boolean)
+    timestamp = db.Column(db.Date, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, title, text, timestamp, author_id):
+        super().__init__()
+        self.title = title
+        self.body = text
+        self.timestamp = timestamp
+        self.author_id = author_id
 
 class Games(db.Model):
     __tablename__ = 'games'
@@ -400,8 +404,11 @@ class Solutions(db.Model):
 
     def __init__(self, form, game, gamer_id):
         super().__init__()
-        self.gamer_id=f=gamer_id
+        self.gamer_id = gamer_id
         self.period_id = form['period']
+        self.recount(form, game)
+
+    def recount(self, form, game):
         if 'cost' in form:
             self.cost = form['cost']
         else:

@@ -2,8 +2,8 @@ from . import main
 from .. import db
 from .modeling import Modeling
 from .decorators import admin_required, gamer_required
-from .forms import Login as Login_form
-from ..database import User, Games, Period, Solutions, Results
+from .forms import Login as Login_form, News as News_form
+from ..database import User, Games, Period, Solutions, Results,News
 from flask import render_template, request, flash,redirect
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -21,8 +21,8 @@ def create_database():
 def index():
     login = Login_form(request.form)
     return render_template('layout.html',
-                           header=render_template('header.html'),
-                           main=render_template('index.html', form=login),
+                           header=render_template('header.html', form=login),
+                           main=render_template('index.html'),
                            footer=render_template('footer.html'))
 
 @main.route('/login', methods=['POST'])
@@ -57,7 +57,7 @@ def index2():
         Games.create(request.form)
     games = Games.query.all()
     return render_template('layout.html',
-                           header=render_template('header.html'),
+                           header=render_template('header.html', form=Login_form()),
                            main=render_template('admin-list.html', games=games),
                            footer=render_template('footer.html'))
 
@@ -73,13 +73,6 @@ def session_admin(id):
                            footer=render_template('footer.html'))
 
 
-@main.route('/3')
-def index3():
-    return render_template('layout.html',
-                           header=render_template('header.html'),
-                           main=render_template('admin-session.html'),
-                           footer=render_template('footer.html'))
-
 @main.route('/4')
 def index4():
     return render_template('layout.html',
@@ -87,27 +80,10 @@ def index4():
                            main=render_template('album.html'),
                            footer=render_template('footer.html'))
 
-@main.route('/5')
-def index5():
-    return render_template('layout.html',
-                           header=render_template('header.html'),
-                           main=render_template('contacts.html'),
-                           footer=render_template('footer.html'))
 
-@login_required
-@main.route('/6')
-def index6():
-    return render_template('layout.html',
-                           header=render_template('header.html'),
-                           main=render_template('gallery.html'),
-                           footer=render_template('footer.html'))
 
-@main.route('/7')
-def index7():
-    return render_template('layout.html',
-                           header=render_template('header.html'),
-                           main=render_template('news.html'),
-                           footer=render_template('footer.html'))
+
+
 
 @main.route('/8')
 def index9():
@@ -131,7 +107,7 @@ def index10():
         game = Games.getGame(current_user.game_id)
 
         return render_template('layout.html',
-                           header=render_template('header.html'),
+                           header=render_template('header.html', form=Login_form()),
                            main=render_template('user-session.html', period=period, game=game),
                            footer=render_template('footer.html'))
     return render_template('layout.html',
@@ -143,7 +119,6 @@ def index10():
 @gamer_required
 def result():
     model = Modeling(current_user, request.form)
-    print(1)
     # # Решения за другие периоды
     # solutions = Solutions.query.filter_by(gamer_id=current_user.id).all()
     # # Решения за прошлы периоды, нахуя только
@@ -165,3 +140,54 @@ def result():
     return "s"
 
 
+# URL
+@main.route('/news/add', methods=['POST'])
+def add_news():
+    try:
+        temp = News(title=request.form['title'],
+            text=request.form['text'],
+            timestamp=request.form['date'],
+            author_id=current_user.id)
+        db.session.add(temp)
+        db.session.commit()
+        redirect('/news')
+    except:
+        pass
+
+@main.route('/news/remove/<int:id>', methods=['POST'])
+def remove_news(id):
+    News.query.filter_by(id=id).delete()
+    redirect('/news')
+
+@main.route('/news')
+def news_page():
+    form = Login_form()
+    return render_template('layout.html',
+                           header=render_template('header.html', form=form),
+                           main=render_template('news.html',
+                                                isAdmin=current_user.isAdmin(),
+                                                form=News_form(),
+                                                news=News.query.all()),
+                           footer=render_template('footer.html'))
+
+@main.route('/galleries')
+def galleries_page():
+    return render_template('layout.html',
+                           header=render_template('header.html'),
+                           main=render_template('gallery.html'),
+                           footer=render_template('footer.html'))
+
+@main.route('/сontacts')
+def contatst_page():
+    return render_template('layout.html',
+                           header=render_template('header.html'),
+                           main=render_template('contacts.html'),
+                           footer=render_template('footer.html'))
+
+@main.route('/check')
+def check():
+    tmp=Solutions.query.filter_by(period_id=4, gamer_id=2).first()
+    tmp.cost=24
+    db.session.add(tmp)
+    db.session.commit()
+    return "2"
