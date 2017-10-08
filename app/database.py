@@ -215,6 +215,7 @@ class Games(db.Model):
     baseFormulaCost1 = db.Column(db.Integer)
     baseFormulaCost2 = db.Column(db.Integer)
     price_coef = db.Column(db.Float)
+
     @staticmethod
     def create(form):
         try:
@@ -233,8 +234,13 @@ class Games(db.Model):
                          )
             if 'time-start' in form:
                 game.time_start = form['time-start']
+            else:
+                game.time_start = datetime.now().time()
+
             if 'time-duration' in form:
-                game.time_duration = form['time-duration'],
+                game.time_duration = form['time-duration']
+            else:
+                game.time_duration = "00:50"
             if 'cost' in form:
                 game.cost_active = True
                 game.cost_max = form['cost-max']

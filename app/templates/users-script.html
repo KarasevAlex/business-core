@@ -19,7 +19,10 @@
 	var Prime_Costbase = {{ game.prime_cost_base }};
 	var Prime_Costcoef = {{ game.prime_cost_coef }};
 	var Prime_Cost_Acc = Prime_Costbase + 0;
-
+	{% if previous_solution is not none %}
+	    var Quality_Cost_Acci= {{previous_solution.Quality_Cost_Acc}}
+        var Prime_Cost_Acc = {{previous_solution.Prime_Cost_Acc}}
+    {%endif%}
 	var formapp = new Vue({
 	  el: '#resolve-period',
 	  data: {

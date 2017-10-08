@@ -78,149 +78,149 @@
 						<tr>
 							<th>Компания</th>
 							<th>1</th>
-							<th>2</th>
-
+							{% set t=%}
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<th>Название</th>
-							<td>Название1</td>
-							<td>Название2</td>
+							{% for user in users %}
+							<td>{{user.name}}</td>
+							{% endfor%}
 
 						</tr>
 						<tr>
 							<th>Логин</th>
-							<td>g12c1</td>
-							<td>g12c2</td>
+							{% for user in users%}
+							<td>{{user.username}}</td>
+							{% endfor %}
 
 						</tr>
 						<tr>
 							<th>Пароль</th>
-							<td>g12wrfe2</td>
-							<td>g1232rwd</td>
+							{% for user in users%}
+							<td>{{user.password_hash}}</td>
+							{% endfor %}
 
 						</tr>
-						<tr>
-							<th>Цена продукции</th>
-							<td>Название1</td>
-							<td>Название2</td>
+						<!--<tr>-->
+							<!--<th>Цена продукции</th>-->
+							<!--&lt;!&ndash;<td>Название1</td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td>Название2</td>&ndash;&gt;-->
 
-						</tr>
-						<tr>
-							<th>Размер завода в СА</th>
-							<td>g12c1</td>
-							<td>g12c2</td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Размер завода в СА</th>-->
+							<!--&lt;!&ndash;<td>g12c1</td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td>g12c2</td>&ndash;&gt;-->
 
-						</tr>
-						<tr>
-							<th>Размер завода в Европе</th>
-							<td>g12wrfe2</td>
-							<td>g1232rwd</td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Размер завода в Европе</th>-->
+							<!--&lt;!&ndash;<td>g12wrfe2</td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td>g1232rwd</td>&ndash;&gt;-->
 
-						</tr>
-						<tr>
-							<th>Размер завода в Азии</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Размер завода в Азии</th>-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 
-						</tr>
-						<tr>
-							<th>Затраты на продвижение в СА</th>
-							<td><span class="glyphicon glyphicon-ok"></span></td>
-							<td><span class="error">90</span></td>
-						</tr>
-						<tr>
-							<th>Затраты на продвижение в Европе</th>
-							<td><span class="glyphicon glyphicon-remove"></span></td>
-							<td><span class="glyphicon glyphicon-ok"></span></td>
-						</tr>
-						<tr>
-							<th>Затраты на продвижение в Азии</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Затраты на продвижение в СА</th>-->
+							<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-ok"></span></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td><span class="error">90</span></td>&ndash;&gt;-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Затраты на продвижение в Европе</th>-->
+							<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-remove"></span></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-ok"></span></td>&ndash;&gt;-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Затраты на продвижение в Азии</th>-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 
-						</tr>
-						<tr>
-							<th>Себестоимость</th>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<th>Качество</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Себестоимость</th>-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Качество</th>-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 
-						</tr>
-						<tr>
-							<th>Спрос в СА</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Спрос в СА</th>-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 
-						</tr>
-						<tr>
-							<th>Спрос в Европе</th>
-							<td></td
-							<td></td>
-						</tr>
-						<tr>
-							<th>Спрос в Азии</th>
-							<td></td>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Спрос в Европе</th>-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Спрос в Азии</th>-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Объем продаж в СА</th>-->
+							<!--<td></td>-->
+							<!--<td></td>-->
 
-						</tr>
-						<tr>
-							<th>Объем продаж в СА</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Объем продаж в Европе</th>-->
+							<!--<td></td>-->
+							<!--<td></td>-->
 
-						</tr>
-						<tr>
-							<th>Объем продаж в Европе</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Объем продаж в Азии</th>-->
+							<!--<td></td>-->
+							<!--<td></td>-->
 
-						</tr>
-						<tr>
-							<th>Объем продаж в Азии</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Общий объем продаж</th>-->
+							<!--<td></td>-->
+							<!--<td></td>-->
 
-						</tr>
-						<tr>
-							<th>Общий объем продаж</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Прибыль в отчетном периоде</th>-->
+							<!--<td></td>-->
+							<!--<td></td>-->
 
-						</tr>
-						<tr>
-							<th>Прибыль в отчетном периоде</th>
-							<td></td>
-							<td></td>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Общий объем прибыли</th>-->
+							<!--<td></td>-->
+							<!--<td></td>-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Бюджет</th>-->
+							<!--<td><span class="glyphicon glyphicon-ok"></span></td>-->
+							<!--<td><span class="error">90</span></td>-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Готовность</th>-->
+							<!--<td><span class="glyphicon glyphicon-remove"></span></td>-->
+							<!--<td><span class="glyphicon glyphicon-ok"></span></td>-->
 
-						</tr>
-						<tr>
-							<th>Общий объем прибыли</th>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<th>Бюджет</th>
-							<td><span class="glyphicon glyphicon-ok"></span></td>
-							<td><span class="error">90</span></td>
-						</tr>
-						<tr>
-							<th>Готовность</th>
-							<td><span class="glyphicon glyphicon-remove"></span></td>
-							<td><span class="glyphicon glyphicon-ok"></span></td>
-
-						</tr>
-						<tr>
-							<th>Место</th>
-							<td></td>
-							<td></td>
-						</tr>
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th>Место</th>-->
+							<!--<td></td>-->
+							<!--<td></td>-->
+						<!--</tr>-->
 					</tbody>
 				</table>
 			</div>
