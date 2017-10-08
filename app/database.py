@@ -130,7 +130,7 @@ class Games(db.Model):
     niokrSS_min = db.Column(db.Integer)
     niokrSS_max = db.Column(db.Integer)
     # НИОКР (качество)
-    niokrQuality_active = db.Column(db.Integer)
+    niokrQuality_active = db.Column(db.Boolean)
     niokrQuality_default = db.Column(db.Integer)
     niokrQuality_min = db.Column(db.Integer)
     niokrQuality_max = db.Column(db.Integer)
@@ -173,48 +173,48 @@ class Games(db.Model):
     # Строительство завода
     costFactory = db.Column(db.Integer)
     amountFactory = db.Column(db.Integer)
-    plant_Construction = db.Column(db.Integer)
+    plant_Construction = db.Column(db.Float)
 
     # Накладные расходы
     costOverheads = db.Column(db.Integer)
     amountOverheads = db.Column(db.Integer)
-    plant_Overheads = db.Column(db.Integer)
+    plant_Overheads = db.Column(db.Float)
     # Расходы на демонтаж
     costDismantling = db.Column(db.Integer)
     amountDismantling = db.Column(db.Integer)
-    plant_Destruction = db.Column(db.Integer)
+    plant_Destruction = db.Column(db.Float)
     # Бюджет команд
     teamBudget = db.Column(db.Integer)
 
     # Начальная с/с
     startSS1 = db.Column(db.Integer)
     startSS2 = db.Column(db.Integer)
-    prime_cost_start = db.Column(db.Integer)
+    prime_cost_start = db.Column(db.Float)
 
     # Начальные вложения в с/с
     startAttachmentsSS1 = db.Column(db.Integer)
     startAttachmentsSS2 = db.Column(db.Integer)
-    prime_cost_base = db.Column(db.Integer)
+    prime_cost_base = db.Column(db.Float)
 
     # Начальные вложения в качество
     startAttachmentsQuality1 = db.Column(db.Integer)
     startAttachmentsQuality2 = db.Column(db.Integer)
-    quality_cost_base = db.Column(db.Integer)
+    quality_cost_base = db.Column(db.Float)
 
     # Степень в формуле с/с
     exponentSS1 = db.Column(db.Integer)
     exponentSS2 = db.Column(db.Integer)
-    prime_cost_coef=db.Column(db.Integer)
+    prime_cost_coef = db.Column(db.Float)
 
     # Степень в формуле качества
     exponentQuality1 = db.Column(db.Integer)
     exponentQuality2 = db.Column(db.Integer)
-    quality_cost_coef = db.Column(db.Integer)
+    quality_cost_coef = db.Column(db.Float)
 
     # Основание в формуле цены
     baseFormulaCost1 = db.Column(db.Integer)
     baseFormulaCost2 = db.Column(db.Integer)
-    price_coef = db.Column(db.Integer)
+    price_coef = db.Column(db.Float)
     @staticmethod
     def create(form):
         try:
