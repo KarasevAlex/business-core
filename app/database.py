@@ -183,7 +183,7 @@ class Games(db.Model):
     # Расходы на демонтаж
     costDismantling = db.Column(db.Integer)
     amountDismantling = db.Column(db.Integer)
-    plant_Destruction= db.Column(db.Integer)
+    plant_Destruction = db.Column(db.Integer)
     # Бюджет команд
     teamBudget = db.Column(db.Integer)
 
@@ -350,6 +350,17 @@ class Games(db.Model):
                 end_time = period.period_end
                 db.session.add(period)
 
+            db.session.commit()
+
+            users = User.query.filter_by(game_id=game.id).all()
+
+            periods = Period.query.filter_by(game_id=game.id, period_number=1).first()
+
+            for user in users:
+                solution = Solutions.set_default(period_id=periods.id, game=game, gamer_id=user.id)
+                solution.count_personal_params(game)
+                db.session.add(solution)
+
         except ValueError as e:
             return e
 
@@ -391,7 +402,7 @@ class Solutions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     period_id = db.Column(db.Integer, db.ForeignKey('periods.id'))
     gamer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
+    # Исходные данные
     cost = db.Column(db.Integer)
     niokrSS = db.Column(db.Integer)
     niokrQuality = db.Column(db.Integer)
@@ -401,80 +412,24 @@ class Solutions(db.Model):
     NAPromotion = db.Column(db.Integer)
     EuropePromotion = db.Column(db.Integer)
     AsiaPromotion = db.Column(db.Integer)
-
-    def __init__(self, form, game, gamer_id):
-        super().__init__()
-        self.gamer_id = gamer_id
-        self.period_id = form['period']
-        self.recount(form, game)
-
-    def recount(self, form, game):
-        if 'cost' in form:
-            self.cost = form['cost']
-        else:
-            self.cost = game.cost_default
-
-        if 'niokrSS' in form:
-            self.niokrSS = form['niokrSS']
-        else:
-            self.niokrSS =game.niokrSS_default
-
-        if 'niokrQuality' in form:
-            self.niokrQuality = form['niokrQuality']
-        else:
-            self.niokrQuality =game.niokrQuality_default
-
-        if 'NAFactory' in form:
-            self.NAFactory = form['NAFactory']
-        else:
-            self.NAFactory =game.NAFactory_default
-
-        if 'EuropeFactory' in form:
-            self.EuropeFactory = form['EuropeFactory']
-        else:
-            self.EuropeFactory = game.EuropeFactory_default
-
-        if 'AsiaFactory' in form:
-            self.AsiaFactory = form['AsiaFactory']
-        else:
-            self.AsiaFactory = game.AsiaFactory_default
-
-        if 'NAPromotion' in form:
-            self.NAPromotion = form['NAPromotion']
-        else:
-            self.NAPromotion = game.NAPromotion_default
-
-        if 'EuropePromotion' in form:
-            self.EuropePromotion = form['EuropePromotion']
-        else:
-            self.EuropePromotion = game.EuropePromotion_default
-
-        if 'AsiaPromotion' in form:
-            self.AsiaPromotion = form['AsiaPromotion']
-        else:
-            self.AsiaPromotion = game.AsiaPromotion_default
-    @staticmethod
-    def getPreviousSolutions(id, current_period):
-        return db.session.query(Solutions).\
-            filter(Period.id == Solutions.period_id).\
-            filter(Solutions.gamer_id == id).\
-            filter(Period.period_number == (int(current_period)-1)).first()
-
-class Results(db.Model):
-    __tablename__ = 'results'
-    id = db.Column(db.Integer, primary_key=True)
-    solutions_id = db.Column(db.Integer, db.ForeignKey('solutions.id'))
-    period_id = db.Column(db.Integer, db.ForeignKey('periods.id'))
-    gamer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # Расчетные параметры
     # Расходы
     Budget = db.Column(db.Integer)
-    # Спрос
+    # Спрос (Считается после принятия решения ВСЕМИ игроками)
     Demand_NA = db.Column(db.Integer)
-    mult_Demand_NA = db.Column(db.Integer)
     Demand_Europa = db.Column(db.Integer)
-    mult_Demand_Europa = db.Column(db.Integer)
     Demand_Asia = db.Column(db.Integer)
-    mult_Demand_Asia = db.Column(db.Integer)
+
+    mult_Demand_NA = db.Column(db.Float)
+    mult_Demand_Europa = db.Column(db.Float)
+    mult_Demand_Asia = db.Column(db.Float)
+
+    mult_Price = db.Column(db.Float)
+    mult_Quality = db.Column(db.Float)
+
+    Quality_Cost_Acc = db.Column(db.Integer)
+    Prime_Cost_Acc = db.Column(db.Integer)
+
     # Объем продаж
     Sales_NA = db.Column(db.Integer)
     Sales_Europa = db.Column(db.Integer)
@@ -484,6 +439,107 @@ class Results(db.Model):
     Prime_cost = db.Column(db.Integer)
     # Прибыль в периоде
     Profit = db.Column(db.Integer)
+
+    @staticmethod
+    def set_default(period_id, game, gamer_id):
+        solution = Solutions()
+        solution.gamer_id = gamer_id
+        solution.period_id = period_id
+        solution.cost = game.cost_default
+        solution.niokrSS = game.niokrSS_default
+        solution.niokrQuality = game.niokrQuality_default
+        solution.NAFactory = game.NAFactory_default
+        solution.EuropeFactory = game.EuropeFactory_default
+        solution.AsiaFactory = game.AsiaFactory_default
+        solution.NAPromotion = game.NAPromotion_default
+        solution.EuropePromotion = game.EuropePromotion_default
+        solution.AsiaPromotion = game.AsiaPromotion_default
+
+        return solution
+
+    @staticmethod
+    def set_previous(period_id, previous_solution):
+        solution = Solutions()
+        solution.gamer_id = previous_solution.gamer_id
+        solution.period_id = period_id
+        solution.cost = previous_solution.cost
+        solution.niokrSS = previous_solution.niokrSS
+        solution.niokrQuality = previous_solution.niokrQuality
+        solution.NAFactory = previous_solution.NAFactory
+        solution.EuropeFactory = previous_solution.EuropeFactory
+        solution.AsiaFactory = previous_solution.AsiaFactory
+        solution.NAPromotion = previous_solution.NAPromotion
+        solution.EuropePromotion = previous_solution.EuropePromotion
+        solution.AsiaPromotion = previous_solution.AsiaPromotion
+
+        return solution
+
+
+
+    def count_personal_params(self, game):
+        self.Quality_Cost_Acc = int(game.quality_cost_base) + int(self.niokrQuality)
+        self.Prime_Cost_Acc = int(game.prime_cost_base) + int(self.niokrSS)
+
+        for solution in Solutions.query.filter_by(gamer_id=self.gamer_id):
+            self.Quality_Cost_Acc += int(solution.niokrQuality)
+            self.Prime_Cost_Acc += int(solution.niokrSS)
+
+        self.mult_Price = 1 / (int(game.price_coef) ** (int(self.cost) - int(game.cost_min)))
+        self.mult_Quality = (self.Prime_Cost_Acc / int(game.quality_cost_base)) ** (1 / int(game.quality_cost_coef))
+
+        self.Prime_cost = game.prime_cost_start + 1 - (self.Prime_Cost_Acc / game.prime_cost_base) ** (
+        1 / game.prime_cost_coef)
+
+        self.mult_Demand_NA = self.mult_Quality * self.mult_Price * float(self.NAPromotion)
+        self.mult_Demand_Europa = self.mult_Quality * self.mult_Price * float(self.EuropePromotion)
+        self.mult_Demand_Asia = self.mult_Quality * self.mult_Price * float(self.AsiaPromotion)
+
+    def update_solution(self, form):
+        if 'budget' in form:
+            self.Budget= form['budget']
+
+        if 'cost' in form:
+            self.cost = form['cost']
+
+        if 'niokrSS' in form:
+            self.niokrSS = form['niokrSS']
+
+        if 'niokrQuality' in form:
+            self.niokrQuality = form['niokrQuality']
+
+        if 'NAFactory' in form:
+            self.NAFactory = form['NAFactory']
+
+        if 'EuropeFactory' in form:
+            self.EuropeFactory = form['EuropeFactory']
+
+        if 'AsiaFactory' in form:
+            self.AsiaFactory = form['AsiaFactory']
+
+        if 'NAPromotion' in form:
+            self.NAPromotion = form['NAPromotion']
+
+        if 'EuropePromotion' in form:
+            self.EuropePromotion = form['EuropePromotion']
+
+        if 'AsiaPromotion' in form:
+            self.AsiaPromotion = form['AsiaPromotion']
+
+
+
+
+    @staticmethod
+    def getPreviousSolutions(current_period_id):
+        current_period = Period.query.filter_by(id=current_period_id).first()
+        previous_period = Period.query.filter_by(game_id=current_period.game_id, period_number=current_period.period_number-1).first()
+        return Solutions.query.filter_by(period_id=previous_period.id).all()
+
+    @staticmethod
+    def getPreviousSolution(current_period, user_id):
+        previous_period = Period.query.filter_by(game_id=current_period.game_id,
+                                                 period_number=current_period.period_number - 1).first()
+        return Solutions.query.filter_by(period_id=previous_period.id, gamer_id=user_id).first()
+
 
 
 

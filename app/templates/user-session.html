@@ -1,13 +1,13 @@
 <main>
 	<div class="container">
 		<div class="well clearfix session-panel">
-			<a href="" class="btn btn-default pull-left">Текущий период</a>
-			<div class="pull-left period-nav">
-				<a href="" class="glyphicon glyphicon-chevron-left"></a>
-				<span>3</span>
-				<a href="" class="glyphicon glyphicon-chevron-right"></a>
-			</div>
-			<p class="pull-right info">Период: <span>3</span></p>
+			<!--<a href="" class="btn btn-default pull-left">Текущий период</a>-->
+			<!--<div class="pull-left period-nav">-->
+				<!--<a href="" class="glyphicon glyphicon-chevron-left"></a>-->
+				<!--<span>3</span>-->
+				<!--<a href="" class="glyphicon glyphicon-chevron-right"></a>-->
+			<!--</div>-->
+			<p class="pull-right info">Период: <span>{{period.period_number}}</span></p>
 			<p class="pull-right info">Осталось: <span>00:00:00</span></p>
 
 		</div>
@@ -23,144 +23,209 @@
 		<!-- Tab panes -->
 		<div class="tab-content">
 		  <div class="tab-pane active" id="periods">
-			<form action="/result" method="post">
+			<form action="/result" method="post" id="resolve-period">
 				<input class="form-control" type="hidden" value="{{ period.id }}" name="period">
 				<input class="form-control" type="hidden" value="{{ period.period_number }}" name="period_number">
+				<input class="form-control budget" type="hidden" value="" name="budget">
 				<div class="row visible-md visible-lg">
-					<div class="col-md-2 col-md-offset-3 center-text"><h4>Текущий период</h4></div>
+					<div class="col-md-2 col-md-offset-4 center-text"><h4>Текущий период</h4></div>
 					<div class="col-md-2 center-text"><h4>Прошлый период</h4></div>
 				</div>
-				{{ period }}
-				{% if game.cost_active%}
+			{% if game.cost_active%}
 				<div class="row">
-					<div class="col-md-3 resolve-item"><span class="glyphicon glyphicon-info-sign"></span> Цена</div>
-					<div class="col-md-2">
-						<input class="form-control" type="number" name="cost">
+					<div class="col-md-3 col-md-offset-1 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Цена влияет на привлекательность продукции Вашей компании для потребителя.</p>
+							<p>Устанавливается единая цена для всех рынков. Вы можете установить цену в пределах от a до b [Параметры a и b были определены Администратором при создании игры]. Цена устанавливается в тысячах рублей. Допустим ввод только целых значений. <a href="">Подробнее…</a></p>
+						</div>
+					Цена
 					</div>
-					<div class="col-md-2 previous">45</div>
-				</div>
-				{% endif %}
-				<div class="row">
-					<div class="col-md-3"><h4 class="resolve-item">НИОКР</h4></div>
-				</div>
-				{% if game.niokrSS_active %}
-				<div class="row">
-					<div class="col-md-3 resolve-item">Снижение себестоимости</div>
 					<div class="col-md-2">
-						<input class="form-control" type="number" name="niokrSS">
+						<input class="form-control" name="cost" type="text">
 					</div>
-					<div class="col-md-2 previous">4</div>
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous">{{ previous_solution.cost }}</div>
+					{% else %}
+						<div class="col-md-2 previous">0</div>
+					{% endif %}
+				</div>
+			{%else%}
+				<input type="hidden" name="cost" class="form-control" value="{{game.cost_default}}">
+			{% endif %}
+				<div class="row">
+					<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">НИОКР</h4></div>
+				</div>
+			{% if game.niokrSS_active %}
+				<div class="row">
+					<div class="col-md-3 col-md-offset-1 resolve-item">Снижение себестоимости</div>
+					<div class="col-md-2">
+						<input class="form-control niokrSS" name="niokrSS"  type="text" v-model="niokrSS" v-on:blur="sizeSS">
+					</div>
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous">{{ previous_solution.niokrSS }}</div>
+					{% else %}
+						<div class="col-md-2 previous">0</div>
+					{% endif %}
 					<div class="col-md-2 resolve-item">Себестоимость</div>
-					<div class="col-md-2 previous">213</div>
+					<div class="col-md-2 previous ss" v-html="SS">0</div>
 				</div>
-				{% endif %}
-				{% if game.niokrQuality_active %}
+			{% else %}
+				<input type="hidden" name="niokrSS" class="form-control" value="{{ game.niokrSS_default }}" v-model="niokrSS" v-on:blur="sizeSS">
+			{% endif %}
+			{% if game.niokrQuality_active %}
 				<div class="row">
-					<div class="col-md-3 resolve-item">Повышение качества</div>
+					<div class="col-md-3 col-md-offset-1 resolve-item">Повышение качества</div>
 					<div class="col-md-2">
-						<input class="form-control" type="number" name="niokrQuality">
+						<input class="form-control niokrQuality" name="niokrQuality"  type="text" v-model="niokrQuality" v-on:blur="sizeQuality">
 					</div>
-					<div class="col-md-2 previous">2424</div>
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous">{{ previous_solution.niokrQuality }}</div>
+					{% else %}
+						<div class="col-md-2 previous">0</div>
+					{% endif %}
 					<div class="col-md-2 resolve-item">Качество</div>
-					<div class="col-md-2 previous">2134</div>
+					<div class="col-md-2 previous quality" v-html="quality">0</div>
 				</div>
-				{% endif %}
+			{%else%}
+				<input type="hidden" name="niokrQuality" class="form-control" value="{{ game.niokrQuality_default }}" v-model="niokrQuality" v-on:blur="sizeQuality">
+			{% endif %}
 				<div class="row">
+					<div class="col-md-1"><h4 class="resolve-item">Объёмы рынков</h4></div>
 					<div class="col-md-3"><h4 class="resolve-item">Заводы</h4></div>
 				</div>
-				{% if game.isSizeNA %}
-				{% if game.NAFactory_active%}
-				<div class="row">
+			{% if game.isSizeNA %}
+			{% if game.NAFactory_active%}
+				<div class="row" v-bind:class="{ 'has-error': factories.isError }">
+					<div class="col-md-1 previous">{{game.sizeNA}}</div>
 					<div class="col-md-3 resolve-item">Северная Америка</div>
 					<div class="col-md-2">
-						<input class="form-control" type="number" name="NAFactory">
+						<input class="form-control" name="NAFactory"  type="text" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
 					</div>
-					<div class="col-md-2 previous">23</div>
+					{% if previous_solution is not none %}
+					<div class="col-md-2 previous lastNA">{{ previous_solution.NAFactory }}</div>
+					{% else %}
+					<div class="col-md-2 previous lastNA">0</div>
+					{% endif %}
 					<div class="col-md-2 resolve-item">Изменение размеров</div>
-					<div class="col-md-2 previous">234</div>
+					<div class="col-md-2 previous" v-html="factories.NA.change">0</div>
 				</div>
-				{% endif %}
-				{% endif %}
-				{% if game.isSizeEurope %}
-				{% if game.EuropeFactory_active %}
-				<div class="row">
+			{%else%}
+				<input type="hidden" name="NAFactory" class="form-control" value="{{ game.NAFactory_default }}" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
+			{% endif %}
+			{% endif %}
+
+			{% if game.isSizeEurope %}
+			{% if game.EuropeFactory_active %}
+				<div class="row" v-bind:class="{ 'has-error': factories.isError }">
+					<div class="col-md-1 previous">{{game.sizeEurope}}</div>
 					<div class="col-md-3 resolve-item">Европа</div>
 					<div class="col-md-2">
-						<input class="form-control" type="number" name="EuropeFactory">
+						<input class="form-control" name="EuropeFactory" type="text" v-on:blur="changeFactory(factories.Europe)" v-model="factories.Europe.val">
 					</div>
-					<div class="col-md-2 previous">43</div>
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous lastEurope">{{ previous_solution.EuropeFactory }}</div>
+					{% else %}
+						<div class="col-md-2 previous lastEurope">0</div>
+					{% endif %}
 					<div class="col-md-2 resolve-item">Изменение размеров</div>
-					<div class="col-md-2 previous">655</div>
+					<div class="col-md-2 previous" v-html="factories.Europe.change">0</div>
 				</div>
-				{% endif %}
-				{% endif %}
-				{% if game.isSizeAsia %}
-				{% if game.AsiaFactory_active %}
-				<div class="row">
+			{%else%}
+				<input type="hidden" name="EuropeFactory" class="form-control" value="{{ game.EuropeFactory_default }}" v-on:blur="changeFactory(factories.Europe)" v-model="factories.Europe.val">
+			{% endif %}
+			{% endif %}
+			{% if game.isSizeAsia %}
+			{% if game.AsiaFactory_active %}
+				<div class="row" v-bind:class="{ 'has-error': factories.isError }">
+					<div class="col-md-1 previous">{{game.sizeAsia}}</div>
 					<div class="col-md-3 resolve-item">Азия</div>
 					<div class="col-md-2">
-						<input class="form-control" type="number" name="AsiaFactory">
+						<input class="form-control" name="AsiaFactory" type="text" v-on:blur="changeFactory(factories.Asia)" v-model="factories.Asia.val">
 					</div>
-					<div class="col-md-2 previous">234</div>
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous lastAsia">{{ previous_solution.AsiaFactory }}</div>
+					{% else %}
+						<div class="col-md-2 previous lastAsia">0</div>
+					{% endif %}
 					<div class="col-md-2 resolve-item">Изменение размеров</div>
-					<div class="col-md-2 previous">42</div>
+					<div class="col-md-2 previous" v-html="factories.Asia.change">0</div>
 				</div>
-				{% endif %}
-				{% endif %}
+			{%else%}
+				<input type="hidden" name="AsiaFactory" class="form-control" value="{{ game.AsiaFactory_default }}" v-on:blur="changeFactory(factories.Asia)" v-model="factories.Asia.val">
+			{% endif %}
+			{% endif %}
 				<div class="row">
-					<div class="col-md-3"><h4 class="resolve-item">Продвижение</h4></div>
+					<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">Продвижение</h4></div>
 				</div>
-				{% if game.isSizeNA %}
-				{% if game.NAPromotion_active%}
+			{% if game.isSizeNA %}
+			{% if game.NAPromotion_active%}
 				<div class="row">
-					<div class="col-md-3 resolve-item">Северная Америка</div>
+					<div class="col-md-3 col-md-offset-1 resolve-item">Северная Америка</div>
 					<div class="col-md-2">
-						<input class="form-control" type="number" name="NAPromotion">
+						<input class="form-control promotionNA" name="NAPromotion" type="text" v-model="promotion.NA" v-on:blur="sizeBudget">
 					</div>
-					<div class="col-md-2 previous">123</div>
+
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous">{{ previous_solution.NAPromotion }}</div>
+					{% else %}
+						<div class="col-md-2 previous">0</div>
+					{% endif %}
 				</div>
-				{% endif %}
-				{% endif %}
-				{% if game.isSizeEurope %}
-				{% if game.EuropePromotion_active %}
+			{%else%}
+				<input type="hidden" name="NAPromotion" class="form-control" value="{{ game.NAPromotion_default }}" v-model="promotion.NA" v-on:blur="sizeBudget">
+			{% endif %}
+			{% endif %}
+			{% if game.isSizeEurope %}
+			{% if game.EuropePromotion_active %}
 				<div class="row">
-					<div class="col-md-3 resolve-item">Европа</div>
+					<div class="col-md-3 col-md-offset-1 resolve-item">Европа</div>
 					<div class="col-md-2">
-						<input class="form-control" type="number" name="EuropePromotion">
+						<input class="form-control promotionEurope" name="EuropePromotion" type="text" v-model="promotion.Europe" v-on:blur="sizeBudget">
 					</div>
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous">{{ previous_solution.EuropePromotion }}</div>
+					{% else %}
+						<div class="col-md-2 previous">0</div>
+					{% endif %}
+				</div>
+			{%else%}
+				<input type="hidden" name="EuropePromotion" class="form-control" value="{{ game.EuropePromotion_default }}" v-model="promotion.Europe" v-on:blur="sizeBudget">
+			{% endif %}
+			{% endif %}
+			{% if game.isSizeAsia %}
+			{% if game.AsiaPromotion_active %}
+				<div class="row">
+					<div class="col-md-3 col-md-offset-1 resolve-item">Азия</div>
+					<div class="col-md-2">
+						<input class="form-control promotionAsia" name="AsiaPromotion"  type="text" v-model="promotion.Asia" v-on:blur="sizeBudget">
+					</div>
+					{% if previous_solution is not none %}
+						<div class="col-md-2 previous">{{ previous_solution.AsiaPromotion }}</div>
+					{% else %}
+						<div class="col-md-2 previous">0</div>
+					{% endif %}
+				</div>
+			{%else%}
+				<input type="hidden" name="AsiaPromotion" class="form-control" value="{{ game.AsiaPromotion_default }}" v-model="promotion.Asia" v-on:blur="sizeBudget">
+			{% endif %}
+			{% endif %}
+				<div class="row">
+					<div class="col-md-3 col-md-offset-1 resolve-item">Израсходованный бюджет</div>
+					<div class="col-md-2 previous" id="spent-budget-val" v-html="spentBudgetVal"></div>
 					<div class="col-md-2 previous">0</div>
-				</div>
-				{% endif %}
-				{% endif %}
-				{% if game.isSizeAsia %}
-				{% if game.AsiaPromotion_active %}
-				<div class="row">
-					<div class="col-md-3 resolve-item">Азия</div>
-					<div class="col-md-2">
-						<input class="form-control" type="number" name="AsiaPromotion">
-					</div>
-					<div class="col-md-2 previous">0</div>
-				</div>
-				{% endif %}
-				{% endif %}
-				<div class="row">
-					<div class="col-md-3 resolve-item">Израсходованный бюджет</div>
-					<div class="col-md-2">
-						<input class="form-control" type="text">
-					</div>
-					<div class="col-md-2 previous">333</div>
 					<div class="col-md-2 resolve-item">Доступный бюджет</div>
-					<div class="col-md-2 previous">333</div>
+					<div class="col-md-2 previous allBudget">100</div>
 				</div>
-				<div class="alert alert-warning">
+				<div class="alert alert-warning" v-if="spentBudgetVal < allBudget">
 					<h4>ПРЕДУПРЕЖДЕНИЕ!</h4>
 					<p>Решение сохранено. Вы израсходовали не весь доступный бюджет. Вы могли бы увеличить свои расходы</p>
 				</div>
-				<div class="alert alert-danger">
+				<div class="alert alert-danger" v-if="spentBudgetVal > allBudget">
 					<h4>Предупреждение!</h4>
 					<p>Решение не сохранено. Ваши затраты превышают допустимый бюджет.</p>
 				</div>
-				<button type="submit" class="btn btn-primary center-block">Принять решение</button>
+				<button class="btn btn-primary center-block" type="submit" v-bind:disabled="factories.isError || spentBudgetVal > allBudget">Принять решение</button>
 			</form>
 		  </div>
 		  <div class="tab-pane" id="solutions">

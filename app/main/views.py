@@ -1,21 +1,23 @@
+import flask_excel as excel
+import xlsxwriter
 from . import main
 from .. import db
 from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
-from ..database import User, Games, Period, Solutions, Results,News
-from flask import render_template, request, flash,redirect
+from ..database import User, Games, Period, Solutions, News
+from flask import render_template, request, flash,redirect, send_from_directory
 from flask_login import login_user, logout_user, login_required, current_user
 
 
 @main.route('/create_database', methods=['GET', 'POST'])
 def create_database():
-    # try:
-    db.create_all()
-    db.session.add(User(username='Admin', password='Admin', role=1))
-    return "succed"
-    # except Exception as e:
-    #     return "fail"
+    try:
+        db.create_all()
+        db.session.add(User(username='Admin', password='Admin', role=1))
+        return "succed"
+    except Exception as e:
+        return "fail"
 
 @main.route('/', methods=['POST','GET'])
 def index():
@@ -44,7 +46,6 @@ def index_():
 @main.route('/logout')
 @login_required
 def logout():
-    е = current_user
     logout_user()
     return redirect('/')
 
@@ -68,7 +69,7 @@ def session_admin(id):
     games = Games.query.filter_by(id=id)
     periods = Period.query.filter_by(game_id=id)
     return render_template('layout.html',
-                           header=render_template('header.html'),
+                           header=render_template('header.html', form=Login_form()),
                            main=render_template('admin-session.html', games=games, periods=periods),
                            footer=render_template('footer.html'))
 
@@ -104,14 +105,18 @@ def flush():
 def index10():
     period = Period.getActivePeriod(current_user.game_id)
     if period is not None:
+        previous_solution= None
         game = Games.getGame(current_user.game_id)
+        if period.period_number != 1:
+            previous_solution = Solutions.getPreviousSolution(period, current_user.id)
 
         return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
-                           main=render_template('user-session.html', period=period, game=game),
-                           footer=render_template('footer.html'))
+                           main=render_template('user-session.html', period=period, game=game, previous_solution=previous_solution),
+                           footer=render_template('footer.html'),
+                           script=render_template('users-script.html', game=game))
     return render_template('layout.html',
-                           header=render_template('header.html'),
+                           header=render_template('header.html', form=Login_form()),
                            footer=render_template('footer.html'))
 
 @main.route('/result', methods=['POST'])
@@ -119,24 +124,6 @@ def index10():
 @gamer_required
 def result():
     model = Modeling(current_user, request.form)
-    # # Решения за другие периоды
-    # solutions = Solutions.query.filter_by(gamer_id=current_user.id).all()
-    # # Решения за прошлы периоды, нахуя только
-    # results = Results.query.filter_by(gamer_id=current_user.id).all()
-    # # исходные данные
-    # game = Games.getGame(current_user.game_id)
-    # # решение для текущего периода
-    # solution = Solutions(gamer_id=current_user.id)
-    # solution.generate(request.form, game)
-    # # Результаты по текущему периоду
-    # result = Results()
-    # Solutions.getPreviousSolutions(current_user.id, 2)
-    # result.recount(current_solution=solution,
-    #                            game=game,
-    #                            solutions=solutions,
-    #                            results=results)
-    # db.session.add(solution)
-    # db.session.add(result)
     return "s"
 
 
@@ -184,10 +171,21 @@ def contatst_page():
                            main=render_template('contacts.html'),
                            footer=render_template('footer.html'))
 
-@main.route('/check')
-def check():
-    tmp=Solutions.query.filter_by(period_id=4, gamer_id=2).first()
-    tmp.cost=24
-    db.session.add(tmp)
-    db.session.commit()
-    return "2"
+@main.route('/excel/<int:id>')
+def get_logins_excel(id):
+    Users=db.session.query(User.username,User.password_hash).filter_by(game_id=id).all()
+    workbook = xlsxwriter.Workbook('users.xlsx')
+    worksheet = workbook.add_worksheet()
+    row = 1
+    col = 0
+    for item, cost in (Users):
+        worksheet.write(row, col, item)
+        worksheet.write(row, col + 1, cost)
+        row += 1
+    workbook.close()
+    file_name = "users.xlsx"
+    output = excel.make_response()
+    output.headers["Content-Disposition"] = "attachment; filename=users.xlsx"
+    output.headers["Content-type"] = "application/vnd.openxmlformats-\
+    officedocument.spreadsheetml.sheet"
+    return output

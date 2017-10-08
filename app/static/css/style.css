@@ -15,6 +15,11 @@ main {
 	background-color: #c12121;
 	border-color: #580000;
 }
+.btn-primary:active:hover, .btn-primary.active:hover, 
+.open>.dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, 
+.btn-primary.active:focus, .open>.dropdown-toggle.btn-primary:focus, 
+.btn-primary:active.focus, .btn-primary.active.focus, 
+.open>.dropdown-toggle.btn-primary.focus,
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus{
 	background-color: #981111;
     border-color: #580000;
@@ -155,19 +160,22 @@ a:hover, a:focus {
 	border-bottom: 1px solid #DDDDDD;
 	margin-bottom: 15px;
 }
+.table-top {
+	padding: 5px 0 10px;
+}
 .excel {
 	background: url('../img/excel.png') no-repeat center center;
 	-webkit-background-size: cover;
 	background-size: cover;
 	width: 28px;
 	height: 28px;
-	display: block
+	display: block;
+	margin-left: 10px;
 }
 .print{
 	font-size: 18px;
     color: #000;
     padding-top: 3px;
-	margin-left: 10px;
 }
 .print:hover, .print:active, .print:focus{
 	text-decoration: none;
@@ -229,5 +237,16 @@ h4.resolve-item {
 	font-size: 20px;
 	text-align: center;
 }
+.table td.input-td {
+	padding: 0;
+}
+.input-td input {
+	margin-bottom: 0;
+	width: 100px;
+}
+.help-btn {
+	cursor: pointer;
+}
+.help-pane {
 
-
+}
