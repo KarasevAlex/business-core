@@ -234,7 +234,7 @@ class Games(db.Model):
             if 'time-start' in form:
                 game.time_start = form['time-start']
             if 'time-duration' in form:
-                game.time_duration = form['time-duration'],
+                game.time_duration = form['time-duration']
             if 'cost' in form:
                 game.cost_active = True
                 game.cost_max = form['cost-max']
