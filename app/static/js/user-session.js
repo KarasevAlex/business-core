@@ -11,14 +11,6 @@ $(document).ready(function(){
 	var quality = +$('.quality').text();
 	var ss = +$('.ss').text();
 
-	var Plant_Construction = {{ game.plant_Construction }};
-	var Plant_Destruction = {{ game.plant_Destruction }};
-	var Plant_Overheads = {{ game.plant_Overheads }};
-	var Prime_Coststart = {{ game.prime_cost_start }};
-	var Prime_Costbase = {{ game.prime_cost_base }};
-	var Prime_Costcoef = {{ game.prime_cost_coef }};
-	var Prime_Cost_Acc = Prime_Costbase + 0;
-
 	var formapp = new Vue({
 	  el: '#resolve-period',
 	  data: {
@@ -96,11 +88,12 @@ $(document).ready(function(){
 	  	},
 	  	sizeSS: function(){
 	  		var Prime_Cost_Acc_new = Prime_Cost_Acc + this.niokrSS;
-	  		this.SS = Prime_Coststart + 1 - (Prime_Cost_Acc_new / Prime_Costbase) ^ (1 / Prime_Costcoef)
+	  		this.SS = Prime_Coststart + 1 - Math.pow((Prime_Cost_Acc_new / Prime_Costbase), (1 / Prime_Costcoef));
 	  		this.sizeBudget();
 	  	},
 	  	sizeQuality: function(){
-	  		this.quality;
+	  	    var Quality_Cost_Acc_new = Quality_Cost_Acc + this.niokrQuality;
+	  		this.quality = Math.pow((Quality_Cost_Acc_new / Quality_Costbase), (1 / Quality_Costcoef));
 	  		this.sizeBudget();
 	  	}
 	  }
@@ -111,12 +104,14 @@ $(document).ready(function(){
 	help.click(function(e){
 		var target = $(e.currentTarget);
 		var content = target.next('.help-pane').html();
+		console.log(content)
 		target.webuiPopover({
 			placement: 'bottom-right',
 			width: 300,
 			animation: 'pop',
 			content: content,
-			closeable: true
+			closeable: true,
+			trigger:'click'
 		});
 	});
 });
