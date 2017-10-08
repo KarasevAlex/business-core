@@ -26,21 +26,3 @@ class News(Form):
                              _name="text")
     submit = SubmitField('Войти')
 
-# НУ НАХУЙ ЕЕ ОПИСЫВАТЬ ТАК СОЙДЕТ=)
-
-# class Game(Form):
-#     title = StringField('Название', [InputRequired(), ],
-#                         id="name",
-#                         _name="name",
-#                         render_kw={"placeholder": "Название"})
-#
-#     TeamCount = IntegerField('Количество команд',[InputRequired(), validators.Length(min=2)],
-#                              default=2,
-#                              id='team-number',
-#                              _name='team-number',
-#                              render_kw={"placeholder": "Количество команд"})
-#     PeriodCount = IntegerField('Количество периодов', [InputRequired(), validators.Length(min=2)],
-#                              default=5,
-#                              id='period-number',
-#                              _name='period-number',
-#                              render_kw={"placeholder": "Количество периодов"})
