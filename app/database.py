@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # vim:fileencoding=utf-8
-from datetime import datetime
+
 from . import db, loginManager
 from flask_login import UserMixin
 from datetime import datetime, timedelta
-from flask import current_app, request, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from random import choice
 from string import ascii_uppercase
-from math import fabs
+
 @loginManager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
