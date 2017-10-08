@@ -7,34 +7,24 @@
 				</ul>
 			</div>
 			<div class="col-md-9">
+				{%if isAdmin %}
 				<div class="page-header">
 				  <button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newNewsModal"><span class="glyphicon glyphicon-plus"></span> Добавить новость</button>
 				  <h1>Новости</h1>
 				</div>
+				{% endif %}
+				{% for new in news %}
 				<div class="news">
 					<div class="news__title clearfix">
-						<h4 class="pull-left">Заголовок новости</h4>
-						<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteNewsModal">&times;</button>
-						<span class="pull-right news__date">24.08.2017</span>
+						<h4 class="pull-left" id="{{new.id}}">{{new.title}}</h4>
+						{%if isAdmin %}
+							<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteNewsModal">&times;</button>
+						{% endif %}
+						<span class="pull-right news__date">{{new.timestamp}}</span>
 					</div>
-					<div class="news__content"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, ut aspernatur, distinctio possimus iure voluptatum eum provident porro ipsum quam!</p></div>
+					<div class="news__content"><p> {{new.body}} </p></div>
 				</div>
-				<div class="news">
-					<div class="news__title clearfix">
-						<h4 class="pull-left">Заголовок новости</h4>
-						<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteNewsModal">&times;</button>
-						<span class="pull-right news__date">24.08.2017</span>
-					</div>
-					<div class="news__content"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, ut aspernatur, distinctio possimus iure voluptatum eum provident porro ipsum quam!</p></div>
-				</div>
-				<div class="news">
-					<div class="news__title clearfix">
-						<h4 class="pull-left">Заголовок новости</h4>
-						<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteNewsModal">&times;</button>
-						<span class="pull-right news__date">24.08.2017</span>
-					</div>
-					<div class="news__content"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, ut aspernatur, distinctio possimus iure voluptatum eum provident porro ipsum quam!</p></div>
-				</div>
+				{% endfor%}
 				<ul class="pagination">
 				  <li><a href="#">&laquo;</a></li>
 				  <li class="active"><a href="#">1</a></li>
@@ -56,24 +46,30 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h4 class="modal-title" id="myModalLabel">Создать новость</h4>
 	  </div>
-	  <form action="">
+	  <form action="/news/add" method="post">
 		  <div class="modal-body">
 			<div class="form-group">
-				<label>Дата</label>
-				<input type="date" class="form-control">
+				{{ form.date.label}}
+				{{ form.date(class_="form-control")}}
+				<!--<label>Дата</label>-->
+				<!--<input type="date" class="form-control">-->
 			</div>
 			<div class="form-group">
-				<label>Заголовок новости</label>
-				<input type="text" class="form-control">
+				{{ form.title.label}}
+				{{ form.title(class_="form-control")}}
+				<!--<label>Заголовок новости</label>-->
+				<!--<input type="text" class="form-control">-->
 			</div>
 			<div class="form-group">
-				<label>Текст новости</label>
-				<textarea class="form-control"></textarea>
+				{{ form.text.label}}
+				{{ form.text(class_="form-control")}}
+				<!--<textarea class="form-control"></textarea>-->
 			</div>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>
-			<button type="submit" class="btn btn-primary">Создать</button>
+			{{ form.submit(class_="btn btn-primary")}}
+			<!--<button type="submit" class="btn btn-primary">Создать</button>-->
 		  </div>
 	  </form>
 	</div>
