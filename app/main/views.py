@@ -134,7 +134,8 @@ def index10():
 @login_required
 @gamer_required
 def result():
-    model = Modeling(current_user, request.form)
+    if Period.check_period(request.form['period']):
+        model = Modeling(current_user, request.form)
     return "s"
 
 
@@ -159,9 +160,8 @@ def remove_news(id):
 
 @main.route('/news')
 def news_page():
-    form = Login_form()
     return render_template('layout.html',
-                           header=render_template('header.html', form=form),
+                           header=render_template('header.html', form=Login_form()),
                            main=render_template('news.html',
                                                 isAdmin=current_user.isAdmin(),
                                                 form=News_form(),
@@ -171,20 +171,20 @@ def news_page():
 @main.route('/galleries')
 def galleries_page():
     return render_template('layout.html',
-                           header=render_template('header.html'),
+                           header=render_template('header.html',form=Login_form()),
                            main=render_template('gallery.html'),
                            footer=render_template('footer.html'))
 
 @main.route('/сontacts')
 def contatst_page():
     return render_template('layout.html',
-                           header=render_template('header.html'),
+                           header=render_template('header.html',form=Login_form()),
                            main=render_template('contacts.html'),
                            footer=render_template('footer.html'))
 
 @main.route('/excel/<int:id>')
 def get_logins_excel(id):
-    Users=db.session.query(User.username,User.password_hash).filter_by(game_id=id).all()
+    Users = db.session.query(User.username,User.password_hash).filter_by(game_id=id).all()
     workbook = xlsxwriter.Workbook('users.xlsx')
     worksheet = workbook.add_worksheet()
     row = 1

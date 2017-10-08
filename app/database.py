@@ -393,6 +393,14 @@ class Period(db.Model):
         self.period_duration = period_time
 
     @staticmethod
+    def check_period(period_id):
+        current_time = datetime.now().time()
+        period = Period.query.filter_by(id=period_id).first()
+        if current_time >= period.period_start and current_time <= period.period_end:
+            return True
+        return False
+
+    @staticmethod
     def getActivePeriod(game_id):
         current_time = datetime.now().time()
         periods = Period.query.filter_by(game_id=game_id)
