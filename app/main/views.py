@@ -2,6 +2,7 @@ import flask_excel as excel
 import xlsxwriter
 from . import main
 from .. import db
+from .chart import Chart
 from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
@@ -67,11 +68,19 @@ def index2():
 @login_required
 def session_admin(id):
     games = Games.query.filter_by(id=id)
+    users = User.query.filter_by(game_id=id).all()
     periods = Period.query.filter_by(game_id=id)
+    # current_period = Period.getActivePeriod(id)
+    # if current_period is not None:
+    #     previous_solution = None
+    #     if current_period.period_number != 1:
+    #         previous_solution = Solutions.getPreviousSolutions(current_period.id)
+    chart = Chart(Solutions.query.filter_by(period_id=1).all(), users)
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('admin-session.html', games=games, periods=periods),
-                           footer=render_template('footer.html'))
+                           footer=render_template('footer.html'),
+                           script=chart.render())
 
 
 @main.route('/4')
@@ -105,7 +114,7 @@ def flush():
 def index10():
     period = Period.getActivePeriod(current_user.game_id)
     if period is not None:
-        previous_solution= None
+        previous_solution = None
         game = Games.getGame(current_user.game_id)
         if period.period_number != 1:
             previous_solution = Solutions.getPreviousSolution(period, current_user.id)

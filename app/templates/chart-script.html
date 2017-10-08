@@ -1,0 +1,179 @@
+<script>
+        // Цена
+        var cost = document.getElementById('costSS-chart').getContext('2d');
+        var cost_chart = new Chart(cost, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+
+                datasets: [{% for item in costSS_dataset %}
+                          {
+                              label:"{{item.label}}",
+                              backgroundColor: "{{item.fillColor}}",
+                              data:[{% for data in item.data %}
+                              {{data}},
+                              {% endfor %}]
+                          },
+                    {% endfor %}]
+            },
+            // Configuration options go here
+            options: {}
+        });
+        // Качество
+
+        var quality = document.getElementById('quality-chart').getContext('2d');
+        var quality_chart = new Chart(quality, {
+            type: 'bar',
+
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+                datasets: [{
+                    label:"{{ quality_chart_dataset.label }}",
+                    backgroundColor: "{{quality_chart_dataset.fillColor}}",
+                    data:[{% for data in quality_chart_dataset.data %}
+                              {{data}},
+                              {% endfor %}]
+
+                        }]
+            },
+        });
+
+        var demand = document.getElementById('demand-chart').getContext('2d');
+        var demand_chart = new Chart(demand, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+
+                datasets: [{% for item in demand_chart_dataset %}
+                          {
+                              label:"{{item.label}}",
+                              backgroundColor: "{{item.fillColor}}",
+                              data:[{% for data in item.data %}
+                              {{data}},
+                              {% endfor %}]
+                          },
+                    {% endfor %}]
+            },
+            // Configuration options go here
+            options: {}
+        });
+
+
+        var factories = document.getElementById('factories-chart').getContext('2d');
+        var factories_chart = new Chart(factories, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+
+                datasets: [{% for item in factories_chart_dataset %}
+                          {
+                              label:"{{item.label}}",
+                              backgroundColor: "{{item.fillColor}}",
+                              data:[{% for data in item.data %}
+                              {{data}},
+                              {% endfor %}]
+                          },
+                    {% endfor %}]
+            },
+            // Configuration options go here
+            options: {}
+        });
+
+
+
+        var sales = document.getElementById('sales-chart').getContext('2d');
+        var sales_chart = new Chart(sales, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+
+                datasets: [{% for item in sales_chart_dataset %}
+                          {
+                              label:"{{item.label}}",
+                              backgroundColor: "{{item.fillColor}}",
+                              data:[{% for data in item.data %}
+                              {{data}},
+                              {% endfor %}]
+                          },
+                    {% endfor %}]
+            },
+            // Configuration options go here
+            options: {}
+        });
+
+
+
+        var profit = document.getElementById('profit-chart').getContext('2d');
+        var profit_chart = new Chart(profit, {
+            type: 'bar',
+
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+                datasets: [{
+                    label:"{{ profit_chart_dataset.label }}",
+                    backgroundColor: "{{profit_chart_dataset.fillColor}}",
+                    data:[{% for data in profit_chart_dataset.data %}
+                              {{data}},
+                              {% endfor %}]
+
+                        }]
+            },
+        });
+
+
+        var promotion = document.getElementById('promotion-chart').getContext('2d');
+        var promotion_chart = new Chart(promotion, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+
+                datasets: [{% for item in promotion_chart_dataset %}
+                          {
+                              label:"{{item.label}}",
+                              backgroundColor: "{{item.fillColor}}",
+                              data:[{% for data in item.data %}
+                              {{data}},
+                              {% endfor %}]
+                          },
+                    {% endfor %}]
+            },
+            // Configuration options go here
+            options: {}
+        });
+</script>
