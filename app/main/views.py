@@ -78,7 +78,9 @@ def session_admin(id):
     chart = Chart(Solutions.query.filter_by(period_id=1).all(), users)
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
-                           main=render_template('admin-session.html', games=games, periods=periods),
+                           main=render_template('admin-session.html', games=games,
+                                                periods=periods,
+                                                users=users),
                            footer=render_template('footer.html'),
                            script=chart.render())
 
@@ -123,7 +125,7 @@ def index10():
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('user-session.html', period=period, game=game, previous_solution=previous_solution),
                            footer=render_template('footer.html'),
-                           script=render_template('users-script.html', game=game))
+                           script=render_template('users-script.html', game=game, previous_solution=previous_solution))
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            footer=render_template('footer.html'))

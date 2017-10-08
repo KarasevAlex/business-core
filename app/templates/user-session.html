@@ -665,6 +665,13 @@
 	var Prime_Coststart = {{ game.prime_cost_start }};
 	var Prime_Costbase = {{ game.prime_cost_base }};
 	var Prime_Costcoef = {{ game.prime_cost_coef }};
-	var Quality_Costbase = {{ game.quality_cost_base }};
-	var Quality_Costcoef = {{ game.quality_cost_coef }};
+    var Quality_Costbase = {{ game.quality_cost_base }};
+    var Quality_Costcoef = {{ game.quality_cost_coef }};
+	{% if previous_solution is not none %}
+	    var Quality_Cost_Acc = {{previous_solution.Quality_Cost_Acc}}
+        var Prime_Cost_Acc = {{previous_solution.Prime_Cost_Acc}}
+    {% else %}
+        var Quality_Cost_Acc = Quality_Costbase;
+        var Prime_Cost_Acc = Prime_Costbase;
+    {%endif%}
 </script>

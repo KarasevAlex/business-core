@@ -11,9 +11,6 @@ $(document).ready(function(){
 	var quality = +$('.quality').text();
 	var ss = +$('.ss').text();
 
-
-	var Prime_Cost_Acc = Prime_Costbase + 0;
-
 	var formapp = new Vue({
 	  el: '#resolve-period',
 	  data: {
@@ -91,11 +88,12 @@ $(document).ready(function(){
 	  	},
 	  	sizeSS: function(){
 	  		var Prime_Cost_Acc_new = Prime_Cost_Acc + this.niokrSS;
-	  		this.SS = Prime_Coststart + 1 - (Prime_Cost_Acc_new / Prime_Costbase) ^ (1 / Prime_Costcoef)
+	  		this.SS = Prime_Coststart + 1 - Math.pow((Prime_Cost_Acc_new / Prime_Costbase), (1 / Prime_Costcoef));
 	  		this.sizeBudget();
 	  	},
 	  	sizeQuality: function(){
-	  		this.quality = (Quality_Cost_Acci / Quality_Costbase) ^ (1 / Quality_Costcoef);
+	  	    var Quality_Cost_Acc_new = Quality_Cost_Acc + this.niokrQuality;
+	  		this.quality = Math.pow((Quality_Cost_Acc_new / Quality_Costbase), (1 / Quality_Costcoef));
 	  		this.sizeBudget();
 	  	}
 	  }
