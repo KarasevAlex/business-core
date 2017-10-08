@@ -219,7 +219,7 @@ class Games(db.Model):
     def create(form):
         try:
             game = Games(title=form['name'], team_number=form['team-number'], period_number=form['period-number'],
-                         time_start=form['time-start'], time_duration=form['time-duration'],
+
                          costFactory=form['costFactory'], amountFactory=form['amountFactory'],
                          costOverheads=form['costOverheads'], amountOverheads=form['amountOverheads'],
                          costDismantling=form['costDismantling'], amountDismantling=form['amountDismantling'],
@@ -231,7 +231,10 @@ class Games(db.Model):
                          exponentQuality1=form['exponentQuality1'], exponentQuality2=form['exponentQuality2'],
                          baseFormulaCost1=form['baseFormulaCost1'], baseFormulaCost2=form['baseFormulaCost2']
                          )
-            print(game.title)
+            if 'time-start' in form:
+                game.time_start = form['time-start']
+            if 'time-duration' in form:
+                game.time_duration = form['time-duration'],
             if 'cost' in form:
                 game.cost_active = True
                 game.cost_max = form['cost-max']
