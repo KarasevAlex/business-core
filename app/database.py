@@ -508,8 +508,8 @@ class Solutions(db.Model):
         return solution
 
     def count_personal_params(self, game):
-        self.Quality_Cost_Acc = int(game.quality_cost_base) + int(self.niokrQuality)
-        self.Prime_Cost_Acc = int(game.prime_cost_base) + int(self.niokrSS)
+        self.Quality_Cost_Acc = int(game.quality_cost_base)
+        self.Prime_Cost_Acc = int(game.prime_cost_base)
 
         for solution in Solutions.query.filter_by(gamer_id=self.gamer_id):
             self.Quality_Cost_Acc += int(solution.niokrQuality)
