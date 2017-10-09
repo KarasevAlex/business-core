@@ -75,16 +75,17 @@ $(document).ready(function(){
 	  				if(this.factories[i].change > 0)
 	  					Plant_Construction_Cost = 
 	  						Math.ceil(this.factories[i].change * Plant_Construction);
-	  				else 
+	  				else
 	  					Plant_Destruction_Cost = 
 	  						Math.ceil(Math.abs(this.factories[i].change) * Plant_Destruction);
-	  		var Plant_Overheads_Cost = Math.ceil((this.factories.NA.val + 
-	  			this.factories.Asia.val + this.factories.Europe.val) * Plant_Overheads);
+	  		var Plant_Overheads_Cost = Math.ceil(((+this.factories.NA.val) +
+			(+this.factories.Asia.val) + (+this.factories.Europe.val)) * Plant_Overheads);
 	  		var Prime_Cost = niokrSS;
 	  		var Quality_Cost = niokrQuality;
 	  		this.spentBudgetVal = Plant_Construction_Cost + Plant_Destruction_Cost + 
-	  			Plant_Overheads_Cost + (+this.niokrSS) + (+this.niokrQuality) + 
+	  			Plant_Overheads_Cost + (+this.niokrSS) + (+this.niokrQuality) +
 	  			(+this.promotion.NA) + (+this.promotion.Asia) + (+this.promotion.Europe);
+	  		$('.budget').val(this.spentBudgetVal);
 	  	},
 	  	sizeSS: function(){
 	  		var Prime_Cost_Acc_new = Prime_Cost_Acc + this.niokrSS;

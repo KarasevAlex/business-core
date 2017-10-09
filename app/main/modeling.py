@@ -71,7 +71,7 @@ class Modeling():
             solution.Sales_Asia = min([solution.Demand_Asia, float(solution.AsiaFactory)])
 
             solution.Sales = solution.Sales_NA + solution.Sales_Asia + solution.Sales_Europa
-            solution.Profit = (solution.cost-solution.Prime_cost)*solution.Sales*-solution.Budget
+            solution.Profit = (solution.cost-solution.Prime_cost)*solution.Salesc - (float(solution.Budget))
 
 
 
