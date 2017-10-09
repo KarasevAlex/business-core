@@ -1,96 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Business-core</title>
-	<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="font-awesome-4.7.0/font-awesome-4.7.0/fonts/fontawesome-webfont.svg">
-	<link rel="stylesheet" href="./css/style.css">
-</head>
-<body>
-	<header class="header">
-		<div class="container">
-			<img src="./img/logo.jpg" alt="">
-		</div>
-		<nav  class="navbar navbar-default" role="navigation">
-			<div class="container clearfix">
-				<ul class="navbar-nav pull-left nav">
-					<li class="dropdown">
-					    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-					      О компании <span class="caret"></span>
-					    </a>
-					    <ul class="dropdown-menu">
-					      <li><a href="">Краткое описание</a></li>
-					      <li><a href="">Наша команда</a></li>
-					      <li><a href="">Образовательным учреждениям</a></li>
-					      <li><a href="">Учащимся</a></li>
-					      <li><a href="">Нас рекомендуют</a></li>
-					      <li><a href="">Партнеры</a></li>
-					    </ul>
-					</li>
-					<li class="active"><a href="">Услуги / Цены</a></li>
-					<li><a href="news.html">Новости</a></li>
-					<li><a href="gallery.html">Галерея</a></li>
-					<li><a href="">Демо</a></li>
-					<li><a href="">Контакты</a></li>
-				</ul>
-				<button class="pull-right btn btn-default" data-toggle="modal" data-target="#enterModal">Войти</button>
-			</div>
-		</nav>
-	</header>
-	<main>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 col-md-offset-3">
-					<div class="well well-lg error-block">
-						<h1 class=" center-block error-block__title">период закончен</h1>
-						<p class=" center-block error-block__text">решение не сохранено</p>
-					</div>
+<main>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="well well-lg error-block">
+					<h1 class=" center-block error-block__title">{{ title }}</h1>
+					<p class=" center-block error-block__text">{{ message }}</p>
 				</div>
 			</div>
 		</div>
-	</main>
-	<footer class="footer clearfix">
-		<div class="container">
-			<p class="pull-right">© B-core 2017</p>
-		</div>
-	</footer>
-	<!-- Modal -->
-	<div class="modal fade" id="enterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h4 class="modal-title" id="myModalLabel">Авторизация</h4>
-		  </div>
-		  <form action="">
-			  <div class="modal-body">
-			  	<div class="alert alert-danger">
-			  		Неверный пароль
-			  	</div>
-				<div class="form-group">
-					<label for="login">Логин</label>
-					<input type="text" class="form-control" id="login" placeholder="Ваш логин" name="login" required>
-				</div>
-				<div class="form-group">
-					<label for="password">Пароль</label>
-					<input type="password" class="form-control" id="password" placeholder="Ваш пароль" name="password" required>
-				</div>
-				<p><a href="">Востановить пароль</a></p>
-			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-				<button type="submit" class="btn btn-primary">Войти</button>
-			  </div>
-		  </form>
-		</div>
-	  </div>
 	</div>
-	<script
-  src="http://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-	<script src="./bootstrap/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="./js/games.js"></script>
-</body>
-</html>
+</main>

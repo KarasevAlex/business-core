@@ -1,13 +1,11 @@
-import flask_excel as excel
-import xlsxwriter
 from . import main
-from .. import db
+from .. import db, excel
 from .chart import Chart
 from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
 from ..database import User, Games, Period, Solutions, News
-from flask import render_template, request, flash,redirect, send_from_directory
+from flask import render_template, request, flash, redirect
 from flask_login import login_user, logout_user, login_required, current_user
 
 
@@ -50,7 +48,6 @@ def logout():
     logout_user()
     return redirect('/')
 
-
 @main.route('/game', methods=['POST', 'GET'])
 @login_required
 @admin_required
@@ -63,11 +60,10 @@ def index2():
                            main=render_template('admin-list.html', games=games),
                            footer=render_template('footer.html'))
 
-
 @main.route('/game/<int:id>')
 @login_required
 def session_admin(id):
-    games = Games.query.filter_by(id=id)
+    games = Games.query.filter_by(id=id).first()
     users = User.query.filter_by(game_id=id).all()
     periods = Period.query.filter_by(game_id=id)
     # current_period = Period.getActivePeriod(id)
@@ -84,7 +80,6 @@ def session_admin(id):
                            footer=render_template('footer.html'),
                            script=chart.render())
 
-
 @main.route('/4')
 def index4():
     return render_template('layout.html',
@@ -92,18 +87,12 @@ def index4():
                            main=render_template('album.html'),
                            footer=render_template('footer.html'))
 
-
-
-
-
-
 @main.route('/8')
 def index9():
     return render_template('layout.html',
                            header=render_template('header.html'),
                            main=render_template('partners.html'),
                            footer=render_template('footer.html'))
-
 
 @main.route('/flush')
 def flush():
@@ -115,9 +104,10 @@ def flush():
 @gamer_required
 def index10():
     period = Period.getActivePeriod(current_user.game_id)
-    if period is not None:
+    if period['succeed']:
         previous_solution = None
         game = Games.getGame(current_user.game_id)
+        period=period['data']
         if period.period_number != 1:
             previous_solution = Solutions.getPreviousSolution(period, current_user.id)
 
@@ -128,6 +118,7 @@ def index10():
                            script=render_template('users-script.html', game=game, previous_solution=previous_solution))
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
+                           main=render_template('error.html', title=period['message'], message=period['time']),
                            footer=render_template('footer.html'))
 
 @main.route('/result', methods=['POST'])
@@ -136,7 +127,19 @@ def index10():
 def result():
     if Period.check_period(request.form['period']):
         model = Modeling(current_user, request.form)
-    return "s"
+        return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form()),
+                           main=render_template('user-session.html', period=model.getPeriod(),
+                                                game=model.getGame(),
+                                                previous_solution=Solutions.getPreviousSolution(model.getPeriod(),
+                                                                                                current_user.id),
+                                                current_solution=model.getCurrentSolution()),
+                           footer=render_template('footer.html'))
+    return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form()),
+                           main=render_template('error.html', message="Период завершен, решение не установлено"),
+                           footer=render_template('footer.html'))
+
 
 
 # URL
@@ -183,20 +186,7 @@ def contatst_page():
                            footer=render_template('footer.html'))
 
 @main.route('/excel/<int:id>')
-def get_logins_excel(id):
-    Users = db.session.query(User.username,User.password_hash).filter_by(game_id=id).all()
-    workbook = xlsxwriter.Workbook('users.xlsx')
-    worksheet = workbook.add_worksheet()
-    row = 1
-    col = 0
-    for item, cost in (Users):
-        worksheet.write(row, col, item)
-        worksheet.write(row, col + 1, cost)
-        row += 1
-    workbook.close()
-    file_name = "users.xlsx"
-    output = excel.make_response()
-    output.headers["Content-Disposition"] = "attachment; filename=users.xlsx"
-    output.headers["Content-type"] = "application/vnd.openxmlformats-\
-    officedocument.spreadsheetml.sheet"
-    return output
+def get_excel(id):
+    data = db.session.query(User.username, User.password_hash).filter_by(game_id=id).all()
+    return excel.make_response_from_array(data, "xls")
+

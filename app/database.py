@@ -233,14 +233,18 @@ class Games(db.Model):
                          baseFormulaCost1=form['baseFormulaCost1'], baseFormulaCost2=form['baseFormulaCost2']
                          )
             if 'time-start' in form:
+                isFirstStart = True
                 game.time_start = form['time-start']
             else:
+                isFirstStart = False
                 game.time_start = datetime.now().time()
 
             if 'time-duration' in form:
+                isOversStart = True
                 game.time_duration = form['time-duration']
             else:
-                game.time_duration = "00:50"
+                isOversStart = False
+                game.time_duration = "00:15"
             if 'cost' in form:
                 game.cost_active = True
                 game.cost_max = form['cost-max']
@@ -343,7 +347,7 @@ class Games(db.Model):
 
             db.session.add(game)
             db.session.commit()
-            for i in range(1,int(game.team_number)+1):
+            for i in range(1, int(game.team_number)+1):
                 gamer = User(game_id=game.id)
                 gamer.generate(i)
                 db.session.add(gamer)
@@ -354,7 +358,10 @@ class Games(db.Model):
             end_time = game.time_start
             for i in range(1, int(game.period_number) + 1):
                 period = Period(game_id=game.id)
-                period.generate(i, start_time=end_time, period_time=delta)
+                if i == 1:
+                    period.generate(i, start_time=end_time, period_time=delta, isActive=isFirstStart)
+                else:
+                    period.generate(i, start_time=end_time, period_time=delta, isActive=isOversStart)
                 end_time = period.period_end
                 db.session.add(period)
 
@@ -384,13 +391,15 @@ class Period(db.Model):
     period_end = db.Column(db.Time)
     period_duration = db.Column(db.Time)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
+    isActive = db.Column(db.Boolean)
 
 
-    def generate(self, period_number, start_time, period_time):
+    def generate(self, period_number, start_time, period_time, isActive=False):
         self.period_number = period_number
         self.period_start = start_time
         self.period_end = (datetime.combine(datetime.now().date(), start_time) + period_time).time()
         self.period_duration = period_time
+        self.isActive = isActive
 
     @staticmethod
     def check_period(period_id):
@@ -403,10 +412,18 @@ class Period(db.Model):
     @staticmethod
     def getActivePeriod(game_id):
         current_time = datetime.now().time()
-        periods = Period.query.filter_by(game_id=game_id)
-        for period in periods:
-            if current_time >= period.period_start and current_time <= period.period_end:
-                return period
+        periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number)
+        if periods[0].period_start > current_time:
+            return {'succeed': False,
+                    'message': 'Период начнется в',
+                    'time': periods[0].period_start.strftime('%H:%M:%S')}
+        else:
+            for period in periods:
+                if current_time >= period.period_start and current_time <= period.period_end and period.isActive:
+                    return {'succeed': True, 'data': period}
+        return {'succeed': False,
+                'message': 'Игра завершена в',
+                'time':  period.period_end.strftime('%H:%M:%S')}
 
     @staticmethod
     def getPreviousPeriod(period_id):
@@ -490,8 +507,6 @@ class Solutions(db.Model):
 
         return solution
 
-
-
     def count_personal_params(self, game):
         self.Quality_Cost_Acc = int(game.quality_cost_base) + int(self.niokrQuality)
         self.Prime_Cost_Acc = int(game.prime_cost_base) + int(self.niokrSS)
@@ -512,7 +527,7 @@ class Solutions(db.Model):
 
     def update_solution(self, form):
         if 'budget' in form:
-            self.Budget= form['budget']
+            self.Budget = form['budget']
 
         if 'cost' in form:
             self.cost = form['cost']
@@ -540,7 +555,6 @@ class Solutions(db.Model):
 
         if 'AsiaPromotion' in form:
             self.AsiaPromotion = form['AsiaPromotion']
-
 
 
 

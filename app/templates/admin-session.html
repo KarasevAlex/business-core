@@ -56,12 +56,16 @@
 						<input type="time" name="end" value="{{period.period_end}}" class="form-control">
 					</div>
 
-
 					<div class="col-md-12"><button type="submit" class="btn btn-default">Сохранить</button></div>
 				</form>
 				<div class="col-md-4 col-md-offset-2">
+					{% if period.isActive %}
 					<button class="btn btn-default btn-lg" disabled>Старт</button>
 					<button class="btn btn-default btn-lg">Стоп</button>
+					{% else%}
+					<button class="btn btn-default btn-lg">Старт</button>
+					<button class="btn btn-default btn-lg" disabled>Стоп</button>
+					{% endif %}
 				</div>
 			</div>
 			  {% endfor %}
@@ -70,14 +74,16 @@
 		  <div class="tab-pane" id="solutions">
 			<div class="clearfix">
 				<a href="" class="pull-right glyphicon glyphicon-print print"></a>
-				<a href="/excel/" class="pull-right excel"></a>
+				<a href="/excel/{{games.id}}" class="pull-right excel"></a>
 			</div>
 			<div class="table-responsive ">
 				<table class="table table-condensed table-striped table-hover">
 					<thead>
 						<tr>
 							<th>Компания</th>
-							<th>1</th>
+							{% for i in range(1, (users | length)+1)%}
+								<th>{{i}}</th>
+							{% endfor %}
 						</tr>
 					</thead>
 					<tbody>

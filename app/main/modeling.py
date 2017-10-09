@@ -1,4 +1,4 @@
-from ..database import Solutions, Games
+from ..database import Solutions, Games, Period
 from .. import db
 
 class Modeling():
@@ -33,7 +33,12 @@ class Modeling():
                     previous_solution.count_personal_params(self.Game)
 
         self.generateResult()
-
+    def getPeriod(self):
+        return Period.query.filter_by(id=self.Current_period).firts()
+    def getGame(self):
+        return self.Game
+    def getCurrentSolution(self):
+        return  self.Current_period_solution
     def generateResult(self):
 
         sum_Mult_Demand_NA = 0
