@@ -219,7 +219,7 @@ def demo_result():
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('demo-session.html', isResult=True,
-
+                                                previous_solution=model.getCurrentSolutions(),
                                                 game=model.getGame()),
                            footer=render_template('footer.html'),
                            script=chart.render())

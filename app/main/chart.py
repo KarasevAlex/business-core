@@ -32,7 +32,7 @@ class Chart:
         self.solutions = solution
         self.labels.append("Игрок 1 (Вы)")
         self.labels.append("Игрок 2 (Бот)")
-
+        self.setDataDemo()
     def setDataDemo(self):
         # Цены СС
         cost = {}

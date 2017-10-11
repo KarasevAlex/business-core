@@ -100,83 +100,44 @@
 			  	</form>
 			  </div>
 			{% else %}
-			<div class="tab-pane" id="solutions">
+			<div class="tab-pane active" id="solutions">
 			<form action="" id="change-table">
 				<div class="table-responsive ">
 					<table class="table table-condensed table-striped table-hover table-bordered">
 					<thead>
 						<tr>
 							<th>Компания</th>
-
+							<th>Ваша компания</th>
+							<th>Бот</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<th>Название</th>
-						</tr>
-
-						<tr>
 							<th>Цена продукции</th>
 							{% for solution in previous_solution%}
-								<td class="input-td"><input type="text" value="{{solution.cost}}" class="form-control"></td>
+								<td>{{solution.cost}}</td>
 							{% endfor %}
 
 						</tr>
 						<tr>
 							<th>Размер завода в СА</th>
 							{% for solution in previous_solution%}
-								<td class="input-td"><input type="text" value="{{solution.NAFactory}}" class="form-control"></td>
+								<td>{{solution.NAFactory}}</td>
 							{% endfor %}
 
 								<!--&lt;!&ndash;<td>g12c1</td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td>g12c2</td>&ndash;&gt;-->
 
 						</tr>
-						<tr>
-							<th>Размер завода в Европе</th>
-							{% for solution in previous_solution%}
-								<td class="input-td"><input type="text" value="{{solution.EuropeFactory}}" class="form-control"></td>
-							{% endfor %}
 
-							<!--&lt;!&ndash;<td>g12wrfe2</td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td>g1232rwd</td>&ndash;&gt;-->
-
-						</tr>
-						<tr>
-							<th>Размер завода в Азии</th>
-							{% for solution in previous_solution%}
-								<td class="input-td"><input type="text" value="{{solution.AsiaFactory}}" class="form-control"></td>
-							{% endfor %}
-														<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-						</tr>
 						<tr>
 							<th>Затраты на продвижение в СА</th>
 							{% for solution in previous_solution%}
-								<td class="input-td"><input type="text" value="{{solution.NAPromotion}}" class="form-control"></td>
+								<td>{{solution.NAPromotion}}</td>
 							{% endfor %}
 
 								<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-ok"></span></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td><span class="error">90</span></td>&ndash;&gt;-->
-						</tr>
-						<tr>
-							<th>Затраты на продвижение в Европе</th>
-							{% for solution in previous_solution%}
-								<td class="input-td"><input type="text" value="{{solution.EuropePromotion}}" class="form-control"></td>
-							{% endfor %}
-
-								<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-remove"></span></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-ok"></span></td>&ndash;&gt;-->
-						</tr>
-						<tr>
-							<th>Затраты на продвижение в Азии</th>
-							{% for solution in previous_solution%}
-								<td class="input-td"><input type="text" value="{{solution.AsiaPromotion}}" class="form-control"></td>
-							{% endfor %}
-
-								<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-
 						</tr>
 						<tr>
 							<th>Себестоимость</th>
@@ -206,22 +167,7 @@
 
 
 						</tr>
-						<tr>
-							<th>Спрос в Европе</th>
-							{% for solution in previous_solution%}
-								<td>{{solution.Demand_Europe}}</td>
-							{% endfor %}
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-						</tr>
-						<tr>
-							<th>Спрос в Азии</th>
-							{% for solution in previous_solution%}
-								<td>{{solution.Demand_Asia}}</td>
-							{% endfor %}
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-						</tr>
+
 						<tr>
 							<th>Объем продаж в СА</th>
 							{% for solution in previous_solution%}
@@ -231,33 +177,7 @@
 							<!--<td></td>-->
 
 						</tr>
-						<tr>
-							<th>Объем продаж в Европе</th>
-							{% for solution in previous_solution%}
-								<td>{{solution.Sales_Europe}}</td>
-							{% endfor %}
-							<!--<td></td>-->
-							<!--<td></td>-->
 
-						</tr>
-						<tr>
-							<th>Объем продаж в Азии</th>
-							{% for solution in previous_solution%}
-								<td>{{solution.Sales_Asia}}"</td>
-							{% endfor %}
-							<!--<td></td>-->
-							<!--<td></td>-->
-
-						</tr>
-						<tr>
-							<th>Общий объем продаж</th>
-							{% for solution in previous_solution%}
-								<td>{{solution.Sales}}</td>
-							{% endfor %}
-							<!--<td></td>-->
-							<!--<td></td>-->
-
-						</tr>
 						<tr>
 							<th>Прибыль в отчетном периоде</th>
 							{% for solution in previous_solution%}
