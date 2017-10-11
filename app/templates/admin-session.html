@@ -3,12 +3,20 @@
 		<div class="well clearfix session-panel">
 			<a href="" class="btn btn-default pull-left">Текущий период</a>
 			<div class="pull-left period-nav">
-				<a href="" class="glyphicon glyphicon-chevron-left"></a>
-				<span>3</span>
-				<a href="" class="glyphicon glyphicon-chevron-right"></a>
+				{% if last_active is none %}
+					<span>Отсутствуют доступные результаты</span>
+				{%else%}
+					<a href="" class="glyphicon glyphicon-chevron-left"></a>
+					<span>{{last_active.period_number}}</span>
+					<a href="" class="glyphicon glyphicon-chevron-right"></a>
+				{%endif%}
 			</div>
-			<p class="pull-right info">Период: <span>3</span></p>
-			<p class="pull-right info">Осталось: <span>00:00:00</span></p>
+			{% if current_period is none %}
+				<p class="pull-right info"> В настоящий момент нет активных периодов</p>
+			{%else%}
+				<p class="pull-right info">Период: <span>{{current_period.period_number}}</span></p>
+				<p class="pull-right info">Время завершения: <span>{{current_period.period_end}}</span></p>
+			{%endif%}
 
 		</div>
 		<div class="clearfix">
@@ -72,12 +80,14 @@
 			<button class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-plus"></span> Добавить период</button>
 		  </div>
 		  <div class="tab-pane" id="solutions">
-			<div class="clearfix">
-				<a href="" class="pull-right glyphicon glyphicon-print print"></a>
-				<a href="/excel/{{games.id}}" class="pull-right excel"></a>
+			<div class="clearfix table-top">
+				<!--<a href="" class="pull-left glyphicon glyphicon-print print"></a>-->
+				<a href="/excel/{{games.id}}" class="pull-left excel"></a>
+				<input type="submit" form="change-table" class="pull-right btn btn-primary change-table" value="Сохранить">
 			</div>
-			<div class="table-responsive ">
-				<table class="table table-condensed table-striped table-hover">
+			<form action="" id="change-table">
+				<div class="table-responsive ">
+					<table class="table table-condensed table-striped table-hover table-bordered">
 					<thead>
 						<tr>
 							<th>Компания</th>
@@ -108,105 +118,158 @@
 							{% endfor %}
 
 						</tr>
-						<!--<tr>-->
-							<!--<th>Цена продукции</th>-->
-							<!--&lt;!&ndash;<td>Название1</td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td>Название2</td>&ndash;&gt;-->
+						<tr>
+							<th>Цена продукции</th>
+							{% for solution in previous_solution%}
+								<td class="input-td"><input type="text" value="{{solution.cost}}" class="form-control"></td>
+							{% endfor %}
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Размер завода в СА</th>-->
-							<!--&lt;!&ndash;<td>g12c1</td>&ndash;&gt;-->
+						</tr>
+						<tr>
+							<th>Размер завода в СА</th>
+							{% for solution in previous_solution%}
+								<td class="input-td"><input type="text" value="{{solution.NAFactory}}" class="form-control"></td>
+							{% endfor %}
+
+								<!--&lt;!&ndash;<td>g12c1</td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td>g12c2</td>&ndash;&gt;-->
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Размер завода в Европе</th>-->
+						</tr>
+						<tr>
+							<th>Размер завода в Европе</th>
+							{% for solution in previous_solution%}
+								<td class="input-td"><input type="text" value="{{solution.EuropeFactory}}" class="form-control"></td>
+							{% endfor %}
+
 							<!--&lt;!&ndash;<td>g12wrfe2</td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td>g1232rwd</td>&ndash;&gt;-->
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Размер завода в Азии</th>-->
+						</tr>
+						<tr>
+							<th>Размер завода в Азии</th>
+							{% for solution in previous_solution%}
+								<td class="input-td"><input type="text" value="{{solution.AsiaFactory}}" class="form-control"></td>
+							{% endfor %}
+														<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+						</tr>
+						<tr>
+							<th>Затраты на продвижение в СА</th>
+							{% for solution in previous_solution%}
+								<td class="input-td"><input type="text" value="{{solution.NAPromotion}}" class="form-control"></td>
+							{% endfor %}
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Затраты на продвижение в СА</th>-->
-							<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-ok"></span></td>&ndash;&gt;-->
+								<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-ok"></span></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td><span class="error">90</span></td>&ndash;&gt;-->
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Затраты на продвижение в Европе</th>-->
-							<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-remove"></span></td>&ndash;&gt;-->
+						</tr>
+						<tr>
+							<th>Затраты на продвижение в Европе</th>
+							{% for solution in previous_solution%}
+								<td class="input-td"><input type="text" value="{{solution.EuropePromotion}}" class="form-control"></td>
+							{% endfor %}
+
+								<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-remove"></span></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td><span class="glyphicon glyphicon-ok"></span></td>&ndash;&gt;-->
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Затраты на продвижение в Азии</th>-->
+						</tr>
+						<tr>
+							<th>Затраты на продвижение в Азии</th>
+							{% for solution in previous_solution%}
+								<td class="input-td"><input type="text" value="{{solution.AsiaPromotion}}" class="form-control"></td>
+							{% endfor %}
+
+								<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+
+						</tr>
+						<tr>
+							<th>Себестоимость</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Prime_cost}}</td>
+							{% endfor %}
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
+						</tr>
+						<tr>
+							<th>Качество</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.mult_Quality}}</td>
+							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Себестоимость</th>-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Качество</th>-->
+
+						</tr>
+						<tr>
+							<th>Спрос в СА</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Demand_NA}}</td>
+							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Спрос в СА</th>-->
+						</tr>
+						<tr>
+							<th>Спрос в Европе</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Demand_Europe}}</td>
+							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-
-
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Спрос в Европе</th>-->
+						</tr>
+						<tr>
+							<th>Спрос в Азии</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Demand_Asia}}</td>
+							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Спрос в Азии</th>-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Объем продаж в СА</th>-->
+						</tr>
+						<tr>
+							<th>Объем продаж в СА</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Sales_NA}} </td>
+							{% endfor %}
 							<!--<td></td>-->
 							<!--<td></td>-->
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Объем продаж в Европе</th>-->
+						</tr>
+						<tr>
+							<th>Объем продаж в Европе</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Sales_Europe}}</td>
+							{% endfor %}
 							<!--<td></td>-->
 							<!--<td></td>-->
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Объем продаж в Азии</th>-->
+						</tr>
+						<tr>
+							<th>Объем продаж в Азии</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Sales_Asia}}"</td>
+							{% endfor %}
 							<!--<td></td>-->
 							<!--<td></td>-->
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Общий объем продаж</th>-->
+						</tr>
+						<tr>
+							<th>Общий объем продаж</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Sales}}</td>
+							{% endfor %}
 							<!--<td></td>-->
 							<!--<td></td>-->
 
-						<!--</tr>-->
-						<!--<tr>-->
-							<!--<th>Прибыль в отчетном периоде</th>-->
+						</tr>
+						<tr>
+							<th>Прибыль в отчетном периоде</th>
+							{% for solution in previous_solution%}
+								<td>{{solution.Profit}}</td>
+							{% endfor %}
 							<!--<td></td>-->
 							<!--<td></td>-->
 
-						<!--</tr>-->
+						</tr>
 						<!--<tr>-->
 							<!--<th>Общий объем прибыли</th>-->
 							<!--<td></td>-->
@@ -230,7 +293,8 @@
 						<!--</tr>-->
 					</tbody>
 				</table>
-			</div>
+				</div>
+			</form>
 		  </div>
 		  <div class="tab-pane" id="graphics">
 			<ul class="nav nav-pills ">

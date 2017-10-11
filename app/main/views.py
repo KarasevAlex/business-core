@@ -65,17 +65,23 @@ def index2():
 def session_admin(id):
     games = Games.query.filter_by(id=id).first()
     users = User.query.filter_by(game_id=id).all()
-    periods = Period.query.filter_by(game_id=id)
-    # current_period = Period.getActivePeriod(id)
-    # if current_period is not None:
-    #     previous_solution = None
-    #     if current_period.period_number != 1:
-    #         previous_solution = Solutions.getPreviousSolutions(current_period.id)
-    chart = Chart(Solutions.query.filter_by(period_id=1).all(), users)
+    periods = Period.query.filter_by(game_id=id).all()
+    last_active = None
+    current_period = None
+    for period in periods:
+        if period.isFinished():
+            last_active = period
+        if period.check_period():
+            current_period = period
+    if last_active is not None:
+        previous_solution = Solutions.getSolutions(last_active)
+        chart = Chart(previous_solution, users)
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('admin-session.html', games=games,
-                                                periods=periods,
+                                                periods=periods, last_active=last_active,
+                                                current_period=current_period,
+                                                previous_solution=previous_solution,
                                                 users=users),
                            footer=render_template('footer.html'),
                            script=chart.render())
@@ -107,15 +113,15 @@ def index10():
     if period['succeed']:
         previous_solution = None
         game = Games.getGame(current_user.game_id)
-        period=period['data']
+        period = period['data']
         if period.period_number != 1:
             previous_solution = Solutions.getPreviousSolution(period, current_user.id)
 
         return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('user-session.html', period=period, game=game, previous_solution=previous_solution),
-                           footer=render_template('footer.html'),
-                           script=render_template('users-script.html', game=game, previous_solution=previous_solution))
+                           footer=render_template('footer.html')
+                          )
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('error.html', title=period['message'], message=period['time']),
@@ -126,7 +132,7 @@ def index10():
 @gamer_required
 def result():
     if Period.check_period(request.form['period']):
-        model = Modeling(current_user, request.form)
+        model = Modeling().generateGame(current_user, request.form)
         return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('user-session.html', period=model.getPeriod(),
@@ -152,14 +158,14 @@ def add_news():
             author_id=current_user.id)
         db.session.add(temp)
         db.session.commit()
-        redirect('/news')
+        return redirect('/news')
     except:
         pass
 
 @main.route('/news/remove/<int:id>', methods=['POST'])
 def remove_news(id):
     News.query.filter_by(id=id).delete()
-    redirect('/news')
+    return redirect('/news')
 
 @main.route('/news')
 def news_page():
@@ -190,3 +196,27 @@ def get_excel(id):
     data = db.session.query(User.username, User.password_hash).filter_by(game_id=id).all()
     return excel.make_response_from_array(data, "xls")
 
+
+@main.route('/demo')
+def demo():
+    return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form()),
+                           main=render_template('demo-session.html'),
+                           footer=render_template('footer.html'))
+
+@main.route('/demo/result', methods=['POST'])
+def demo_result():
+    # try:
+    tm=request.form
+    user_solution = Solutions()
+    user_solution.update_solution(request.form)
+    game = Games().create_default()
+    user_solution.count_personal_params(game, isDemo=True)
+    model = Modeling().generateDemo(user_solution, game)
+        #
+        # pass
+        # return render_template('layout.html',
+        #                    header=render_template('header.html', form=Login_form()),
+        #                    main=render_template('demo-session.html'),
+        #                    footer=render_template('footer.html'))
+        #

@@ -24,5 +24,5 @@ class News(Form):
     text = TextAreaField('Текст новости', [InputRequired()],
                              id="text",
                              _name="text")
-    submit = SubmitField('Войти')
+    submit = SubmitField('Создать')
 

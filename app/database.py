@@ -217,6 +217,22 @@ class Games(db.Model):
     price_coef = db.Column(db.Float)
 
     @staticmethod
+    def create_default():
+        game = Games()
+        game.plant_Construction = 1.0
+        game.plant_Overheads = 0.2
+        game.plant_Destruction = 0.333333
+        game.prime_cost_start = 4.0
+        game.prime_cost_base = 33.3333
+        game.quality_cost_base = 33.333
+        game.prime_cost_coef = 2.0
+        game.quality_cost_coef = 2.0
+        game.sizeNA = 100
+        game.price_coef = 2
+        game.cost_min = 3
+        return game
+
+    @staticmethod
     def create(form):
         try:
             game = Games(title=form['name'], team_number=form['team-number'], period_number=form['period-number'],
@@ -409,6 +425,12 @@ class Period(db.Model):
             return True
         return False
 
+    def check_period(self):
+        current_time = datetime.now().time()
+        if current_time >= self.period_start and current_time <= self.period_end:
+            return True
+        return False
+
     @staticmethod
     def getActivePeriod(game_id):
         current_time = datetime.now().time()
@@ -429,6 +451,12 @@ class Period(db.Model):
     def getPreviousPeriod(period_id):
         pass
 
+
+    def isFinished(self):
+        current_time = datetime.now().time()
+        if current_time >= self.period_end:
+            return True
+        return False
 
 class Solutions(db.Model):
     __tablename__ = 'solutions'
@@ -467,11 +495,12 @@ class Solutions(db.Model):
     Sales_NA = db.Column(db.Integer)
     Sales_Europa = db.Column(db.Integer)
     Sales_Asia = db.Column(db.Integer)
-    Sales = db.Column(db.Integer)
+    Sales = db.Column(db.Float)
     # Себестоимость продукции
-    Prime_cost = db.Column(db.Integer)
+    Prime_cost = db.Column(db.Float)
     # Прибыль в периоде
-    Profit = db.Column(db.Integer)
+    Profit = db.Column(db.Float)
+    Acc_Profit = db.Column(db.Float)
 
     @staticmethod
     def set_default(period_id, game, gamer_id):
@@ -487,7 +516,7 @@ class Solutions(db.Model):
         solution.NAPromotion = game.NAPromotion_default
         solution.EuropePromotion = game.EuropePromotion_default
         solution.AsiaPromotion = game.AsiaPromotion_default
-
+        solution.Acc_Profit = 0
         return solution
 
     @staticmethod
@@ -504,16 +533,20 @@ class Solutions(db.Model):
         solution.NAPromotion = previous_solution.NAPromotion
         solution.EuropePromotion = previous_solution.EuropePromotion
         solution.AsiaPromotion = previous_solution.AsiaPromotion
-
+        solution.Acc_Profit = previous_solution.Acc_Profit
         return solution
 
-    def count_personal_params(self, game):
+    def count_personal_params(self, game, isDemo = False):
         self.Quality_Cost_Acc = int(game.quality_cost_base)
         self.Prime_Cost_Acc = int(game.prime_cost_base)
 
-        for solution in Solutions.query.filter_by(gamer_id=self.gamer_id):
-            self.Quality_Cost_Acc += int(solution.niokrQuality)
-            self.Prime_Cost_Acc += int(solution.niokrSS)
+        if isDemo:
+            self.Quality_Cost_Acc += int(self.niokrQuality)
+            self.Prime_Cost_Acc += int(self.niokrSS)
+        else:
+            for solution in Solutions.query.filter_by(gamer_id=self.gamer_id):
+                self.Quality_Cost_Acc += int(solution.niokrQuality)
+                self.Prime_Cost_Acc += int(solution.niokrSS)
 
         self.mult_Price = 1 / (int(game.price_coef) ** (int(self.cost) - int(game.cost_min)))
         self.mult_Quality = (self.Prime_Cost_Acc / int(game.quality_cost_base)) ** (1 / int(game.quality_cost_coef))
@@ -522,8 +555,9 @@ class Solutions(db.Model):
         1 / game.prime_cost_coef)
 
         self.mult_Demand_NA = self.mult_Quality * self.mult_Price * float(self.NAPromotion)
-        self.mult_Demand_Europa = self.mult_Quality * self.mult_Price * float(self.EuropePromotion)
-        self.mult_Demand_Asia = self.mult_Quality * self.mult_Price * float(self.AsiaPromotion)
+        if not isDemo:
+            self.mult_Demand_Europa = self.mult_Quality * self.mult_Price * float(self.EuropePromotion)
+            self.mult_Demand_Asia = self.mult_Quality * self.mult_Price * float(self.AsiaPromotion)
 
     def update_solution(self, form):
         if 'budget' in form:
@@ -566,10 +600,14 @@ class Solutions(db.Model):
 
     @staticmethod
     def getPreviousSolution(current_period, user_id):
-        previous_period = Period.query.filter_by(game_id=current_period.game_id,
-                                                 period_number=current_period.period_number - 1).first()
-        return Solutions.query.filter_by(period_id=previous_period.id, gamer_id=user_id).first()
+        if current_period.period_number != 1:
+            previous_period = Period.query.filter_by(game_id=current_period.game_id,
+                                                     period_number=current_period.period_number - 1).first()
+            return Solutions.query.filter_by(period_id=previous_period.id, gamer_id=user_id).first()
+        else:
+            return None
 
 
-
-
+    @staticmethod
+    def getSolutions(period):
+        return Solutions.query.filter_by(period_id=period.id).all()

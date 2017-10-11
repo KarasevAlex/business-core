@@ -13,6 +13,14 @@ class Chart:
     def __init__(self, solution, users):
         self.solutions = solution
         self.users = users
+        self.labels = []
+        self.costSS_dataset = []
+        self.quality_chart_dataset = {}
+        self.demand_chart_dataset = []
+        self.factories_chart_dataset = []
+        self.sales_chart_dataset = []
+        self.profit_chart_dataset = {}
+        self.promotion_chart_dataset = []
         for user in self.users:
             self.labels.append(user.name)
 
