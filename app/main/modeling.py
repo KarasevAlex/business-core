@@ -42,7 +42,7 @@ class Modeling():
         self.Current_period_solutions = []
         self.Current_period_solutions.append(self.Current_period_solution)
         self.Current_period_solutions.append(botSolution)
-        self.generateResult()
+        self.generateResult(isDemo=True)
 
     def getPeriod(self):
         return Period.query.filter_by(id=self.Current_period).first()
@@ -52,6 +52,9 @@ class Modeling():
 
     def getCurrentSolution(self):
         return self.Current_period_solution
+
+    def getCurrentSolutions(self):
+        return self.Current_period_solutions
 
     def resultDemo(self):
         pass
@@ -67,45 +70,66 @@ class Modeling():
         solutions.NAPromotion = 100 - solutions.NAFactory - solutions.niokrSS - solutions.niokrQuality
         return solutions
 
-    def generateResult(self):
+    def generateResult(self, isDemo=False):
 
         sum_Mult_Demand_NA = 0
         sum_Mult_Demand_Asia = 0
         sum_Mult_Demand_Europe = 0
 
-        for solution in self.Current_period_solutions:
-            sum_Mult_Demand_NA += solution.mult_Demand_NA
-            sum_Mult_Demand_Asia += solution.mult_Demand_Asia
-            sum_Mult_Demand_Europe += solution.mult_Demand_Europa
+        if not isDemo:
+            for solution in self.Current_period_solutions:
+                sum_Mult_Demand_NA += solution.mult_Demand_NA
+                sum_Mult_Demand_Asia += solution.mult_Demand_Asia
+                sum_Mult_Demand_Europe += solution.mult_Demand_Europa
+            for solution in self.Current_period_solutions:
+                try:
+                    solution.Demand_NA = int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA
+                except:
+                    solution.Demand_NA = 0
+                solution.Sales_NA = min([solution.Demand_NA, float(solution.NAFactory)])
 
-        for solution in self.Current_period_solutions:
-            try:
-                solution.Demand_NA = int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA
-            except:
-                solution.Demand_NA = 0
-            solution.Sales_NA = min([solution.Demand_NA, float(solution.NAFactory)])
+                try:
+                    solution.Demand_Europa = int(
+                        self.Game.sizeEurope) * solution.mult_Demand_Europa / sum_Mult_Demand_Europe
+                except:
+                    solution.Demand_Europa = 0
+                solution.Sales_Europa = min([solution.Demand_Europa, float(solution.EuropeFactory)])
 
-            try:
-                solution.Demand_Europa = int(self.Game.sizeEurope) * solution.mult_Demand_Europa / sum_Mult_Demand_Europe
-            except:
-                solution.Demand_Europa = 0
-            solution.Sales_Europa = min([solution.Demand_Europa, float(solution.EuropeFactory)])
+                try:
+                    solution.Demand_Asia = int(self.Game.sizeAsia) * solution.mult_Demand_Asia / sum_Mult_Demand_Asia
+                except:
+                    solution.Demand_Asia = 0
 
-            try:
-                solution.Demand_Asia = int(self.Game.sizeAsia) * solution.mult_Demand_Asia / sum_Mult_Demand_Asia
-            except:
-                solution.Demand_Asia = 0
+                solution.Sales_Asia = min([solution.Demand_Asia, float(solution.AsiaFactory)])
 
-            solution.Sales_Asia = min([solution.Demand_Asia, float(solution.AsiaFactory)])
+                solution.Sales = solution.Sales_NA + solution.Sales_Asia + solution.Sales_Europa
 
-            solution.Sales = solution.Sales_NA + solution.Sales_Asia + solution.Sales_Europa
+                if solution.Budget is not None:
+                    solution.Profit = ((float(solution.cost)) - (float(solution.Prime_cost))) * (
+                    float(solution.Sales)) - (float(solution.Budget))
+                    solution.Acc_Profit += solution.Profit
+                else:
+                    solution.Profit = 0
 
-            if solution.Budget is not None:
-                solution.Profit = ((float(solution.cost))-(float(solution.Prime_cost)))*(float(solution.Sales)) - (float(solution.Budget))
-                solution.Acc_Profit += solution.Profit
-            else:
-                solution.Profit = 0
+        else:
+            for solution in self.Current_period_solutions:
+                sum_Mult_Demand_NA += solution.mult_Demand_NA
 
+            for solution in self.Current_period_solutions:
+                try:
+                    solution.Demand_NA = int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA
+                except:
+                    solution.Demand_NA = 0
+                solution.Sales_NA = min([solution.Demand_NA, float(solution.NAFactory)])
+
+                solution.Sales = solution.Sales_NA
+
+                if solution.Budget is not None:
+                    solution.Profit = ((float(solution.cost)) - (float(solution.Prime_cost))) * (
+                    float(solution.Sales)) - (float(solution.Budget))
+                    solution.Acc_Profit += solution.Profit
+                else:
+                    solution.Profit = 0
 
 
 

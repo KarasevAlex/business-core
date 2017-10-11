@@ -10,9 +10,7 @@ class Chart:
     sales_chart_dataset = []
     profit_chart_dataset = {}
     promotion_chart_dataset = []
-    def __init__(self, solution, users):
-        self.solutions = solution
-        self.users = users
+    def __init__(self):
         self.labels = []
         self.costSS_dataset = []
         self.quality_chart_dataset = {}
@@ -21,10 +19,87 @@ class Chart:
         self.sales_chart_dataset = []
         self.profit_chart_dataset = {}
         self.promotion_chart_dataset = []
+
+    def generate(self, solution, users):
+        self.solutions = solution
+        self.users = users
         for user in self.users:
             self.labels.append(user.name)
 
         self.setData()
+
+    def generateDemo(self, solution):
+        self.solutions = solution
+        self.labels.append("Игрок 1 (Вы)")
+        self.labels.append("Игрок 2 (Бот)")
+
+    def setDataDemo(self):
+        # Цены СС
+        cost = {}
+        cost['label'] = 'Цена'
+        cost['data'] = []
+        cost['fillColor'] = "rgba(31, 58, 147, 1)"
+        costSS = {}
+        costSS['label'] = 'Себестоимость'
+        costSS['data'] = []
+        costSS['fillColor'] = "rgba(94, 102, 255, 1)"
+        # Качество
+
+        self.quality_chart_dataset['label'] = "Качество"
+        self.quality_chart_dataset['data'] = []
+        self.quality_chart_dataset['fillColor'] = "rgba(31, 58, 147, 1)"
+        # Спрос
+
+        demand_NA = {}
+        demand_NA['label'] = 'Северная Америка'
+        demand_NA['data'] = []
+        demand_NA['fillColor'] = "rgba(150, 40, 27, 1)"
+
+        NAFactory = {}
+        NAFactory['label'] = 'Северная Америка'
+        NAFactory['data'] = []
+        NAFactory['fillColor'] = "rgba(150, 40, 27, 1)"
+
+        Sales_NA = {}
+        Sales_NA['label'] = 'Северная Америка'
+        Sales_NA['data'] = []
+        Sales_NA['fillColor'] = "rgba(150, 40, 27, 1)"
+
+
+        # Прибыль
+        self.profit_chart_dataset['label'] = "Прибыль"
+        self.profit_chart_dataset['data'] = []
+        self.profit_chart_dataset['fillColor'] = "rgba(65, 131, 215, 1)"
+        # Продвижение
+
+        NAPromotion = {}
+        NAPromotion['label'] = 'Северная Америка'
+        NAPromotion['data'] = []
+        NAPromotion['fillColor'] = "rgba(150, 40, 27, 1)"
+
+        for solution in self.solutions:
+            cost['data'].append(solution.cost)
+            costSS['data'].append(solution.Prime_cost)
+            self.quality_chart_dataset['data'].append(solution.mult_Quality)
+            self.profit_chart_dataset['data'].append(solution.Profit)
+            demand_NA['data'].append(solution.Demand_NA)
+
+            NAFactory['data'].append(solution.NAFactory)
+            Sales_NA['data'].append(solution.Sales_NA)
+
+            NAPromotion['data'].append(solution.NAPromotion)
+
+        self.costSS_dataset.append(cost)
+        self.costSS_dataset.append(costSS)
+
+        self.demand_chart_dataset.append(demand_NA)
+
+        self.factories_chart_dataset.append(NAFactory)
+
+        self.sales_chart_dataset.append(Sales_NA)
+
+        self.promotion_chart_dataset.append(NAPromotion)
+
 
     def setData(self):
         # Цены СС
@@ -41,6 +116,8 @@ class Chart:
         self.quality_chart_dataset['label'] = "Качество"
         self.quality_chart_dataset['data'] = []
         self.quality_chart_dataset['fillColor'] = "rgba(31, 58, 147, 1)"
+
+
         # Спрос
 
         demand_NA = {}

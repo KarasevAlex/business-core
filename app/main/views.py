@@ -75,7 +75,8 @@ def session_admin(id):
             current_period = period
     if last_active is not None:
         previous_solution = Solutions.getSolutions(last_active)
-        chart = Chart(previous_solution, users)
+        chart = Chart()
+        chart.generate(previous_solution, users)
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('admin-session.html', games=games,
@@ -201,22 +202,24 @@ def get_excel(id):
 def demo():
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
-                           main=render_template('demo-session.html'),
+                           main=render_template('demo-session.html', isResult=False),
                            footer=render_template('footer.html'))
 
 @main.route('/demo/result', methods=['POST'])
 def demo_result():
     # try:
-    tm=request.form
     user_solution = Solutions()
     user_solution.update_solution(request.form)
     game = Games().create_default()
     user_solution.count_personal_params(game, isDemo=True)
-    model = Modeling().generateDemo(user_solution, game)
-        #
-        # pass
-        # return render_template('layout.html',
-        #                    header=render_template('header.html', form=Login_form()),
-        #                    main=render_template('demo-session.html'),
-        #                    footer=render_template('footer.html'))
-        #
+    model = Modeling()
+    model.generateDemo(user_solution, game)
+    chart = Chart()
+    chart.generateDemo(model.getCurrentSolutions())
+    return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form()),
+                           main=render_template('demo-session.html', isResult=True,
+
+                                                game=model.getGame()),
+                           footer=render_template('footer.html'),
+                           script=chart.render())
