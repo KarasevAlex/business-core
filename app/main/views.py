@@ -60,33 +60,40 @@ def index2():
                            main=render_template('admin-list.html', games=games),
                            footer=render_template('footer.html'))
 
-@main.route('/game/<int:id>')
+@main.route('/game/<int:id>/<int:period_id>')
 @login_required
-def session_admin(id):
+def session_admin(id, period_id):
     games = Games.query.filter_by(id=id).first()
     users = User.query.filter_by(game_id=id).all()
     periods = Period.query.filter_by(game_id=id).all()
-    last_active = None
-    current_period = None
-    for period in periods:
-        if period.isFinished():
-            last_active = period
-        if period.check_period():
-            current_period = period
-    if last_active is not None:
-        previous_solution = Solutions.getSolutions(last_active)
+    period = Period.query.filter_by(period_number=period_id, game_id=id).first()
+    current_period = Period.getActivePeriod(id)
+    if current_period['succeed']:
+        current_period = current_period['data']
+    else:
+        current_period = None
+    period_solution = None
+    if period.isFinished():
+        period_solution = Solutions.getSolutions(period)
         chart = Chart()
-        chart.generate(previous_solution, users)
+        chart.generate(period_solution, users)
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('admin-session.html', games=games,
+                                                    periods=periods, period=period,
+                                                    current_period=current_period,
+                                                    previous_solution=period_solution,
+                                                    users=users),
+                               footer=render_template('footer.html'),
+                               script=chart.render())
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form()),
                            main=render_template('admin-session.html', games=games,
-                                                periods=periods, last_active=last_active,
+                                                periods=periods, period=period,
                                                 current_period=current_period,
-                                                previous_solution=previous_solution,
+                                                previous_solution=period_solution,
                                                 users=users),
-                           footer=render_template('footer.html'),
-                           script=chart.render())
-
+                           footer=render_template('footer.html'))
 @main.route('/4')
 def index4():
     return render_template('layout.html',
@@ -106,46 +113,44 @@ def flush():
     db.session.flush()
     return "True"
 
-@main.route('/play')
+@main.route('/play',methods=['POST', 'GET'])
 @login_required
 @gamer_required
 def index10():
-    period = Period.getActivePeriod(current_user.game_id)
-    if period['succeed']:
-        previous_solution = None
-        game = Games.getGame(current_user.game_id)
-        period = period['data']
-        if period.period_number != 1:
-            previous_solution = Solutions.getPreviousSolution(period, current_user.id)
+    if request.method == "GET":
+        period = Period.getActivePeriod(current_user.game_id)
+        if period['succeed']:
+            previous_solution = None
+            game = Games.getGame(current_user.game_id)
+            period = period['data']
+            if period.period_number != 1:
+                previous_solution = Solutions.getPreviousSolution(period, current_user.id)
 
+            return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('user-session.html', period=period, game=game, previous_solution=previous_solution),
+                               footer=render_template('footer.html')
+                              )
         return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
-                           main=render_template('user-session.html', period=period, game=game, previous_solution=previous_solution),
-                           footer=render_template('footer.html')
-                          )
-    return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
-                           main=render_template('error.html', title=period['message'], message=period['time']),
-                           footer=render_template('footer.html'))
-
-@main.route('/result', methods=['POST'])
-@login_required
-@gamer_required
-def result():
-    if Period.check_period(request.form['period']):
-        model = Modeling().generateGame(current_user, request.form)
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('error.html', title=period['message'], message=period['time']),
+                               footer=render_template('footer.html'))
+    else:
+        if Period.check_period_by_id(request.form['period']):
+            model = Modeling()
+            model.generateGame(current_user, request.form)
+            return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('user-session.html', period=model.getPeriod(),
+                                                    game=model.getGame(),
+                                                    previous_solution=Solutions.getPreviousSolution(model.getPeriod(),
+                                                                                                    current_user.id),
+                                                    current_solution=model.getCurrentSolution()),
+                               footer=render_template('footer.html'))
         return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
-                           main=render_template('user-session.html', period=model.getPeriod(),
-                                                game=model.getGame(),
-                                                previous_solution=Solutions.getPreviousSolution(model.getPeriod(),
-                                                                                                current_user.id),
-                                                current_solution=model.getCurrentSolution()),
-                           footer=render_template('footer.html'))
-    return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
-                           main=render_template('error.html', message="Период завершен, решение не установлено"),
-                           footer=render_template('footer.html'))
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('error.html', message="Период завершен, решение не установлено"),
+                               footer=render_template('footer.html'))
 
 
 
@@ -223,3 +228,20 @@ def demo_result():
                                                 game=model.getGame()),
                            footer=render_template('footer.html'),
                            script=chart.render())
+
+
+
+
+@main.route('/period/<int:id>', methods=['POST'])
+def change_period(id):
+    try:
+        period = Period.query.filter_by(id=id).first()
+        period.changePeriod(request.form['begin'], request.form['period'], request.form['end'])
+        db.session.add(period)
+        return redirect('/game/%s' % period.game_id)
+    except:
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
+                               footer=render_template('footer.html'))
+

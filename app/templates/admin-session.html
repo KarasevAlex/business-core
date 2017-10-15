@@ -3,13 +3,13 @@
 		<div class="well clearfix session-panel">
 			<a href="" class="btn btn-default pull-left">Текущий период</a>
 			<div class="pull-left period-nav">
-				{% if last_active is none %}
-					<span>Отсутствуют доступные результаты</span>
-				{%else%}
-					<a href="" class="glyphicon glyphicon-chevron-left"></a>
-					<span>{{last_active.period_number}}</span>
-					<a href="" class="glyphicon glyphicon-chevron-right"></a>
-				{%endif%}
+				{% if period.period_number != 1 %}
+					<a href="/game/{{games.id}}/{{period.period_number-1}}" class="glyphicon glyphicon-chevron-left"></a>
+				{% endif %}
+				<span>{{period.period_number}}</span>
+				{% if period.period_number != games.period_number %}
+					<a href="/game/{{games.id}}/{{period.period_number+1}}" class="glyphicon glyphicon-chevron-right"></a>
+				{% endif %}
 			</div>
 			{% if current_period is none %}
 				<p class="pull-right info"> В настоящий момент нет активных периодов</p>
@@ -25,7 +25,6 @@
 				<li><a href="#solutions" data-toggle="tab">Решения</a></li>
 				<li><a href="#graphics" data-toggle="tab">Графики</a></li>
 			</ul>
-
 		</div>
 
 		<!-- Tab panes -->
@@ -34,7 +33,7 @@
 			  {% for period in periods%}
 				<div class="period row">
 				<h4 class="period__name col-md-2">Период {{period.period_number}}</h4>
-				<form action="" class="col-md-4 row">
+				<form action="/period/{{period.id}}" method="post" class="col-md-4 row">
 					<input type="hidden" value="1">
 					<div class="col-md-4">
 						<label>
@@ -118,6 +117,7 @@
 							{% endfor %}
 
 						</tr>
+						{% if previous_solution is not none %}
 						<tr>
 							<th>Цена продукции</th>
 							{% for solution in previous_solution%}
@@ -270,6 +270,7 @@
 							<!--<td></td>-->
 
 						</tr>
+						{% endif%}
 						<!--<tr>-->
 							<!--<th>Общий объем прибыли</th>-->
 							<!--<td></td>-->
@@ -297,7 +298,8 @@
 			</form>
 		  </div>
 		  <div class="tab-pane" id="graphics">
-			<ul class="nav nav-pills ">
+			{% if previous_solution is not none %}
+		  	<ul class="nav nav-pills ">
 			  <li class="active"><a href="#costSS" data-toggle="tab">Цены с/с</a></li>
 			  <li><a href="#quality" data-toggle="tab">Качество</a></li>
 			  <li><a href="#promotion" data-toggle="tab">Продвижение</a></li>
@@ -316,7 +318,10 @@
 				<div class="tab-pane" id="sales"><canvas id="sales-chart" width="600" height="400"></canvas></div>
 				<div class="tab-pane" id="profit"><canvas id="profit-chart" width="600" height="400"></canvas></div>
 				<div class="tab-pane" id="accrued-profit"><canvas id="accrued-profit-chart" width="600" height="400"></canvas></div>
-			  </div>
+			</div>
+			{% else %}
+			  <span> Графики для текущего периода отсутствуют </span>
+			{% endif %}
 		  </div>
 		</div>
 	</div>

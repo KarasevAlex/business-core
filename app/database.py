@@ -418,7 +418,7 @@ class Period(db.Model):
         self.isActive = isActive
 
     @staticmethod
-    def check_period(period_id):
+    def check_period_by_id(period_id):
         current_time = datetime.now().time()
         period = Period.query.filter_by(id=period_id).first()
         if current_time >= period.period_start and current_time <= period.period_end:
@@ -457,6 +457,11 @@ class Period(db.Model):
         if current_time >= self.period_end:
             return True
         return False
+
+    def changePeriod(self, start, duration, end):
+        self.period_end = end
+        self.period_duration = duration
+        self.period_start = start
 
 class Solutions(db.Model):
     __tablename__ = 'solutions'
@@ -611,3 +616,19 @@ class Solutions(db.Model):
     @staticmethod
     def getSolutions(period):
         return Solutions.query.filter_by(period_id=period.id).all()
+
+
+class Partner(db.Model):
+
+    __tablename__ = 'member'
+    id = db.Column(db.Integer, primary_key=True )
+    picture = db.Column(db.String)
+    name = db.Column(db.String)
+
+class Team(db.Model):
+
+    __tablename__ = "team"
+    id = db.Column(db.Integer, primary_key=True)
+    picture = db.Column(db.String)
+    name = db.Column(db.String)
+    discription = db.Column(db.Text)

@@ -107,7 +107,7 @@ class Modeling():
                 if solution.Budget is not None:
                     solution.Profit = ((float(solution.cost)) - (float(solution.Prime_cost))) * (
                     float(solution.Sales)) - (float(solution.Budget))
-                    solution.Acc_Profit += solution.Profit
+
                 else:
                     solution.Profit = 0
 
