@@ -1,10 +1,10 @@
-from . import main
+from . import main, API
 from .. import db, excel
 from .chart import Chart
 from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
-from ..database import User, Games, Period, Solutions, News
+from ..database import User, Games, Period, Solutions, News, Partner, Team
 from flask import render_template, request, flash, redirect
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -35,7 +35,7 @@ def index_():
             if user.verify_password(form.password.data):
                 if user.role == 3:
                     login_user(user, remember=True)
-                    return redirect('/play')
+                    return redirect('/play/1')
                 else:
                     login_user(user, remember=True)
                     return redirect('/game')
@@ -113,24 +113,34 @@ def flush():
     db.session.flush()
     return "True"
 
-@main.route('/play',methods=['POST', 'GET'])
+@main.route('/play/<int:period_result>',methods=['POST', 'GET'])
 @login_required
 @gamer_required
-def index10():
+def user_game(period_result):
     if request.method == "GET":
         period = Period.getActivePeriod(current_user.game_id)
         if period['succeed']:
             previous_solution = None
+            results = None
+            users = None
+            chart = None
             game = Games.getGame(current_user.game_id)
             period = period['data']
             if period.period_number != 1:
                 previous_solution = Solutions.getPreviousSolution(period, current_user.id)
-
+                if Solutions.isSolutionAllowed(period, period_result):
+                    results = Solutions.getSolutions(Period.getPeriod(game.id, period_result))
+                    chart = Chart()
+                    users = User.query.filter_by(game_id=game.id).all()
+                    chart.generate(results, users)
             return render_template('layout.html',
                                header=render_template('header.html', form=Login_form()),
-                               main=render_template('user-session.html', period=period, game=game, previous_solution=previous_solution),
-                               footer=render_template('footer.html')
-                              )
+                               main=render_template('user-session.html', period=period,
+                                                    game=game, users=users,
+                                                    previous_solution=previous_solution,
+                                                    results=results),
+                               footer=render_template('footer.html'),
+                               script=chart.render())
         return render_template('layout.html',
                                header=render_template('header.html', form=Login_form()),
                                main=render_template('error.html', title=period['message'], message=period['time']),
@@ -154,24 +164,6 @@ def index10():
 
 
 
-# URL
-@main.route('/news/add', methods=['POST'])
-def add_news():
-    try:
-        temp = News(title=request.form['title'],
-            text=request.form['text'],
-            timestamp=request.form['date'],
-            author_id=current_user.id)
-        db.session.add(temp)
-        db.session.commit()
-        return redirect('/news')
-    except:
-        pass
-
-@main.route('/news/remove/<int:id>', methods=['POST'])
-def remove_news(id):
-    News.query.filter_by(id=id).delete()
-    return redirect('/news')
 
 @main.route('/news')
 def news_page():
@@ -245,3 +237,31 @@ def change_period(id):
                                main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
                                footer=render_template('footer.html'))
 
+@main.route('/team')
+def team_page():
+    try:
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('index.html',
+                                                    members=Team.query.all(),
+                                                    isAdmin=current_user.isAdmin()))
+    except:
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
+                               footer=render_template('footer.html'))
+
+@main.route('/partners')
+def partners_page():
+    try:
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('partners.html',
+                                                    partners=Partner.query.all(),
+                                                    isAdmin=current_user.isAdmin()),
+                               footer=render_template('footer.html'))
+    except:
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form()),
+                               main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
+                               footer=render_template('footer.html'))
