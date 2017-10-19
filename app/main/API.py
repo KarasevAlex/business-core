@@ -1,5 +1,5 @@
 from . import main
-from ..database import Partner, News, Team
+from ..database import Partner, News, Team, Games
 from .. import db
 from flask import Flask, render_template, request
 from flask import Flask, request, redirect, url_for
@@ -75,3 +75,12 @@ def add_news():
 def remove_news(id):
     News.query.filter_by(id=id).delete()
     return redirect('/news')
+
+
+
+@main.route('/game/finish/<int:id>', methods=['POST'])
+def finish_game(id):
+    game = Games.query.filter_by(id=id).first()
+    game.isFinished = True
+    db.session.add(game)
+    return redirect('/game/%s/1'% id)
