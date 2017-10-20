@@ -3,12 +3,12 @@
 		<div class="well clearfix session-panel">
 			<!--<a href="" class="btn btn-default pull-left">Текущий период</a>-->
 			<div class="pull-left period-nav">
-				{% if period.period_number != 1 %}
-					<a href="/play/{{period.period_number-1}}" class="glyphicon glyphicon-chevron-left"></a>
+				{% if period_result.period_number != 1 %}
+					<a href="/play/{{period_result.period_number-1}}" class="glyphicon glyphicon-chevron-left"></a>
 				{% endif %}
-				<span>{{period.period_number}}</span>
-				{% if period.period_number != game.period_number %}
-					<a href="/play/{{period.period_number+1}}" class="glyphicon glyphicon-chevron-right"></a>
+				<span>{{period_result.period_number}}</span>
+				{% if period_result.period_number != game.period_number %}
+					<a href="/play/{{period_result.period_number+1}}" class="glyphicon glyphicon-chevron-right"></a>
 				{% endif %}
 			</div>
 
@@ -254,15 +254,16 @@
 			</div>
 			<div class="table-wrapper table-responsive">
 				<table class="table table-condensed table-striped table-hover">
-					<thead>
-						<tr>
-							<th>Компания</th>
-							{% for i in range(1, (users | length)+1)%}
-								<th>{{i}}</th>
-							{% endfor %}
-						</tr>
-					</thead>
-					<tbody>
+					{% if results is not none %}
+						<thead>
+							<tr>
+								<th>Компания</th>
+								{% for i in range(1, (users | length)+1)%}
+									<th>{{i}}</th>
+								{% endfor %}
+							</tr>
+						</thead>
+						<tbody>
 						<tr>
 							<th>Название</th>
 							{% for user in users %}
@@ -270,47 +271,47 @@
 							{% endfor%}
 
 						</tr>
-						{% if results is not none %}
+
 							<tr>
 								<th>Цена продукции</th>
 								{% for solution in results%}
-									<td class="input-td"><input type="text" value="{{solution.cost}}" class="form-control"></td>
+									<td>{{solution.cost}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
 								<th>Размер завода в СА</th>
 								{% for solution in results%}
-									<td class="input-td"><input type="text" value="{{solution.NAFactory}}" class="form-control"></td>
+									<td>{{solution.NAFactory}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
 								<th>Размер завода в Европе</th>
 								{% for solution in results%}
-									<td class="input-td"><input type="text" value="{{solution.EuropeFactory}}" class="form-control"></td>
+									<td>{{solution.EuropeFactory}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
 								<th>Размер завода в Азии</th>
 								{% for solution in results%}
-									<td class="input-td"><input type="text" value="{{solution.AsiaFactory}}" class="form-control"></td>
+									<td>{{solution.AsiaFactory}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
 								<th>Затраты на продвижение в СА</th>
 								{% for solution in results%}
-									<td class="input-td"><input type="text" value="{{solution.NAPromotion}}" class="form-control"></td>
+									<td>{{solution.NAPromotion}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
 								<th>Затраты на продвижение в Европе</th>
 								{% for solution in results%}
-									<td class="input-td"><input type="text" value="{{solution.EuropePromotion}}" class="form-control"></td>
+									<td>{{solution.EuropePromotion}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
 								<th>Затраты на продвижение в Азии</th>
 								{% for solution in results%}
-									<td class="input-td"><input type="text" value="{{solution.AsiaPromotion}}" class="form-control"></td>
+									<td>{{solution.AsiaPromotion}}</td>
 								{% endfor %}
 							</tr>
 							<tr>

@@ -456,7 +456,7 @@ class Period(db.Model):
         pass
     @staticmethod
     def getPeriod(game_id, period_number):
-        return Period.query.filter(game_id == game_id, period_number == period_number).first()
+        return Period.query.filter_by(game_id = game_id, period_number = period_number).first()
 
     def isFinished(self):
         current_time = datetime.now().time()
@@ -625,6 +625,8 @@ class Solutions(db.Model):
 
     @staticmethod
     def isSolutionAllowed(current_period, required_result):
+        if (Games.query.filter_by(id=current_period.game_id).first()).isFinished:
+            return True
         if current_period.period_number > required_result:
             return True
         return False

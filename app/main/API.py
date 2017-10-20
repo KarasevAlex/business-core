@@ -1,6 +1,7 @@
 from . import main
-from ..database import Partner, News, Team, Games
+from ..database import Partner, News, Team, Games, Solutions
 from .. import db
+from .modeling import Modeling
 from flask import Flask, render_template, request
 from flask import Flask, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -84,3 +85,22 @@ def finish_game(id):
     game.isFinished = True
     db.session.add(game)
     return redirect('/game/%s/1'% id)
+
+
+@main.route('/solutions/change', methods=['POST'])
+def solutions_change():
+    form = request.form
+    solutions = Solutions.query.filter_by(period_id=form['period-id']).all()
+    game = Games.getGame(form['game-id'])
+    for solution in solutions:
+        solution.cost = form[str(solution.gamer_id)+'-cost']
+        solution.NAFactory = form[str(solution.gamer_id)+'-NAFactory']
+        solution.EuropeFactory = form[str(solution.gamer_id)+'-EuropeFactory']
+        solution.AsiaFactory = form[str(solution.gamer_id)+'-AsiaFactory']
+        solution.NAPromotion = form[str(solution.gamer_id)+'-NAPromotion']
+        solution.EuropePromotion = form[str(solution.gamer_id)+'-EuropePromotion']
+        solution.AsiaPromotion = form[str(solution.gamer_id)+'-AsiaPromotion']
+        solution.count_personal_params(game)
+    modeling = Modeling()
+    modeling.adminRecount(form['period-id'],game)
+    return redirect('/game/%s/%s' % (form['game-id'], form['period-number']))

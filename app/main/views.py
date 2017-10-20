@@ -74,9 +74,12 @@ def session_admin(id, period_id):
         current_period = None
     period_solution = None
     if period.isFinished():
-        period_solution = Solutions.getSolutions(period)
+        period_solution = db.session.query(User,Solutions).\
+            outerjoin(Solutions, User.id == Solutions.gamer_id).\
+            filter(Solutions.period_id == period.id).all()
+        # period_solution =
         chart = Chart()
-        chart.generate(period_solution, users)
+        chart.generate(Solutions.getSolutions(period), users)
         return render_template('layout.html',
                                header=render_template('header.html', form=Login_form()),
                                main=render_template('admin-session.html', games=games,
@@ -117,30 +120,36 @@ def flush():
 @login_required
 @gamer_required
 def user_game(period_result):
+    period = Period.getActivePeriod(current_user.game_id)
+    users = User.query.filter_by(game_id=current_user.game_id).all()
+    previous_solution = None
+    results = None
+    pResult = Period.getPeriod(current_user.game_id, period_result)
     if request.method == "GET":
-        period = Period.getActivePeriod(current_user.game_id)
         if period['succeed']:
-            previous_solution = None
-            results = None
-            users = None
-            chart = None
             game = Games.getGame(current_user.game_id)
             period = period['data']
             if period.period_number != 1:
                 previous_solution = Solutions.getPreviousSolution(period, current_user.id)
                 if Solutions.isSolutionAllowed(period, period_result):
-                    results = Solutions.getSolutions(Period.getPeriod(game.id, period_result))
+                    results = Solutions.getSolutions(pResult)
                     chart = Chart()
-                    users = User.query.filter_by(game_id=game.id).all()
                     chart.generate(results, users)
+                    return render_template('layout.html',
+                                           header=render_template('header.html', form=Login_form()),
+                                           main=render_template('user-session.html', period=period,
+                                                                game=game, users=users,
+                                                                previous_solution=previous_solution,
+                                                                results=results, period_result=pResult),
+                                           footer=render_template('footer.html'),
+                                           script=chart.render())
             return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
-                               main=render_template('user-session.html', period=period,
-                                                    game=game, users=users,
-                                                    previous_solution=previous_solution,
-                                                    results=results),
-                               footer=render_template('footer.html'),
-                               script=chart.render())
+                                   header=render_template('header.html', form=Login_form()),
+                                   main=render_template('user-session.html', period=period,
+                                                        game=game, users=users,
+                                                        previous_solution=previous_solution,
+                                                        results=results, period_result=pResult),
+                                   footer=render_template('footer.html'))
         return render_template('layout.html',
                                header=render_template('header.html', form=Login_form()),
                                main=render_template('error.html', title=period['message'], message=period['time']),
@@ -149,19 +158,36 @@ def user_game(period_result):
         if Period.check_period_by_id(request.form['period']):
             model = Modeling()
             model.generateGame(current_user, request.form)
+
+            if period['data'].period_number != 1 and Solutions.isSolutionAllowed(period, period_result):
+                results = Solutions.getSolutions(pResult)
+                chart = Chart()
+                chart.generate(results, users)
+                return render_template('layout.html',
+                                       header=render_template('header.html', form=Login_form()),
+                                       main=render_template('user-session.html', period=model.getPeriod(),
+                                                            game=model.getGame(), users=users,
+                                                            previous_solution=Solutions.getPreviousSolution(
+                                                                model.getPeriod(),
+                                                                current_user.id),
+                                                            results=results, period_result=pResult,
+                                                            current_solution=model.getCurrentSolution()),
+                                       footer=render_template('footer.html'),
+                                       script=chart.render())
             return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
-                               main=render_template('user-session.html', period=model.getPeriod(),
-                                                    game=model.getGame(),
-                                                    previous_solution=Solutions.getPreviousSolution(model.getPeriod(),
-                                                                                                    current_user.id),
-                                                    current_solution=model.getCurrentSolution()),
-                               footer=render_template('footer.html'))
+                                   header=render_template('header.html', form=Login_form()),
+                                   main=render_template('user-session.html', period=model.getPeriod(),
+                                                        game=model.getGame(), users=users,
+                                                        previous_solution=Solutions.getPreviousSolution(
+                                                            model.getPeriod(),
+                                                            current_user.id),
+                                                        results=results, period_result=pResult,
+                                                        current_solution=model.getCurrentSolution()),
+                                   footer=render_template('footer.html'))
         return render_template('layout.html',
                                header=render_template('header.html', form=Login_form()),
                                main=render_template('error.html', message="Период завершен, решение не установлено"),
                                footer=render_template('footer.html'))
-
 
 
 
@@ -265,3 +291,5 @@ def partners_page():
                                header=render_template('header.html', form=Login_form()),
                                main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
                                footer=render_template('footer.html'))
+
+

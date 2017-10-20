@@ -34,6 +34,13 @@ class Modeling():
 
         self.generateResult()
 
+    def adminRecount(self, period_id, game):
+        self.Current_period = period_id
+        self.Game = game
+        self.Previous_solutions = Solutions.query.filter_by()
+        self.Current_period_solutions = Solutions.query.filter_by(period_id=period_id).all()
+        self.generateResult()
+
     def generateDemo(self, solution, game):
         self.Current_period_solution = solution
         self.Game = game

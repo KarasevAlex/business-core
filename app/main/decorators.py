@@ -13,7 +13,6 @@ def admin_required(f):
 def gamer_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        en=current_user
         if current_user.isAdmin():
             abort(403)
         return f(*args, **kwargs)
