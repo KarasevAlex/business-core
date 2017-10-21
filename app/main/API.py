@@ -1,13 +1,13 @@
 from . import main
 from ..database import Partner, News, Team, Games, Solutions
-from .. import db
+from .. import db, mail
 from .modeling import Modeling
 from flask import Flask, render_template, request
 from flask import Flask, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import uuid, os
 from flask_login import current_user
-
+from flask_mail import Message
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPG'])
 
@@ -104,3 +104,17 @@ def solutions_change():
     modeling = Modeling()
     modeling.adminRecount(form['period-id'],game)
     return redirect('/game/%s/%s' % (form['game-id'], form['period-number']))
+
+
+@main.route('/gallaries/photo/delete')
+def gallaries_photo_delete():
+    photos_id=request.form['delete']
+    for photo in photos_id:
+
+
+@main.route('/send/mail')
+def send_mail():
+    msg = Message("Hello",
+                  sender="karasev_a_e@mail.ru",
+                  recipients=["karasev_a_e@mail.ru"])
+    mail.send(msg)

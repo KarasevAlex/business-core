@@ -643,3 +643,18 @@ class Team(db.Model):
     picture = db.Column(db.String(128))
     name = db.Column(db.String(128))
     discription = db.Column(db.Text)
+
+class Gallery(db.Model):
+    __tablename__ = "gallery"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128))
+    date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+class Photos(db.Model):
+    __tablename__ = "photos"
+    id = db.Column(db.Integer, primary_key=True)
+    gallery_id = db.Column(db.Integer, db.ForeignKey('gallery.id'))
+    path = db.Column(db.String(128))
+
+
+
