@@ -11,11 +11,12 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 @main.route('/create_database', methods=['GET', 'POST'])
 def create_database():
-    try:
+
         db.create_all()
+        print('1')
         db.session.add(User(username='Admin', password='Admin', role=1))
         return "succed"
-    except Exception as e:
+
         return "fail"
 
 @main.route('/', methods=['POST','GET'])

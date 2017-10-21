@@ -618,17 +618,17 @@ class Solutions(db.Model):
         return Solutions.query.filter_by(period_id=period.id).all()
 
 
-class Partner(db.Model):
+# class Partner(db.Model):
+#
+#     __tablename__ = 'member'
+#     id = db.Column(db.Integer, primary_key=True )
+#     picture = db.Column(db.String)
+#     name = db.Column(db.String)
 
-    __tablename__ = 'member'
-    id = db.Column(db.Integer, primary_key=True )
-    picture = db.Column(db.String)
-    name = db.Column(db.String)
-
-class Team(db.Model):
-
-    __tablename__ = "team"
-    id = db.Column(db.Integer, primary_key=True)
-    picture = db.Column(db.String)
-    name = db.Column(db.String)
-    discription = db.Column(db.Text)
+# class Team(db.Model):
+#
+#     __tablename__ = "team"
+#     id = db.Column(db.Integer, primary_key=True)
+#     picture = db.Column(db.String)
+#     name = db.Column(db.String)
+#     discription = db.Column(db.Text)
