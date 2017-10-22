@@ -1,9 +1,6 @@
 from . import main
-<<<<<<< HEAD
 from ..database import Partner, News, Team, Games, Solutions,Period
-=======
 from ..database import Partner, News, Team, Games, Solutions, Period
->>>>>>> ed8af566bc83ca6a7dd50c16a9a04a14d9e58563
 from .. import db, mail
 from .modeling import Modeling
 from flask import Flask, render_template, request
