@@ -4,7 +4,7 @@ from .chart import Chart
 from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
-from ..database import User, Games, Period, Solutions, News, Partner, Team
+from ..database import User, Games, Period, Solutions, News, Partner, Team, StaticPages
 from flask import render_template, request, flash, redirect
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -21,11 +21,7 @@ def create_database():
 
 @main.route('/', methods=['POST','GET'])
 def index():
-    login = Login_form(request.form)
-    return render_template('layout.html',
-                           header=render_template('header.html', form=login),
-                           main=render_template('index.html'),
-                           footer=render_template('footer.html'))
+    return redirect('/team')
 
 @main.route('/login', methods=['POST'])
 def index_():
@@ -293,4 +289,13 @@ def partners_page():
                                main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
                                footer=render_template('footer.html'))
 
-
+@main.route('/<string:page>')
+def static_page(page):
+    pages = ['decription', 'organizations', 'students']
+    if page in pages:
+        page = StaticPages.query.filter_by(page_url=page).first()
+        return render_template('layout.html',
+                       header=render_template('header.html', form=Login_form()),
+                       main=render_template('static.html', page=page,
+                                            isAdmin=current_user.isAdmin()),
+                       footer=render_template('footer.html'))

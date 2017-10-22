@@ -3,39 +3,27 @@
 		<div class="row">
 			<div class="col-md-3">
 				<ul class="nav nav-pills nav-stacked">
-					<li>
-                      <li><a href="/decription">Краткое описание</a></li>
-                      <li><a href="/team">Наша команда</a></li>
-                      <li><a href="/organizations">Образовательным учреждениям</a></li>
-                      <li><a href="/students">Учащимся</a></li>
-                      <li><a href="">Нас рекомендуют</a></li>
-					  <li class="active"><a href="/partners">Партнеры</a></li>
+				  <li><a href="/decription">Краткое описание</a></li>
+				  <li><a href="/team">Наша команда</a></li>
+				  <li><a href="/organizations">Образовательным учреждениям</a></li>
+				  <li><a href="/students">Учащимся</a></li>
+				  <li><a href="">Нас рекомендуют</a></li>
+				  <li><a href="/partners">Партнеры</a></li>
 				</ul>
 			</div>
 			<div class="col-md-9">
 				<div class="page-header">
 					{%if isAdmin %}
-					<button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newPartnerModal"><span class="glyphicon glyphicon-plus"></span> Добавить</button>
+					<div class="pull-right">
+						<button class="btn btn-default" data-target="editPageModal"><span class="glyphicon glyphicon-pencil"></span></button>
+					</div>
 					{% endif %}
-				  <h1>Партнеры</h1>
+				  <h1>{{page.title}}</h1>
 				</div>
 				<div class="content-area">
-					<!--<button class=" btn btn-default" data-target=""><span class="glyphicon glyphicon-pencil"></span></button>-->
 
 					<div class="row">
-						{% for item in partners %}
-						<div class="col-md-3" id="{{item.id}}">
-							<img src="/static/img/picturs/{{item.picture}}" style="height: 150px" alt="">
-							{%if isAdmin %}
-								<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deletePartnerModal">&times;</button>
-							{% endif %}
-							<p>{{item.name}}</p>
-						</div>
-						{% if loop.index / 3 == 1 %}
-						</div>
-						<div class="row">
-						{% endif %}
-						{% endfor %}
+						<p>{{page.text}}</p>
 					</div>
 				</div>
 			</div>
@@ -43,7 +31,7 @@
 	</div>
 </main>
 
-<div class="modal fade" id="newPartnerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 	<div class="modal-content">
 	  <div class="modal-header">

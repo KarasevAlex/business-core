@@ -1,13 +1,13 @@
 from . import main
-from ..database import Partner, News, Team, Games, Solutions
-from .. import db
+from ..database import Partner, News, Team, Games, Solutions, Period
+from .. import db, mail
 from .modeling import Modeling
 from flask import Flask, render_template, request
 from flask import Flask, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import uuid, os
 from flask_login import current_user
-
+from flask_mail import Message
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPG'])
 
@@ -110,3 +110,17 @@ def change_period_status():
     period = Period.query.filter_by(id=request.form['id']).first()
     period.isActive = request.form['isActive']
     db.session.add(period)
+
+@main.route('/gallaries/photo/delete')
+def gallaries_photo_delete():
+    photos_id=request.form['delete']
+    for photo in photos_id:
+        pass
+
+@main.route('/send/mail')
+def send_mail():
+    msg = Message("Hello",
+                  sender="karasev_a_e@mail.ru",
+                  recipients=["karasev_a_e@mail.ru"])
+    mail.send(msg)
+
