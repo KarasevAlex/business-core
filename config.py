@@ -10,7 +10,6 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:Atlant@localhost/bcore?charset=utf8'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     UPLOAD_FOLDER = '/static/img/picturs'
-    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 @staticmethod
 def init_app(app):

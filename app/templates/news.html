@@ -50,7 +50,7 @@
 		  <div class="modal-body">
 			<div class="form-group">
 				{{ form.date.label}}
-				{{ form.date(class_="form-control")}}
+				{{ form.date(class_="form-control",id="js-news-data")}}
 				<!--<label>Дата</label>-->
 				<!--<input type="date" class="form-control">-->
 			</div>
@@ -93,3 +93,10 @@
 	</div>
   </div>
 </div>
+<script src="/static/js/jquery-ui.min.js"></script>
+<script>
+	$(document).ready(function(){
+	console.log($('#js-news-data'));
+		$('#js-news-data').datepicker();
+	});
+</script>

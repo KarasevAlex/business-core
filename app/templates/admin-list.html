@@ -14,7 +14,7 @@
 										</div>
 										<div class="form-group" v-bind:class="{ 'has-error': teamNumber.isError }">
 											<label for="team-number">Количество команд</label>
-											<input type="text" class="form-control" id="team-number" placeholder="Количество команд" name="team-number" required value="2" v-on:blur="validate(event, teamNumber); updateAllVolumes(event);" v-model="teamNumber.value">
+											<input type="text" class="form-control" id="team-number" placeholder="Количество команд" name="team-number" required value="2" v-on:change="validate(event, teamNumber); updateAllVolumes(event);" v-model="teamNumber.value">
 										</div>
 										<div class="form-group" v-bind:class="{ 'has-error': periodNumber.isError }">
 											<label for="period-number">Количество периодов</label>
@@ -56,7 +56,7 @@
 									<div class="col-md-3">
 										<button type="button" class="pull-right btn btn-default" v-on:click="updateAllVolumes()"><span class="glyphicon glyphicon-refresh"></span></button>
 										<p class="average">В среднем на команду: </p>
-										<p>{{ averageVolume }}</p>
+										<p v-html="averageVolume"></p>
 									</div>
 								</div>
 								<h3>Доступные решения</h3>
@@ -333,10 +333,14 @@
 				<h2>Список игр</h2>
 				{% for game in games%}
 
-					<div class="well clearfix">
+					<div class="well clearfix js-game">
 					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
 					<h4 class="game__name"><a href="game/{{game.id}}/1">{{ game.title }} <br><small>ID игры - {{ game.id }}</small></a></h4>
-					<span class="game__time">00:00</span>
+					<span class="game__time js-timer"  data-finish-time="{{game.period_end}}">
+						<span class="js-hours">00</span>:
+						<span class="js-minutes">00</span>:
+						<span class="js-seconds">00</span>
+					</span>
 				</div>
 				{% endfor%}
 				<ul class="pagination">
@@ -402,3 +406,4 @@
   </div>
 </div>
 <script src="/static/js/games.js"></script>
+<script src="/static/js/timer.js"></script>

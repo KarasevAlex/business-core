@@ -12,21 +12,34 @@
 				  <h1>Заголовок альбома</h1>
 				</div>
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-4 photo" data-photo-id="1" data-slick-index="1">
 						<div class="album-manage">
-							<button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deletePhotoModal">&times;</button>
-							<a href="" class="glyphicon glyphicon-paperclip"></a>
+							<button type="button" class="delete-photo js-delete-photo">&times;</button>
+							<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo"></a>
+						</div>
+						<div class="reestablish">
+							<button class="btn btn-default">Восстановить</button>
 						</div>
 						<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4 photo" data-photo-id="2" data-slick-index="2">
 						<div class="album-manage">
-							<button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal">&times;</button>
-							<a href="" class="glyphicon glyphicon-paperclip"></a>
+							<button type="button" class="delete-photo js-delete-photo">&times;</button>
+							<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo"></a>
+						</div>
+						<div class="reestablish">
+							<button class="btn btn-default">Восстановить</button>
 						</div>
 						<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4 photo" data-photo-id="3" data-slick-index="3">
+						<div class="album-manage">
+							<button type="button" class="delete-photo js-delete-photo">&times;</button>
+							<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo"></a>
+						</div>
+						<div class="reestablish">
+							<button class="btn btn-default">Восстановить</button>
+						</div>
 						<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
 					</div>
 				</div>
@@ -39,6 +52,41 @@
 				  <li><a href="#">5</a></li>
 				  <li><a href="#">&raquo;</a></li>
 				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="modal-photo">
+		<span class="close glyphicon glyphicon-remove js-close-modal"></span>
+		<div class="modal-photo__list">
+			<div class="modal-photo__item photo" data-photo-id="1">
+				<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+				<div class="album-manage">
+					<button type="button" class="delete-photo js-delete-photo">&times;</button>
+					<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo"></a>
+				</div>
+				<div class="reestablish">
+					<button class="btn btn-default">Восстановить</button>
+				</div>
+			</div>
+			<div class="modal-photo__item photo" data-photo-id="3">
+				<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+				<div class="album-manage">
+					<button type="button" class="delete-photo js-delete-photo">&times;</button>
+					<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo"></a>
+				</div>
+				<div class="reestablish">
+					<button class="btn btn-default">Восстановить</button>
+				</div>
+			</div>
+			<div class="modal-photo__item photo" data-photo-id="2">
+				<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+				<div class="album-manage">
+					<button type="button" class="delete-photo js-delete-photo">&times;</button>
+					<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo"></a>
+				</div>
+				<div class="reestablish">
+					<button class="btn btn-default">Восстановить</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -85,3 +133,5 @@
 	</div>
   </div>
 </div>
+<script src="/static/js/slick.min.js"></script>
+<script src="/static/js/gallery.js"></script>

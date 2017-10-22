@@ -79,6 +79,7 @@ class User(db.Model, UserMixin):
         self.name = 'Team №'+str(team_id)
         self.role = 3
 
+
 class News(db.Model):
     __tablename__ = 'news'
     id = db.Column(db.Integer, primary_key=True)
@@ -216,6 +217,8 @@ class Games(db.Model):
     baseFormulaCost2 = db.Column(db.Integer)
     price_coef = db.Column(db.Float)
 
+    isFinished =db.Column(db.Boolean)
+
     @staticmethod
     def create_default():
         game = Games()
@@ -248,6 +251,7 @@ class Games(db.Model):
                          exponentQuality1=form['exponentQuality1'], exponentQuality2=form['exponentQuality2'],
                          baseFormulaCost1=form['baseFormulaCost1'], baseFormulaCost2=form['baseFormulaCost2']
                          )
+            game.isFinished = False
             if 'time-start' in form:
                 isFirstStart = True
                 game.time_start = form['time-start']
@@ -450,7 +454,9 @@ class Period(db.Model):
     @staticmethod
     def getPreviousPeriod(period_id):
         pass
-
+    @staticmethod
+    def getPeriod(game_id, period_number):
+        return Period.query.filter_by(game_id = game_id, period_number = period_number).first()
 
     def isFinished(self):
         current_time = datetime.now().time()
@@ -617,18 +623,25 @@ class Solutions(db.Model):
     def getSolutions(period):
         return Solutions.query.filter_by(period_id=period.id).all()
 
+    @staticmethod
+    def isSolutionAllowed(current_period, required_result):
+        if (Games.query.filter_by(id=current_period.game_id).first()).isFinished:
+            return True
+        if current_period.period_number > required_result:
+            return True
+        return False
 
-# class Partner(db.Model):
-#
-#     __tablename__ = 'member'
-#     id = db.Column(db.Integer, primary_key=True )
-#     picture = db.Column(db.String)
-#     name = db.Column(db.String)
 
-# class Team(db.Model):
-#
-#     __tablename__ = "team"
-#     id = db.Column(db.Integer, primary_key=True)
-#     picture = db.Column(db.String)
-#     name = db.Column(db.String)
-#     discription = db.Column(db.Text)
+class Partner(db.Model):
+    __tablename__ = 'member'
+    id = db.Column(db.Integer, primary_key=True )
+    picture = db.Column(db.String(128))
+    name = db.Column(db.String(128))
+
+class Team(db.Model):
+    __tablename__ = "team"
+    id = db.Column(db.Integer, primary_key=True)
+    picture = db.Column(db.String(128))
+    name = db.Column(db.String(128))
+    discription = db.Column(db.Text)
+
