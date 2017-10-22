@@ -1,6 +1,5 @@
 from . import main
 from ..database import Partner, News, Team, Games, Solutions,Period
-from ..database import Partner, News, Team, Games, Solutions, Period
 from .. import db, mail
 from .modeling import Modeling
 from flask import Flask, render_template, request
