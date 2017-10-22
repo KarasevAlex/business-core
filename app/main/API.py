@@ -1,5 +1,5 @@
 from . import main
-from ..database import Partner, News, Team, Games, Solutions
+from ..database import Partner, News, Team, Games, Solutions,Period
 from .. import db, mail
 from .modeling import Modeling
 from flask import Flask, render_template, request
@@ -118,3 +118,10 @@ def send_mail():
                   sender="karasev_a_e@mail.ru",
                   recipients=["karasev_a_e@mail.ru"])
     mail.send(msg)
+
+
+@main.route('/period/status', methods=['POST'])
+def change_period_status():
+    period = Period.query.filter_by(id=request.form['id']).first()
+    period.isActive = request.form['isActive']
+    db.session.add(period)
