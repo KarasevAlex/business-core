@@ -648,7 +648,7 @@ class Gallery(db.Model):
     __tablename__ = "gallery"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
-    date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Photos(db.Model):
     __tablename__ = "photos"
@@ -656,5 +656,9 @@ class Photos(db.Model):
     gallery_id = db.Column(db.Integer, db.ForeignKey('gallery.id'))
     path = db.Column(db.String(128))
 
-
-
+class StaticPages(db.Model):
+    __tablename__ = "pages"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128))
+    text = db.Column(db.Text)
+    page_url = db.Column(db.String(128))

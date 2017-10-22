@@ -6,7 +6,6 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     # FLASKY_MAIL_SENDER = 'Flasky Admin <flasky@example.com>'
-    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:Atlant@localhost/bcore?charset=utf8'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     UPLOAD_FOLDER = '/static/img/picturs'
@@ -20,9 +19,6 @@ class DevelopmentConfig(Config):
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-
 
 class TestingConfig(Config):
     TESTING = True

@@ -110,7 +110,7 @@ def solutions_change():
 def gallaries_photo_delete():
     photos_id=request.form['delete']
     for photo in photos_id:
-
+        pass
 
 @main.route('/send/mail')
 def send_mail():
