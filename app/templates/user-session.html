@@ -238,11 +238,11 @@
 				</div>
 				<div class="alert alert-warning" v-if="spentBudgetVal < allBudget">
 					<h4>ПРЕДУПРЕЖДЕНИЕ!</h4>
-					<p>Решение сохранено. Вы израсходовали не весь доступный бюджет. Вы могли бы увеличить свои расходы</p>
+					<p>Вы израсходовали не весь доступный бюджет. Вы могли бы увеличить свои расходы</p>
 				</div>
 				<div class="alert alert-danger" v-if="spentBudgetVal > allBudget">
 					<h4>Предупреждение!</h4>
-					<p>Решение не сохранено. Ваши затраты превышают допустимый бюджет.</p>
+					<p>Ваши затраты превышают допустимый бюджет.</p>
 				</div>
 				<button class="btn btn-primary center-block" type="submit" v-bind:disabled="factories.isError || spentBudgetVal > allBudget">Принять решение</button>
 			</form>
@@ -456,3 +456,4 @@
         var Prime_Cost_Acc = Prime_Costbase;
     {%endif%}
 </script>
+<script src="/static/js/user-session.js"></script>

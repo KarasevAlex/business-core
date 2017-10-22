@@ -5,9 +5,9 @@ $(document).ready(function(){
 	var niokrSS = +$('.niokrSS').val();
 	var niokrQuality= +$(".niokrQuality").val();
 	var allBudget = +$('.allBudget').text(); 
-	var promotionNA = +$('.promotionNA').val()
-	var promotionEurope = +$('.promotionEurope').val()
-	var promotionAsia = +$('.promotionAsia').val()
+	var promotionNA = +$('.promotionNA').val();
+	var promotionEurope = +$('.promotionEurope').val() || 0;
+	var promotionAsia = +$('.promotionAsia').val() || 0;
 	var quality = +$('.quality').text();
 	var ss = +$('.ss').text();
 
@@ -105,7 +105,6 @@ $(document).ready(function(){
 	help.click(function(e){
 		var target = $(e.currentTarget);
 		var content = target.next('.help-pane').html();
-		console.log(content)
 		target.webuiPopover({
 			placement: 'bottom-right',
 			width: 300,

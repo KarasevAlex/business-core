@@ -631,6 +631,7 @@ class Solutions(db.Model):
             return True
         return False
 
+
 class Partner(db.Model):
     __tablename__ = 'member'
     id = db.Column(db.Integer, primary_key=True )
@@ -662,3 +663,4 @@ class StaticPages(db.Model):
     title = db.Column(db.String(128))
     text = db.Column(db.Text)
     page_url = db.Column(db.String(128))
+

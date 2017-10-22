@@ -1,5 +1,9 @@
 from . import main
+<<<<<<< HEAD
 from ..database import Partner, News, Team, Games, Solutions,Period
+=======
+from ..database import Partner, News, Team, Games, Solutions, Period
+>>>>>>> ed8af566bc83ca6a7dd50c16a9a04a14d9e58563
 from .. import db, mail
 from .modeling import Modeling
 from flask import Flask, render_template, request
@@ -105,6 +109,11 @@ def solutions_change():
     modeling.adminRecount(form['period-id'],game)
     return redirect('/game/%s/%s' % (form['game-id'], form['period-number']))
 
+@main.route('/period/status', methods=['POST'])
+def change_period_status():
+    period = Period.query.filter_by(id=request.form['id']).first()
+    period.isActive = request.form['isActive']
+    db.session.add(period)
 
 @main.route('/gallaries/photo/delete')
 def gallaries_photo_delete():

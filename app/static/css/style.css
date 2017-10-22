@@ -7,6 +7,11 @@ body {
     display: flex;
     flex-direction: column;
 }
+html.notscroll, .notscroll>body{
+	height: 100%;
+  overflow: hidden;
+}
+
 main {
 	flex: 1;
 }
@@ -117,12 +122,12 @@ a:hover, a:focus {
 	border-color: #D83D3D; 
 }
 .game__name{
-	width: 75%;
+	width: 65%;
 	float: left;
 }
 .game__time{
-	width: 15%;
-	font-size: 25px;
+	width: 25%;
+	font-size: 20px;
 	margin: 10px;
 	float: left;
 }
@@ -200,20 +205,22 @@ a:hover, a:focus {
 	font-size: 20px;
 	color: #000;
 }
-.album-manage .close{
+.album-manage .delete-photo{
 	margin-left: 5px;
 	font-size: 26px;
 }
-.album-manage a, .album-manage .close{
+.album-manage>button {
+	border: none;
+	background-color: transparent;
 	opacity: 0.4;
 	color: #000;
 	cursor: pointer;
 }
-.album-manage a:hover,.album-manage a:focus,.album-manage a:active,
-.album-manage .close:hover, .album-manage .close:active, .album-manage .close:focus{
+.album-manage>button:hover, .album-manage>button:active, .album-manage>button:focus {
+	opacity: 0.8;
 	text-decoration: none;
-	opacity: 0.8
 }
+
 /*  footer   */
 .footer {
 	color: #fff;
@@ -250,10 +257,84 @@ h4.resolve-item {
 .help-pane {
 
 }
-.error-block {
-	margin-top: 50px;
-	text-align: center;
+/* для фото */
+.modal-photo {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background-color: rgba(0,0,0,0.6);
+	display: none;
 }
-.error-block__title, .error-block__text {
+.modal-photo.open {
+	display: block;
+}
+.modal-photo .close {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	color: #fff;
+	opacity: 1;
+	cursor: pointer;
+	z-index: 100;
+}
+.modal-photo__list {
+	height: 100%;
+	width: 100%;
+	padding: 40px;
+}
+.modal-photo__item {
+	display: flex;
+	max-height: 100%;
+	max-width: 100%;
+	position: relative;
+}
+.modal-photo__item img {
+	margin: auto;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+.modal-photo__item .album-manage {
 	
+	left: 0px;
+	right: auto;
+	z-index: 100;
+	top: 0;
+}
+.slick-arrow {
+	color: #fff;
+	position: absolute;
+	top: 50%;
+	margin-top: -25px;
+	font-size: 35px;
+	z-index: 100;
+}
+.glyphicon-chevron-right.slick-arrow {
+	right: 30px
+}
+.glyphicon-chevron-left.slick-arrow {
+	left: 30px;
+}
+
+.reestablish {
+	display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+}
+.reestablish .btn {
+	margin: auto;
+}
+.photo.deleted .reestablish {
+	display: flex;
+}
+.photo.main .main-photo {
+	cursor: auto;
+	color: #f00;
+	opacity: 1;
 }
