@@ -25,6 +25,7 @@
 										<div class="form-group">
 											<input type="checkbox" id="isTimeStart" name="isTimeStart" v-model="timeStart.isWork">
 											<label for="isTimeStart">Начать в</label>
+											<input  class="form-control" type="text" id="js-start-data" name="" placeholder="Дата начала" v-bind:disabled="!timeStart.isWork">
 											<input type="time" class="form-control" id="time-start" placeholder="Время начала" name="time-start" v-bind:disabled="!timeStart.isWork">
 										</div>
 										<div class="form-group">
@@ -333,7 +334,7 @@
 				<h2>Список игр</h2>
 				{% for game in games%}
 
-					<div class="well clearfix js-game">
+					<div class="well clearfix js-game js-item">
 					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
 					<h4 class="game__name"><a href="game/{{game.id}}/1">{{ game.title }} <br><small>ID игры - {{ game.id }}</small></a></h4>
 					<span class="game__time js-timer"  data-finish-time="{{game.period_end}}">
@@ -388,7 +389,7 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade js-delete-modal" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 	<div class="modal-content">
 	  <div class="modal-header">
@@ -405,5 +406,6 @@
 	</div>
   </div>
 </div>
+<script src="/static/js/jquery-ui.min.js"></script>
 <script src="/static/js/games.js"></script>
 <script src="/static/js/timer.js"></script>

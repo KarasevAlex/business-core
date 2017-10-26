@@ -1,6 +1,6 @@
 function deleteItem(modal){
 		var $item;
-		modal.on('show.bs.modal', function (e) {
+		$('.js-delete-modal').on('show.bs.modal', function (e) {
 			var $btn = $(e.relatedTarget);
 			$item = $btn.parent('.js-item');
 		  	var $nameText = modal.find('#item-name-text');

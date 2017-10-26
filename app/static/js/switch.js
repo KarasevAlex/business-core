@@ -15,8 +15,8 @@ $(document).ready(function () {
 
 			}, 
 			success: function(data){
-				start.attr('disabled', 'disabled');
-				stop.attr('disabled', false);
+				start.prop('disabled', true);
+				stop.prop('disabled', false);
 			}
 		});
 	})
@@ -34,11 +34,104 @@ $(document).ready(function () {
 			},
 			error: function(){
 
-			}, 
+			},
 			success: function(data){
-				stop.attr('disabled', 'disabled');
-				start.attr('disabled', 	false);
+				stop.prop('disabled', true);
+				start.prop('disabled', 	false);
 			}
 		});
-	})
+	});
+
+	$('.period__form').each(function(i, el){
+		var period = $(el);
+		var begin = period.find('.js-begin-time');
+		var duration = period.find('.js-duration-time');
+		var finish = period.find('.js-finish-time');
+		var is_duration = period.find('.js-is-duration-time');
+		var is_finish = period.find('.js-is-finish-time');
+
+		function timeToStr(hours, minutes){
+			if(hours < 10)
+				hours = '0' + hours;
+			if(minutes < 10)
+				minutes = '0' + minutes;
+			return hours + ':' + minutes;
+		}
+
+		function getFinish(){
+			var d = duration.val();
+			d = d.split(':');
+
+			var b = begin.val();
+			b = b.split(':');
+
+			var result_mins = +b[1] + (+d[1]);
+			var result_hours = +b[0] + +(d[0]);
+
+			result_hours += Math.floor(result_mins / 60);
+			result_mins = result_mins % 60;
+
+			if(result_hours >= 24)
+				result_hours -= 24;
+
+			var result = timeToStr(result_hours, result_mins);
+
+			finish.val(result);
+		}
+		function getDuration(){
+			var f = finish.val();
+			f = f.split(':');
+
+			var b = begin.val();
+			b = b.split(':');
+
+			var result_mins = f[1] - b[1] ;
+			var result_hours = f[0] - b[0];
+
+			if(result_mins < 0){
+				result_hours--;
+				result_mins += 60;
+			}
+
+			var result = timeToStr(result_hours, result_mins);
+
+			duration.val(result);
+		}
+
+		begin.change(function(e){
+			if(is_duration.prop('checked')){
+				var val = +duration.val() + (+begin.val());
+				finish.val(val);
+			} else {
+				var val = +finish.val() - (+begin.val());
+				duration.val(val);
+			}
+		});
+		duration.blur(function(e){
+			getFinish()
+		});
+		finish.blur(function(e){
+			getDuration();
+
+		});
+		is_duration.click(function(e){
+			finish.prop('disabled', true);
+			duration.prop('disabled', false);
+		});
+		is_finish.click(function(e){
+			duration.prop('disabled', true);
+			finish.prop('disabled', false);
+		});
+		period.submit(function(e){
+			var d = duration.val();
+			var f = finish.val();
+			var b = begin.val();
+
+			if(!b || !f || ! d){
+				e.preventDefault();
+				period
+					.append('<p class="error">Неверно заполнены поля</p>');
+			}
+		});
+	});
 });

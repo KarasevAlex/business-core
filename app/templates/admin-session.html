@@ -37,7 +37,7 @@
 			  {% for period in periods%}
 				<div class="period row"  data-id="{{period.id}}">
 				<h4 class="period__name col-md-2">Период {{period.period_number}}</h4>
-				<form action="/period/{{period.id}}" method="post" class="col-md-4 row">
+				<form action="/period/{{period.id}}" method="post" class="col-md-4 row period__form">
 					<input type="hidden" value="1">
 					<div class="col-md-4">
 						<label>
@@ -46,25 +46,25 @@
 						</label>
 					</div>
 					<div class="col-md-8">
-						<input type="time" name="begin" value="{{period.period_start}}" class="form-control">
+						<input type="time" name="begin" value="{{period.period_start}}" class="js-begin-time form-control">
 					</div>
 					<div class="col-md-4">
 						<label>
-							<input type="radio" name="isPeriodTime" value="true">
+							<input type="radio" name="isPeriodTime" value="true" class="js-is-duration-time">
 							Период
 						</label>
 					</div>
 					<div class="col-md-8">
-						<input type="time" name="period" value="{{period.period_duration}}" class="form-control">
+						<input type="time" name="period" value="{{period.period_duration}}" class="js-duration-time form-control">
 					</div>
 					<div class="col-md-4">
 						<label>
-							<input type="radio" name="isPeriodTime" value="false">
+							<input class="js-is-finish-time" type="radio" name="isPeriodTime" value="false">
 							Конец
 						</label>
 					</div>
 					<div class="col-md-8">
-						<input type="time" name="end" value="{{period.period_end}}" class="form-control">
+						<input type="time" name="end" value="{{period.period_end}}" class="js-finish-time form-control">
 					</div>
 
 					<div class="col-md-12"><button type="submit" class="btn btn-default">Сохранить</button></div>

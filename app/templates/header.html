@@ -25,8 +25,8 @@
                 <li><a href="/сontacts">Контакты</a></li>
             </ul>
             {% if isAdmin %}
-                    <a href="/game" class="btn btn-primary">Сессия</a>
-                    <a href="/logout" class="btn btn-default">Выход</a>
+                <a href="/logout" class="btn btn-default pull-right">Выход</a>
+                <a href="/game" class="btn btn-primary pull-right">Сессия</a>
             {% else %}
                 <button class="pull-right btn btn-default" data-toggle="modal" data-target="#enterModal">Войти</button>
             {% endif %}
