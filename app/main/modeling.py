@@ -96,8 +96,7 @@ class Modeling():
                 solution.Sales_NA = min([solution.Demand_NA, float(solution.NAFactory)])
 
                 try:
-                    solution.Demand_Europa = int(
-                        self.Game.sizeEurope) * solution.mult_Demand_Europa / sum_Mult_Demand_Europe
+                    solution.Demand_Europa = int(self.Game.sizeEurope) * solution.mult_Demand_Europa / sum_Mult_Demand_Europe
                 except:
                     solution.Demand_Europa = 0
                 solution.Sales_Europa = min([solution.Demand_Europa, float(solution.EuropeFactory)])

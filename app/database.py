@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from random import choice
 from string import ascii_uppercase
+from flask_login import AnonymousUserMixin
 
 @loginManager.user_loader
 def load_user(user_id):
@@ -92,7 +93,7 @@ class News(db.Model):
         super().__init__()
         self.title = title
         self.body = text
-        self.timestamp = timestamp
+        self.timestamp = datetime.strptime(timestamp, '%m/%d/%Y')
         self.author_id = author_id
 
 class Games(db.Model):
@@ -663,4 +664,5 @@ class StaticPages(db.Model):
     title = db.Column(db.String(128))
     text = db.Column(db.Text)
     page_url = db.Column(db.String(128))
+
 

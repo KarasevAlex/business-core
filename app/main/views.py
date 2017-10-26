@@ -36,7 +36,7 @@ def index_():
                 else:
                     login_user(user, remember=True)
                     return redirect('/game')
-        flash('Invalid login or password')
+        return render_template('index.html', form=form)
     return render_template('index.html', form=form)
 
 @main.route('/logout')
@@ -53,7 +53,7 @@ def index2():
         Games.create(request.form)
     games = Games.query.all()
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
+                           header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
                            main=render_template('admin-list.html', games=games),
                            footer=render_template('footer.html'))
 
@@ -71,14 +71,13 @@ def session_admin(id, period_id):
         current_period = None
     period_solution = None
     if period.isFinished():
-        period_solution = db.session.query(User,Solutions).\
+        period_solution = db.session.query(User, Solutions).\
             outerjoin(Solutions, User.id == Solutions.gamer_id).\
             filter(Solutions.period_id == period.id).all()
-        # period_solution =
         chart = Chart()
         chart.generate(Solutions.getSolutions(period), users)
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                main=render_template('admin-session.html', games=games,
                                                     periods=periods, period=period,
                                                     current_period=current_period,
@@ -87,25 +86,12 @@ def session_admin(id, period_id):
                                footer=render_template('footer.html'),
                                script=chart.render())
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
+                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                            main=render_template('admin-session.html', games=games,
                                                 periods=periods, period=period,
                                                 current_period=current_period,
                                                 previous_solution=period_solution,
                                                 users=users),
-                           footer=render_template('footer.html'))
-@main.route('/4')
-def index4():
-    return render_template('layout.html',
-                           header=render_template('header.html'),
-                           main=render_template('album.html'),
-                           footer=render_template('footer.html'))
-
-@main.route('/8')
-def index9():
-    return render_template('layout.html',
-                           header=render_template('header.html'),
-                           main=render_template('partners.html'),
                            footer=render_template('footer.html'))
 
 @main.route('/flush')
@@ -133,7 +119,7 @@ def user_game(period_result):
                     chart = Chart()
                     chart.generate(results, users)
                     return render_template('layout.html',
-                                           header=render_template('header.html', form=Login_form()),
+                                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                            main=render_template('user-session.html', period=period,
                                                                 game=game, users=users,
                                                                 previous_solution=previous_solution,
@@ -141,14 +127,14 @@ def user_game(period_result):
                                            footer=render_template('footer.html'),
                                            script=chart.render())
             return render_template('layout.html',
-                                   header=render_template('header.html', form=Login_form()),
+                                   header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                    main=render_template('user-session.html', period=period,
                                                         game=game, users=users,
                                                         previous_solution=previous_solution,
                                                         results=results, period_result=pResult),
                                    footer=render_template('footer.html'))
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                main=render_template('error.html', title=period['message'], message=period['time']),
                                footer=render_template('footer.html'))
     else:
@@ -161,7 +147,7 @@ def user_game(period_result):
                 chart = Chart()
                 chart.generate(results, users)
                 return render_template('layout.html',
-                                       header=render_template('header.html', form=Login_form()),
+                                       header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                        main=render_template('user-session.html', period=model.getPeriod(),
                                                             game=model.getGame(), users=users,
                                                             previous_solution=Solutions.getPreviousSolution(
@@ -172,7 +158,7 @@ def user_game(period_result):
                                        footer=render_template('footer.html'),
                                        script=chart.render())
             return render_template('layout.html',
-                                   header=render_template('header.html', form=Login_form()),
+                                   header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                    main=render_template('user-session.html', period=model.getPeriod(),
                                                         game=model.getGame(), users=users,
                                                         previous_solution=Solutions.getPreviousSolution(
@@ -182,7 +168,7 @@ def user_game(period_result):
                                                         current_solution=model.getCurrentSolution()),
                                    footer=render_template('footer.html'))
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                main=render_template('error.html', message="Период завершен, решение не установлено"),
                                footer=render_template('footer.html'))
 
@@ -191,7 +177,7 @@ def user_game(period_result):
 @main.route('/news')
 def news_page():
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
+                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                            main=render_template('news.html',
                                                 isAdmin=current_user.isAdmin(),
                                                 form=News_form(),
@@ -201,14 +187,14 @@ def news_page():
 @main.route('/galleries')
 def galleries_page():
     return render_template('layout.html',
-                           header=render_template('header.html',form=Login_form()),
+                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                            main=render_template('gallery.html'),
                            footer=render_template('footer.html'))
 
 @main.route('/сontacts')
 def contatst_page():
     return render_template('layout.html',
-                           header=render_template('header.html',form=Login_form()),
+                           header=render_template('header.html',form=Login_form(),  isAdmin=current_user.isAdmin()),
                            main=render_template('contacts.html'),
                            footer=render_template('footer.html'))
 
@@ -221,7 +207,7 @@ def get_excel(id):
 @main.route('/demo')
 def demo():
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
+                           header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
                            main=render_template('demo-session.html', isResult=False),
                            footer=render_template('footer.html'))
 
@@ -237,7 +223,7 @@ def demo_result():
     chart = Chart()
     chart.generateDemo(model.getCurrentSolutions())
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form()),
+                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                            main=render_template('demo-session.html', isResult=True,
                                                 previous_solution=model.getCurrentSolutions(),
                                                 game=model.getGame()),
@@ -256,7 +242,7 @@ def change_period(id):
         return redirect('/game/%s' % period.game_id)
     except:
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
                                main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
                                footer=render_template('footer.html'))
 
@@ -270,7 +256,7 @@ def team_page():
                                                     isAdmin=current_user.isAdmin()))
     except:
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
                                main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
                                footer=render_template('footer.html'))
 
@@ -278,14 +264,14 @@ def team_page():
 def partners_page():
     try:
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                                main=render_template('partners.html',
                                                     partners=Partner.query.all(),
                                                     isAdmin=current_user.isAdmin()),
                                footer=render_template('footer.html'))
     except:
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
                                main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
                                footer=render_template('footer.html'))
 
@@ -295,7 +281,7 @@ def static_page(page):
     if page in pages:
         page = StaticPages.query.filter_by(page_url=page).first()
         return render_template('layout.html',
-                       header=render_template('header.html', form=Login_form()),
+                       header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                        main=render_template('static.html', page=page,
                                             isAdmin=current_user.isAdmin()),
                        footer=render_template('footer.html'))

@@ -3,6 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import flask_excel as excel
 from flask_mail import Mail
+from flask_login import AnonymousUserMixin
+
+class Anonymous(AnonymousUserMixin):
+   def isAdmin(self):
+       return False
 
 from config import config
 
@@ -11,6 +16,7 @@ main = Blueprint('main', __name__)
 db = SQLAlchemy()
 loginManager = LoginManager()
 loginManager.session_protection = "basic"
+loginManager.anonymous_user = Anonymous
 mail = Mail()
 
 

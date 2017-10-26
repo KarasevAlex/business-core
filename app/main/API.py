@@ -2,17 +2,17 @@ from . import main
 from ..database import Partner, News, Team, Games, Solutions,Period
 from .. import db, mail
 from .modeling import Modeling
-from flask import Flask, render_template, request
+
 from flask import Flask, request, redirect, url_for
 from werkzeug.utils import secure_filename
-import uuid, os
+import uuid, os, json
 from flask_login import current_user
 from flask_mail import Message
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPG'])
 
 def allowed_filename(filename):
-    return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 def upload(file):
     if file and allowed_filename(file.filename):
@@ -61,16 +61,13 @@ def member_remove(id):
 
 @main.route('/news/add', methods=['POST'])
 def add_news():
-    try:
-        temp = News(title=request.form['title'],
-            text=request.form['text'],
-            timestamp=request.form['date'],
-            author_id=current_user.id)
-        db.session.add(temp)
-        db.session.commit()
-        return redirect('/news')
-    except:
-        pass
+    temp = News(title=request.form['title'],
+        text=request.form['text'],
+        timestamp=request.form['date'],
+        author_id=current_user.id)
+    db.session.add(temp)
+    db.session.commit()
+    return redirect('/news')
 
 @main.route('/news/remove/<int:id>', methods=['POST'])
 def remove_news(id):
@@ -107,15 +104,34 @@ def solutions_change():
 
 @main.route('/period/status', methods=['POST'])
 def change_period_status():
-    period = Period.query.filter_by(id=request.form['id']).first()
-    period.isActive = request.form['isActive']
-    db.session.add(period)
+    try:
+        period = Period.query.filter_by(id=request.form['id']).first()
+        temp_sheet = request.form['isActive']
+        if request.form['isActive'] == 'true':
+            period.isActive = True
+            db.session.add(period)
+            return json.dumps(True)
+        period.isActive = False
+        db.session.add(period)
+        return json.dumps(True)
+    except:
+        return json.dumps(False)
 
 @main.route('/gallaries/photo/delete')
 def gallaries_photo_delete():
-    photos_id=request.form['delete']
+    photos_id = request.form['delete']
     for photo in photos_id:
         pass
+
+
+
+@main.route('/gallaries/add', methods=['POST'])
+def gallaries_add():
+    for file in request.files:
+        tm=file
+    return
+
+
 
 @main.route('/send/mail')
 def send_mail():
@@ -124,9 +140,3 @@ def send_mail():
                   recipients=["karasev_a_e@mail.ru"])
     mail.send(msg)
 
-
-@main.route('/period/status', methods=['POST'])
-def change_period_status():
-    period = Period.query.filter_by(id=request.form['id']).first()
-    period.isActive = request.form['isActive']
-    db.session.add(period)

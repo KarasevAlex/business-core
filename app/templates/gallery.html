@@ -18,7 +18,7 @@
 								<a class="glyphicon glyphicon-arrow-up js-up"></a>
 								<a class="glyphicon glyphicon-arrow-down js-down"></a>
 							</div>
-							<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+							<img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
 							<h4><a href="">Заголовок альбома1</a></h4>
 						</div>
 						<div class="col-md-6 js-album">
@@ -27,7 +27,7 @@
 								<a class="glyphicon glyphicon-arrow-up js-up"></a>
 								<a class="glyphicon glyphicon-arrow-down js-down"></a>
 							</div>
-							<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+							<img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
 							<h4><a href="">Заголовок альбома2</a></h4>
 						</div>
 						<div class="col-md-6 js-album">
@@ -36,7 +36,7 @@
 								<a class="glyphicon glyphicon-arrow-up js-up"></a>
 								<a class="glyphicon glyphicon-arrow-down js-down"></a>
 							</div>
-							<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+							<img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
 							<h4><a href="">Заголовок альбома3</a></h4>
 						</div>
 					</div>
@@ -62,13 +62,13 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h4 class="modal-title" id="myModalLabel">Создать новость</h4>
 	  </div>
-	  <form action="">
+	  <form method="post" action="/gallaries/add" enctype="multipart/form-data">
 		  <div class="modal-body">
 			<div class="form-group">
 				<label>Название альбома</label>
-				<textarea class="form-control"></textarea>
+				<input type="text" name="title" class="form-control">
 			</div>
-			<input type="file" multiple>
+			<input type="file" name="file" multiple>
 		  </div>
 		  <div class="modal-footer">
 			<button type="reset" class="btn btn-default" data-dismiss="modal">Отменить</button>
