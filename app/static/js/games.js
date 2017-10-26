@@ -187,4 +187,5 @@ $(document).ready(function(){
 	  	}
 	  }
 	})
+	$('#js-start-data').datepicker();
 });

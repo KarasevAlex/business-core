@@ -88,13 +88,15 @@ $(document).ready(function(){
 	  		$('.budget').val(this.spentBudgetVal);
 	  	},
 	  	sizeSS: function(){
-	  		var Prime_Cost_Acc_new = Prime_Cost_Acc + this.niokrSS;
+	  		var Prime_Cost_Acc_new = Prime_Cost_Acc + (+this.niokrSS);
 	  		this.SS = Prime_Coststart + 1 - Math.pow((Prime_Cost_Acc_new / Prime_Costbase), (1 / Prime_Costcoef));
+	  		this.SS = this.SS.toFixed(3);
 	  		this.sizeBudget();
 	  	},
 	  	sizeQuality: function(){
-	  	    var Quality_Cost_Acc_new = Quality_Cost_Acc + this.niokrQuality;
+	  	    var Quality_Cost_Acc_new = Quality_Cost_Acc + (+this.niokrQuality);
 	  		this.quality = Math.pow((Quality_Cost_Acc_new / Quality_Costbase), (1 / Quality_Costcoef));
+	  		this.quality = this.quality.toFixed(3);
 	  		this.sizeBudget();
 	  	}
 	  }

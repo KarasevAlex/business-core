@@ -49,8 +49,8 @@ main {
 	color: #fff;
 }
 
-.navbar>div>button {
-	margin: 8px 0;
+.navbar .btn {
+	margin: 8px 0 8px 5px;
 }
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
 	background-color: #D83D3D;
@@ -122,12 +122,12 @@ a:hover, a:focus {
 	border-color: #D83D3D; 
 }
 .game__name{
-	width: 65%;
+	width: 75%;
 	float: left;
 }
 .game__time{
-	width: 25%;
-	font-size: 20px;
+	width: 15%;
+	font-size: 25px;
 	margin: 10px;
 	float: left;
 }
@@ -155,7 +155,7 @@ a:hover, a:focus {
 	margin: 5px 15px 0;
 }
 .session-panel  .period-nav a:hover, .session-panel  .period-nav a:focus, .session-panel  .period-nav a:active{
-	text-decoration: none;	
+	text-decoration: none;
 }
 .session-panel .info{
 	margin: 8px 25px 0;
@@ -164,6 +164,12 @@ a:hover, a:focus {
 	padding: 10px 0 15px;
 	border-bottom: 1px solid #DDDDDD;
 	margin-bottom: 15px;
+}
+.period .error {
+	color: #f00;
+	padding: 10px 15px 0;
+    clear: both;
+    font-weight: 400;
 }
 .table-top {
 	padding: 5px 0 10px;
