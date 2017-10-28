@@ -12,34 +12,18 @@
 				  <h1>Фотографии последних событий</h1>
 				</div>
 				<div class="row">
-						<div class="col-md-6 js-album">
-							<div class="album-manage">
-								<button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal">&times;</button>
-								<a class="glyphicon glyphicon-arrow-up js-up"></a>
-								<a class="glyphicon glyphicon-arrow-down js-down"></a>
-							</div>
-							<img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
-							<h4><a href="">Заголовок альбома1</a></h4>
-						</div>
-						<div class="col-md-6 js-album">
-							<div class="album-manage">
-								<button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal">&times;</button>
-								<a class="glyphicon glyphicon-arrow-up js-up"></a>
-								<a class="glyphicon glyphicon-arrow-down js-down"></a>
-							</div>
-							<img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
-							<h4><a href="">Заголовок альбома2</a></h4>
-						</div>
-						<div class="col-md-6 js-album">
-							<div class="album-manage">
-								<button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal">&times;</button>
-								<a class="glyphicon glyphicon-arrow-up js-up"></a>
-								<a class="glyphicon glyphicon-arrow-down js-down"></a>
-							</div>
-							<img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
-							<h4><a href="">Заголовок альбома3</a></h4>
-						</div>
-					</div>
+                    {% for gallary in gallaries %}
+                        <div class="col-md-6 js-album">
+                            <div class="album-manage">
+                                <button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal">&times;</button>
+                                <a class="glyphicon glyphicon-arrow-up js-up"></a>
+                                <a class="glyphicon glyphicon-arrow-down js-down"></a>
+                            </div>
+                            <img src="/static/img/picturs/{{ gallary[1].path }}" alt="" class="img-responsive img-thumbnail">
+                            <h4><a href="/galleries/{{ gallary[0].id }}">{{ gallary[0].title }}</a></h4>
+                        </div>
+                    {% endfor %}
+                </div>
 				<ul class="pagination">
 				  <li><a href="#">&laquo;</a></li>
 				  <li class="active"><a href="#">1</a></li>

@@ -1,5 +1,5 @@
 from . import main
-from ..database import Partner, News, Team, Games, Solutions,Period
+from ..database import Partner, News, Team, Games, Solutions, Period, Gallery, Photos
 from .. import db, mail
 from .modeling import Modeling
 
@@ -127,11 +127,29 @@ def gallaries_photo_delete():
 
 @main.route('/gallaries/add', methods=['POST'])
 def gallaries_add():
-    for file in request.files:
-        tm=file
-    return
+    gallery = Gallery(title=request.form['title'])
+    db.session.add(gallery)
+    db.session.commit()
+    for file in request.files.getlist('file'):
+        filename = upload(file)
+        if filename is not None:
+            photo = Photos(gallery_id=gallery.id, path=filename)
+            db.session.add(photo)
 
+    return redirect('/galleries')
 
+@main.route('/gall/1')
+def gallaries_get_dict():
+    LastPost = db.aliased(Photos, name='last')
+    last_id = (
+        db.session.query(LastPost.id)
+            .filter(LastPost.gallery_id == Gallery.id)
+            .order_by(LastPost.id.desc())
+            .limit(1)
+            .correlate(Gallery)
+            .as_scalar()
+    )
+    return db.session.query(Gallery, Photos).outerjoin(Photos, Photos.id == last_id).all()
 
 @main.route('/send/mail')
 def send_mail():

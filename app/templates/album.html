@@ -9,10 +9,11 @@
 			<div class="col-md-9">
 				<div class="page-header">
 				<button class="pull-right btn btn-primary" data-toggle="modal" data-target="#addPhotoModal"><span class="glyphicon glyphicon-plus"></span> Добавить фотографии</button>
-				  <h1>Заголовок альбома</h1>
+				  <h1>{{ gallary.title }}</h1>
 				</div>
 				<div class="row">
-					<div class="col-md-4 photo" data-photo-id="1" data-slick-index="1">
+                {% for photo in photos %}
+                    <div class="col-md-4 photo" data-photo-id="{{ photo.id }}" data-slick-index="{{ loop.index }}">
 						<div class="album-manage">
 							<button type="button" class="delete-photo js-delete-photo">&times;</button>
 							<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
@@ -20,28 +21,9 @@
 						<div class="reestablish">
 							<button class="btn btn-default">Восстановить</button>
 						</div>
-						<img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+						<img src="/static/img/picturs/{{ photo.path }}" alt="" class="img-responsive img-thumbnail">
 					</div>
-					<div class="col-md-4 photo" data-photo-id="2" data-slick-index="2">
-						<div class="album-manage">
-							<button type="button" class="delete-photo js-delete-photo">&times;</button>
-							<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
-						</div>
-						<div class="reestablish">
-							<button class="btn btn-default">Восстановить</button>
-						</div>
-						<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
-					</div>
-					<div class="col-md-4 photo" data-photo-id="3" data-slick-index="3">
-						<div class="album-manage">
-							<button type="button" class="delete-photo js-delete-photo">&times;</button>
-							<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
-						</div>
-						<div class="reestablish">
-							<button class="btn btn-default">Восстановить</button>
-						</div>
-						<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
-					</div>
+                {% endfor %}
 				</div>
 				<ul class="pagination">
 				  <li><a href="#">&laquo;</a></li>
@@ -58,8 +40,9 @@
 	<div class="modal-photo">
 		<span class="close glyphicon glyphicon-remove js-close-modal"></span>
 		<div class="modal-photo__list">
-			<div class="modal-photo__item photo" data-photo-id="1">
-				<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+            {% for photo in photos %}
+			<div class="modal-photo__item photo" data-photo-id="{{ photo.id }}">
+				<img src="/static/img/picturs/{{ photo.path }}" alt="" class="img-responsive img-thumbnail">
 				<div class="album-manage">
 					<button type="button" class="delete-photo js-delete-photo">&times;</button>
 					<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
@@ -68,26 +51,7 @@
 					<button class="btn btn-default">Восстановить</button>
 				</div>
 			</div>
-			<div class="modal-photo__item photo" data-photo-id="3">
-				<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
-				<div class="album-manage">
-					<button type="button" class="delete-photo js-delete-photo">&times;</button>
-					<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
-				</div>
-				<div class="reestablish">
-					<button class="btn btn-default">Восстановить</button>
-				</div>
-			</div>
-			<div class="modal-photo__item photo" data-photo-id="2">
-				<img src="img/p3.jpg" alt="" class="img-responsive img-thumbnail">
-				<div class="album-manage">
-					<button type="button" class="delete-photo js-delete-photo">&times;</button>
-					<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
-				</div>
-				<div class="reestablish">
-					<button class="btn btn-default">Восстановить</button>
-				</div>
-			</div>
+            {% endfor %}
 		</div>
 	</div>
 </main>

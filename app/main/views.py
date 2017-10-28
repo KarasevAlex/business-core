@@ -4,7 +4,7 @@ from .chart import Chart
 from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
-from ..database import User, Games, Period, Solutions, News, Partner, Team, StaticPages
+from ..database import User, Games, Period, Solutions, News, Partner, Team, StaticPages, Gallery, Photos
 from flask import render_template, request, flash, redirect
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -188,13 +188,22 @@ def news_page():
 def galleries_page():
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
-                           main=render_template('gallery.html'),
+                           main=render_template('gallery.html', gallaries=API.gallaries_get_dict()),
+                           footer=render_template('footer.html'))
+
+@main.route('/galleries/<int:id>')
+def gallery_page(id):
+    return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
+                           main=render_template('album.html',
+                                                gallary=Gallery.query.filter_by(id=id).first(),
+                                                photos=Photos.query.filter_by(gallery_id=id).all()),
                            footer=render_template('footer.html'))
 
 @main.route('/сontacts')
 def contatst_page():
     return render_template('layout.html',
-                           header=render_template('header.html',form=Login_form(),  isAdmin=current_user.isAdmin()),
+                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                            main=render_template('contacts.html'),
                            footer=render_template('footer.html'))
 
