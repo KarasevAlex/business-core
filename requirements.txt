@@ -8,3 +8,4 @@ flask_excel == 0.0.7
 xlsxwriter == 1.0.0
 pyexcel-xls==0.5.0
 flask_mail == 0.9.1
+Flask-Api == 1.0

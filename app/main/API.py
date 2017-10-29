@@ -2,8 +2,9 @@ from . import main
 from ..database import Partner, News, Team, Games, Solutions, Period, Gallery, Photos
 from .. import db, mail
 from .modeling import Modeling
-
+from .decorators import admin_required, gamer_required
 from flask import Flask, request, redirect, url_for
+from flask_api import status
 from werkzeug.utils import secure_filename
 import uuid, os, json
 from flask_login import current_user
@@ -26,6 +27,14 @@ def upload(file):
             return _filename
         except:
             return
+
+def remove_fite(filnename):
+    try:
+        mypath = main.root_path[:-4] + '/static/img/picturs/' + filnename
+        os.remove(mypath)
+        return  True
+    except:
+        return False
 
 @main.route('/partner/add', methods=['POST'])
 def partners_add():
@@ -138,7 +147,6 @@ def gallaries_add():
 
     return redirect('/galleries')
 
-@main.route('/gall/1')
 def gallaries_get_dict():
     LastPost = db.aliased(Photos, name='last')
     last_id = (
@@ -150,6 +158,52 @@ def gallaries_get_dict():
             .as_scalar()
     )
     return db.session.query(Gallery, Photos).outerjoin(Photos, Photos.id == last_id).all()
+
+@main.route('/gallery/remove/<int:id>')
+@admin_required
+def gallery_remove(id):
+    try:
+        obj = Photos.query.filter_by(gallery_id=id).all()
+        for ob in obj:
+            if remove_fite(ob.path):
+                db.session.delete(ob)
+        Gallery.query.filter_by(id=id).delete()
+        return status.HTTP_200_OK
+    except:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@main.route('/gallery/photo/remove/<int:id>')
+@admin_required
+def gallery_photo_remove(id):
+    try:
+        obj = Photos.query.filter_by(id=id).first()
+        if remove_fite(obj.path):
+            db.session.delete(obj)
+        return status.HTTP_200_OK
+    except:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR
+
+@main.route('/news/remove/<int:id>')
+@admin_required
+def news_remove(id):
+    try:
+        News.query.filter_by(id=id).delete()
+        return status.HTTP_200_OK
+    except:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR
+
+@main.route('/partner/remove/<int:id>')
+@admin_required
+def partner_remove(id):
+    try:
+        obj = Partner.query.filter_by(id=id).first()
+        if remove_fite(obj.picture):
+            db.session.delete(obj)
+        return status.HTTP_200_OK
+    except:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR
+
 
 @main.route('/send/mail')
 def send_mail():

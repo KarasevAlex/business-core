@@ -142,7 +142,7 @@
 						<tr>
 							<th>Себестоимость</th>
 							{% for solution in previous_solution%}
-								<td>{{solution.Prime_cost}}</td>
+								<td>{{solution.Prime_cost | round(3)}}</td>
 							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
@@ -150,7 +150,7 @@
 						<tr>
 							<th>Качество</th>
 							{% for solution in previous_solution%}
-								<td>{{solution.mult_Quality}}</td>
+								<td>{{solution.mult_Quality | round(3)}}</td>
 							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
@@ -160,7 +160,7 @@
 						<tr>
 							<th>Спрос в СА</th>
 							{% for solution in previous_solution%}
-								<td>{{solution.Demand_NA}}</td>
+								<td>{{solution.Demand_NA | round(3)}}</td>
 							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
@@ -171,7 +171,7 @@
 						<tr>
 							<th>Объем продаж в СА</th>
 							{% for solution in previous_solution%}
-								<td>{{solution.Sales_NA}} </td>
+								<td>{{solution.Sales_NA | round(3)}} </td>
 							{% endfor %}
 							<!--<td></td>-->
 							<!--<td></td>-->
@@ -181,7 +181,7 @@
 						<tr>
 							<th>Прибыль в отчетном периоде</th>
 							{% for solution in previous_solution%}
-								<td>{{solution.Profit}}</td>
+								<td>{{solution.Profit | round(3)}}</td>
 							{% endfor %}
 							<!--<td></td>-->
 							<!--<td></td>-->
