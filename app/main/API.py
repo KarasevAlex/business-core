@@ -192,10 +192,7 @@ def gallery_poster():
     try:
         photo = Photos.query.filter_by(id=request.form['id'])
         gal = Gallery.query.filter_by(id=photo.gallary_id).firts()
-        if request.form['set'] == "true":
-            gal.Poster = photo.id
-        else:
-            gal.Poster = None
+        gal.Poster = photo.id
         db.session.add(gal)
         return status.HTTP_200_OK
     except:
