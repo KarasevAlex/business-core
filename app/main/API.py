@@ -186,6 +186,21 @@ def gallery_photo_remove(id):
     except:
         return status.HTTP_500_INTERNAL_SERVER_ERROR
 
+@main.route('/gallery/poster')
+@admin_required
+def gallery_poster():
+    try:
+        photo = Photos.query.filter_by(id=request.form['id'])
+        gal = Gallery.query.filter_by(id=photo.gallary_id).firts()
+        if request.form['set'] == "true":
+            gal.Poster = photo.id
+        else:
+            gal.Poster = None
+        db.session.add(gal)
+        return status.HTTP_200_OK
+    except:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR
+
 
 @main.route('/gallery/photo/add', methods=['POST'])
 @admin_required
