@@ -107,6 +107,7 @@ class Games(db.Model):
     # Количество периодов
     period_number = db.Column(db.Integer)
     # Начало и время периода
+    date_start = db.Column(db.Date)
     time_start = db.Column(db.Time)
     time_duration = db.Column(db.Time)
     # Объем Рынков
