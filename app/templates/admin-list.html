@@ -25,8 +25,8 @@
 										<div class="form-group">
 											<input type="checkbox" id="isTimeStart" name="isTimeStart" v-model="timeStart.isWork">
 											<label for="isTimeStart">Начать в</label>
-											<input  class="form-control" type="text" id="js-start-data" name="data-start"  placeholder="Дата начала" v-bind:disabled="!timeStart.isWork">
-											<input type="time" class="form-control" id="time-start" placeholder="Время начала" name="time-start" v-bind:disabled="!timeStart.isWork">
+											<input  class="form-control" type="text" id="js-start-data" name="" placeholder="Дата начала" v-bind:disabled="!timeStart.isWork">
+											<input type="time" v-model="timeStart.value" class="form-control" id="time-start" placeholder="Время начала" name="time-start" v-bind:disabled="!timeStart.isWork">
 										</div>
 										<div class="form-group">
 											<input type="checkbox" id="isTimeDuration" name="isTimeDuration" v-model="timeDuration.isWork">
@@ -335,8 +335,13 @@
 				{% for game in games%}
 
 					<div class="well clearfix js-game js-item">
-					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal">&times;</button>
-					<h4 class="game__name"><a href="game/{{game.id}}/1">{{ game.title }} <br><small>ID игры - {{ game.id }}</small></a></h4>
+					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal" data-item-id="{{ game.id }}" data-item-name="{{ game.title }}">&times;</button>
+					<h4 class="game__name">
+						<a href="game/{{game.id}}/1">
+							<span>{{ game.title }}</span> <br>
+							<small>ID игры - {{ game.id }}</small>
+						</a>
+					</h4>
 					<span class="game__time js-timer"  data-finish-time="{{game.period_end}}">
 						<span class="js-hours">00</span>:
 						<span class="js-minutes">00</span>:
@@ -367,7 +372,7 @@
 	  </div>
 	  <form action="">
 		  <div class="modal-body">
-			<div class="alert alert-danger">
+			<div class="alert alert-danger hide">
 				Неверный пароль
 			</div>
 			<div class="form-group">
@@ -395,14 +400,16 @@
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h4 class="modal-title" id="myModalLabel">Подтверждение</h4>
-	  </div>
-	  <div class="modal-body">
-		Вы точно хотите удалить игру Название игры / ID игры ?
-	  </div>
-	  <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-		<button type="submit" class="btn btn-primary">Удалить</button>
-	  </div>
+	  </div> 
+	  <form action="">
+		  <div class="modal-body">
+			Вы точно хотите удалить игру <span id="item-name-text"></span> / <span id="item-id-text"></span> ?
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+			<button type="submit" class="btn btn-primary">Удалить</button>
+		  </div>
+	  </form>
 	</div>
   </div>
 </div>

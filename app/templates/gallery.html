@@ -13,9 +13,9 @@
 				</div>
 				<div class="row">
                     {% for gallary in gallaries %}
-                        <div class="col-md-6 js-album">
+                        <div class="col-md-6 js-album js-item">
                             <div class="album-manage">
-                                <button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal">&times;</button>
+                                <button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal" data-item-id="{{ gallary[0].id }}" data-item-name="{{ gallary[0].title }}">&times;</button>
                                 <a class="glyphicon glyphicon-arrow-up js-up"></a>
                                 <a class="glyphicon glyphicon-arrow-down js-down"></a>
                             </div>
@@ -63,20 +63,22 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="deleteAlbumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade js-delete-modal" id="deleteAlbumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h4 class="modal-title" id="myModalLabel">Подтверждение</h4>
 	  </div>
-	  <div class="modal-body">
-		Вы точно хотите удалить альбом ?
-	  </div>
-	  <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-		<button type="submit" class="btn btn-primary">Удалить</button>
-	  </div>
+	  <form action="">
+		  <div class="modal-body">
+			Вы точно хотите удалить альбом <span id="item-name-text"></span> / <span id="item-id-text"></span>?
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+			<button type="submit" class="btn btn-primary">Удалить</button>
+		  </div>
+	  </form>
 	</div>
   </div>
 </div>

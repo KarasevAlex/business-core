@@ -46,7 +46,7 @@
 						</label>
 					</div>
 					<div class="col-md-8">
-						<input type="time" name="begin" value="{{period.period_start}}" class="js-begin-time form-control">
+						<input type="text" name="begin" value="{{period.period_start}}" class="js-begin-time form-control">
 					</div>
 					<div class="col-md-4">
 						<label>
@@ -55,7 +55,7 @@
 						</label>
 					</div>
 					<div class="col-md-8">
-						<input type="time" name="period" value="{{period.period_duration}}" class="js-duration-time form-control">
+						<input type="text" name="period" value="{{period.period_duration}}" class="js-duration-time form-control">
 					</div>
 					<div class="col-md-4">
 						<label>
@@ -64,7 +64,7 @@
 						</label>
 					</div>
 					<div class="col-md-8">
-						<input type="time" name="end" value="{{period.period_end}}" class="js-finish-time form-control">
+						<input type="text" name="end" value="{{period.period_end}}" class="js-finish-time form-control">
 					</div>
 
 					<div class="col-md-12"><button type="submit" class="btn btn-default">Сохранить</button></div>
@@ -346,7 +346,7 @@
 	  </div>
 	  <form action="">
 		  <div class="modal-body">
-			<div class="alert alert-danger">
+			<div class="alert alert-danger hide">
 				Неверный пароль
 			</div>
 			<div class="form-group">
@@ -369,3 +369,4 @@
 </div>
 <script src="/static/js/timer.js"></script>
 <script src="/static/js/switch.js"></script>
+<script src="/static/js/delete.js"></script>

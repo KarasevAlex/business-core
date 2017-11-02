@@ -14,11 +14,11 @@
 				</div>
 				{% endif %}
 				{% for new in news %}
-				<div class="news">
+				<div class="news js-item">
 					<div class="news__title clearfix">
 						<h4 class="pull-left" id="{{new.id}}">{{new.title}}</h4>
 						{%if isAdmin %}
-							<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteNewsModal">&times;</button>
+							<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteNewsModal" data-item-id="{{new.id}}" data-item-name="{{new.title}}">&times;</button>
 						{% endif %}
 						<span class="pull-right news__date">{{new.timestamp}}</span>
 					</div>
@@ -76,20 +76,22 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="deleteNewsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade js-delete-modal" id="deleteNewsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h4 class="modal-title" id="myModalLabel">Подтверждение</h4>
 	  </div>
-	  <div class="modal-body">
-		Вы точно хотите удалить новость ?
-	  </div>
-	  <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-		<button type="submit" class="btn btn-primary">Удалить</button>
-	  </div>
+	  <form action="">
+		  <div class="modal-body">
+			Вы точно хотите удалить новость <span id="item-name-text"></span> / <span id="item-id-text">?
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+			<button type="submit" class="btn btn-primary">Удалить</button>
+		  </div>
+		</form>
 	</div>
   </div>
 </div>
