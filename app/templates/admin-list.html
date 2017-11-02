@@ -26,7 +26,7 @@
 											<input type="checkbox" id="isTimeStart" name="isTimeStart" v-model="timeStart.isWork">
 											<label for="isTimeStart">Начать в</label>
 											<input  class="form-control" type="text" id="js-start-data" name="" placeholder="Дата начала" v-bind:disabled="!timeStart.isWork">
-											<input type="time" class="form-control" id="time-start" placeholder="Время начала" name="time-start" v-bind:disabled="!timeStart.isWork">
+											<input type="time" v-model="timeStart.value" class="form-control" id="time-start" placeholder="Время начала" name="time-start" v-bind:disabled="!timeStart.isWork">
 										</div>
 										<div class="form-group">
 											<input type="checkbox" id="isTimeDuration" name="isTimeDuration" v-model="timeDuration.isWork">

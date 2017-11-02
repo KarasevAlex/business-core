@@ -33,3 +33,24 @@ function deleteItem(modal){
 			});
 		})
 	}
+
+$(document).ready(function(){
+	var form = $('#login-form');
+	form.on('submit', function(e){
+		e.preventDefault();
+		var form = $(e.currentTarget);
+		form.find('.login-error').addClass('hide');
+
+		$.ajax({
+			url: form.attr('action'),
+			method: form.attr('method'),
+			data: form.serialize(),
+			success: function(res){
+				location.reload();
+			},
+			error: function(res){
+				form.find('.login-error').removeClass('hide');
+			}
+		})
+	});
+});

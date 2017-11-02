@@ -1,4 +1,7 @@
 $(document).ready(function(){
+	var now = new Date();
+
+	var now_str = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
 	$('#deleteGameModal').modal({show: false});
 	deleteItem($('#deleteGameModal'));
 
@@ -26,6 +29,7 @@ $(document).ready(function(){
 	    	isError: false
 	    },
 	    timeStart: {
+	    	value: now_str,
 	    	isError: false,
 	    	isWork: false
 	    },
@@ -187,5 +191,10 @@ $(document).ready(function(){
 	  	}
 	  }
 	})
-	$('#js-start-data').datepicker();
+	now_date = ('0' + now.getDate()).slice(-2) + '/' + ('0' + now.getMonth()).slice(-2) + '/' + ('0' + now.getYear()).slice(-2)
+	$('#js-start-data').datepicker({
+		dateFormat: 'dd/mm/yy',
+		defaultDate: 0
+	});
+
 });
