@@ -1,14 +1,16 @@
 from . import main
-from ..database import Partner, News, Team, Games, Solutions, Period, Gallery, Photos
+from ..database import Partner, News, Team, Games, Solutions, Period, Gallery, Photos, User
 from .. import db, mail
 from .modeling import Modeling
-from .decorators import admin_required, gamer_required
-from flask import Flask, request, redirect, url_for
+from .decorators import admin_required
+from flask import request, redirect, render_template
 from flask_api import status
 from werkzeug.utils import secure_filename
 import uuid, os, json
-from flask_login import current_user
 from flask_mail import Message
+from flask_login import login_user, logout_user, login_required, current_user
+from .forms import Login as Login_form
+
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPG'])
 
@@ -184,6 +186,29 @@ def gallery_photo_remove(id):
     except:
         return status.HTTP_500_INTERNAL_SERVER_ERROR
 
+@main.route('/gallery/poster')
+@admin_required
+def gallery_poster():
+    try:
+        photo = Photos.query.filter_by(id=request.form['id'])
+        gal = Gallery.query.filter_by(id=photo.gallary_id).firts()
+        gal.Poster = photo.id
+        db.session.add(gal)
+        return status.HTTP_200_OK
+    except:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+@main.route('/gallery/photo/add', methods=['POST'])
+@admin_required
+def gallery_photo_add():
+    filename = upload(request.files['file'])
+    if filename is not None:
+        photos = Photos(path=filename, gallery_id=request.form['id'])
+        db.session.add(photos)
+        return redirect('/galleries/%s' % request.files['id'])
+
+
 @main.route('/news/remove/<int:id>')
 @admin_required
 def news_remove(id):
@@ -212,3 +237,24 @@ def send_mail():
                   recipients=["karasev_a_e@mail.ru"])
     mail.send(msg)
 
+
+@main.route('/login', methods=['POST'])
+def index_():
+    form = Login_form()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.login.data).first()
+        if user is not None:
+            if user.verify_password(form.password.data):
+                if user.role == 3:
+                    login_user(user, remember=True)
+                    return '/play/1'
+                else:
+                    login_user(user, remember=True)
+                    return '/game'
+    return status.HTTP_500_INTERNAL_SERVER_ERROR
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')

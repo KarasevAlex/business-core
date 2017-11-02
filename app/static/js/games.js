@@ -191,10 +191,10 @@ $(document).ready(function(){
 	  	}
 	  }
 	})
-	now_date = ('0' + now.getDate()).slice(-2) + '/' + ('0' + now.getMonth()).slice(-2) + '/' + ('0' + now.getYear()).slice(-2)
+	now_date = ('0' + now.getDate()).slice(-2) + '/' + ('0' + (now.getMonth()+1)).slice(-2) + '/' + ('0' + now.getYear()).slice(-2)
 	$('#js-start-data').datepicker({
 		dateFormat: 'dd/mm/yy',
 		defaultDate: 0
 	});
-
+	$('#js-start-data').val(now_date);
 });

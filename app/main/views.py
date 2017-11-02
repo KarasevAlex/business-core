@@ -23,28 +23,6 @@ def create_database():
 def index():
     return redirect('/team')
 
-@main.route('/login', methods=['POST'])
-def index_():
-    form = Login_form()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.login.data).first()
-        if user is not None:
-            if user.verify_password(form.password.data):
-                if user.role == 3:
-                    login_user(user, remember=True)
-                    return redirect('/play/1')
-                else:
-                    login_user(user, remember=True)
-                    return redirect('/game')
-        return render_template('index.html', form=form)
-    return render_template('index.html', form=form)
-
-@main.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect('/')
-
 @main.route('/game', methods=['POST', 'GET'])
 @login_required
 @admin_required
