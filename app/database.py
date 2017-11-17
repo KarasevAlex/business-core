@@ -50,8 +50,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(64), unique=True, index=True)
     role = db.Column(db.Integer)
     password_hash = db.Column(db.String(128))
-    game_id = db.Column(db.Integer)
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     name = db.Column(db.String(128))
+    solution = db.relationship("Solutions", backref='user', cascade="all, delete, delete-orphan")
 
     @property
     def password(self):
@@ -100,6 +101,8 @@ class Games(db.Model):
     __tablename__ = 'games'
     #Идентификатор
     id = db.Column(db.Integer, primary_key=True)
+    users = db.relationship("User", backref='users', cascade="all, delete, delete-orphan")
+    periods = db.relationship("Period", backref='games', lazy=True, cascade="all, delete")
     # Название
     title = db.Column(db.String(124))
     # Количество команд
@@ -241,7 +244,8 @@ class Games(db.Model):
     def create(form):
         try:
             game = Games(title=form['name'], team_number=form['team-number'], period_number=form['period-number'],
-
+                         time_start=form['time-start'],
+                         time_duration=form['time-duration'],
                          costFactory=form['costFactory'], amountFactory=form['amountFactory'],
                          costOverheads=form['costOverheads'], amountOverheads=form['amountOverheads'],
                          costDismantling=form['costDismantling'], amountDismantling=form['amountDismantling'],
@@ -254,19 +258,19 @@ class Games(db.Model):
                          baseFormulaCost1=form['baseFormulaCost1'], baseFormulaCost2=form['baseFormulaCost2']
                          )
             game.isFinished = False
-            if 'time-start' in form:
+            if 'isTimeStart' in form:
                 isFirstStart = True
-                game.time_start = form['time-start']
+                if len(form['date-start']) == 8:
+                    game.date_start = datetime.strptime(form['date-start'], "%d/%m/%y").date()
+                else:
+                    game.date_start = datetime.strptime(form['date-start'], "%d/%m/%Y").date()
             else:
+                game.date_start = datetime.now().date()
                 isFirstStart = False
-                game.time_start = datetime.now().time()
-
-            if 'time-duration' in form:
+            if 'isTimeDuration' in form:
                 isOversStart = True
-                game.time_duration = form['time-duration']
             else:
                 isOversStart = False
-                game.time_duration = "00:15"
             if 'cost' in form:
                 game.cost_active = True
                 game.cost_max = form['cost-max']
@@ -439,26 +443,44 @@ class Period(db.Model):
 
     @staticmethod
     def getActivePeriod(game_id):
-        current_time = datetime.now().time()
-        periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number)
-        if periods[0].period_start > current_time:
+        current_date = datetime.now().date()
+        game = Games.query.filter_by(id=game_id).first()
+        if current_date == game.date_start:
+            current_time = datetime.now().time()
+            periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number)
+            if periods[0].period_start > current_time:
+                return {'succeed': False,
+                        'message': 'Период начнется в',
+                        'time': periods[0].period_start.strftime('%H:%M:%S')}
+            else:
+                for period in periods:
+                    if current_time >= period.period_start and current_time <= period.period_end and period.isActive:
+                        return {'succeed': True, 'data': period}
             return {'succeed': False,
-                    'message': 'Период начнется в',
-                    'time': periods[0].period_start.strftime('%H:%M:%S')}
-        else:
+                    'message': 'Игра завершена в',
+                    'time':  period.period_end.strftime('%H:%M:%S')}
+        return {'succeed': False,
+                'message': '',
+                'time': game.date_start}
+
+    @staticmethod
+    def getActivePeriodVer2(game_id):
+        current_date = datetime.now().date()
+        game = Games.query.filter_by(id=game_id).first()
+        if current_date == game.date_start:
+            current_time = datetime.now().time()
+            periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number)
             for period in periods:
                 if current_time >= period.period_start and current_time <= period.period_end and period.isActive:
-                    return {'succeed': True, 'data': period}
-        return {'succeed': False,
-                'message': 'Игра завершена в',
-                'time':  period.period_end.strftime('%H:%M:%S')}
+                    return period
+        return None
 
     @staticmethod
     def getPreviousPeriod(period_id):
         pass
     @staticmethod
     def getPeriod(game_id, period_number):
-        return Period.query.filter_by(game_id = game_id, period_number = period_number).first()
+        return Period.query.filter_by(game_id=game_id, period_number=period_number).first()
 
     def isFinished(self):
         current_time = datetime.now().time()
@@ -471,10 +493,21 @@ class Period(db.Model):
         self.period_duration = duration
         self.period_start = start
 
+    @staticmethod
+    def getLastFinished(game_id):
+        periods = Period.query.filter_by(game_id=game_id).all()
+        lastFinished = None
+        for period in periods:
+            if period.isFinished():
+                lastFinished = period
+        return lastFinished
+
+
 class Solutions(db.Model):
     __tablename__ = 'solutions'
     id = db.Column(db.Integer, primary_key=True)
-    period_id = db.Column(db.Integer, db.ForeignKey('periods.id'))
+    # period_id = db.Column(db.Integer, db.ForeignKey('periods.id'))
+    period_id = db.Column(db.Integer)
     gamer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # Исходные данные
     cost = db.Column(db.Integer)
@@ -530,6 +563,7 @@ class Solutions(db.Model):
         solution.EuropePromotion = game.EuropePromotion_default
         solution.AsiaPromotion = game.AsiaPromotion_default
         solution.Acc_Profit = 0
+        solution.Profit = 0
         return solution
 
     @staticmethod
@@ -547,6 +581,7 @@ class Solutions(db.Model):
         solution.EuropePromotion = previous_solution.EuropePromotion
         solution.AsiaPromotion = previous_solution.AsiaPromotion
         solution.Acc_Profit = previous_solution.Acc_Profit
+        solution.Profit = 0
         return solution
 
     def count_personal_params(self, game, isDemo = False):
@@ -560,6 +595,7 @@ class Solutions(db.Model):
             for solution in Solutions.query.filter_by(gamer_id=self.gamer_id):
                 self.Quality_Cost_Acc += int(solution.niokrQuality)
                 self.Prime_Cost_Acc += int(solution.niokrSS)
+                self.Acc_Profit += float(solution.Profit)
 
         self.mult_Price = 1 / (int(game.price_coef) ** (int(self.cost) - int(game.cost_min)))
         self.mult_Quality = (self.Prime_Cost_Acc / int(game.quality_cost_base)) ** (1 / int(game.quality_cost_coef))
@@ -611,6 +647,8 @@ class Solutions(db.Model):
         previous_period = Period.query.filter_by(game_id=current_period.game_id, period_number=current_period.period_number-1).first()
         return Solutions.query.filter_by(period_id=previous_period.id).all()
 
+
+
     @staticmethod
     def getPreviousSolution(current_period, user_id):
         if current_period.period_number != 1:
@@ -633,6 +671,17 @@ class Solutions(db.Model):
             return True
         return False
 
+    @staticmethod
+    def isSolutionsAllowed(game_id, period_number):
+        game = Games.query.filter_by(id=game_id).one()
+        if game.isFinished:
+            return True
+        else:
+            last_finished = Period.getLastFinished(game_id=game_id)
+            if last_finished is not None:
+                if last_finished.period_number >= period_number:
+                    return True
+        return False
 
 class Partner(db.Model):
     __tablename__ = 'member'
@@ -647,17 +696,24 @@ class Team(db.Model):
     name = db.Column(db.String(128))
     discription = db.Column(db.Text)
 
-class Gallery(db.Model):
-    __tablename__ = "gallery"
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128))
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-
 class Photos(db.Model):
     __tablename__ = "photos"
     id = db.Column(db.Integer, primary_key=True)
     gallery_id = db.Column(db.Integer, db.ForeignKey('gallery.id'))
     path = db.Column(db.String(128))
+
+class Gallery(db.Model):
+    __tablename__ = "gallery"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128))
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    order = db.Column(db.Integer)
+    poster = db.Column(db.Integer)
+    photos = db.relationship('Photos',
+                                foreign_keys=[Photos.gallery_id],
+                                backref=db.backref('photo', lazy='joined'),
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
 
 class StaticPages(db.Model):
     __tablename__ = "pages"

@@ -1,9 +1,9 @@
 from . import main
-from ..database import Partner, News, Team, Games, Solutions, Period, Gallery, Photos, User
+from ..database import Partner, News, Team, Games, Solutions, Period, Gallery, Photos, User, StaticPages
 from .. import db, mail
 from .modeling import Modeling
 from .decorators import admin_required
-from flask import request, redirect, render_template
+from flask import request, redirect, render_template, abort
 from flask_api import status
 from werkzeug.utils import secure_filename
 import uuid, os, json
@@ -80,11 +80,12 @@ def add_news():
     db.session.commit()
     return redirect('/news')
 
-@main.route('/news/remove/<int:id>', methods=['POST'])
-def remove_news(id):
-    News.query.filter_by(id=id).delete()
-    return redirect('/news')
-
+@main.route('/games/remove/<int:id>',  methods=['POST'])
+@admin_required
+def geme_remove(id):
+    # try:
+    db.session.delete(Games.query.filter_by(id=id).one())
+    return '', status.HTTP_200_OK
 
 
 @main.route('/game/finish/<int:id>', methods=['POST'])
@@ -161,18 +162,17 @@ def gallaries_get_dict():
     )
     return db.session.query(Gallery, Photos).outerjoin(Photos, Photos.id == last_id).all()
 
-@main.route('/gallery/remove/<int:id>')
-@admin_required
+@main.route('/gallery/remove/<int:id>', methods=['POST','GET'])
 def gallery_remove(id):
     try:
         obj = Photos.query.filter_by(gallery_id=id).all()
         for ob in obj:
             if remove_fite(ob.path):
                 db.session.delete(ob)
-        Gallery.query.filter_by(id=id).delete()
-        return status.HTTP_200_OK
+        db.session.delete(Gallery.query.filter_by(id=id).one())
+        return '', status.HTTP_200_OK
     except:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR
+        abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @main.route('/gallery/photo/remove/<int:id>')
@@ -182,9 +182,9 @@ def gallery_photo_remove(id):
         obj = Photos.query.filter_by(id=id).first()
         if remove_fite(obj.path):
             db.session.delete(obj)
-        return status.HTTP_200_OK
+        return '', status.HTTP_200_OK
     except:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR
+        abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @main.route('/gallery/poster')
 @admin_required
@@ -194,9 +194,9 @@ def gallery_poster():
         gal = Gallery.query.filter_by(id=photo.gallary_id).firts()
         gal.Poster = photo.id
         db.session.add(gal)
-        return status.HTTP_200_OK
+        return '', status.HTTP_200_OK
     except:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR
+        abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @main.route('/gallery/photo/add', methods=['POST'])
@@ -209,14 +209,14 @@ def gallery_photo_add():
         return redirect('/galleries/%s' % request.files['id'])
 
 
-@main.route('/news/remove/<int:id>')
+@main.route('/news/remove/<int:id>', methods=['POST'])
 @admin_required
 def news_remove(id):
     try:
         News.query.filter_by(id=id).delete()
-        return status.HTTP_200_OK
+        return '', status.HTTP_200_OK
     except:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR
+        abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @main.route('/partner/remove/<int:id>')
 @admin_required
@@ -225,9 +225,9 @@ def partner_remove(id):
         obj = Partner.query.filter_by(id=id).first()
         if remove_fite(obj.picture):
             db.session.delete(obj)
-        return status.HTTP_200_OK
+        return '', status.HTTP_200_OK
     except:
-        return status.HTTP_500_INTERNAL_SERVER_ERROR
+        abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @main.route('/send/mail')
@@ -236,6 +236,23 @@ def send_mail():
                   sender="karasev_a_e@mail.ru",
                   recipients=["karasev_a_e@mail.ru"])
     mail.send(msg)
+
+
+@main.route('/static')
+def insert_static_page():
+    pages = {'decription': 'Краткое описание', 'organizations': 'Образовательным учереждениям', 'students': 'Учащимся'}
+    for url in pages.keys():
+         db.session.add(StaticPages(title=pages[url], page_url=url, text="hjgjhghg"))
+    return '', 200
+
+
+@main.route('/static/edit/<int:id>', methods=['POST'])
+def edit_static_page(id):
+    page = StaticPages.query.filter_by(id=id).one()
+    page.text = request.form['description']
+    db.session.add(page)
+    db.session.commit()
+    return redirect('/%s'% page.page_url)
 
 
 @main.route('/login', methods=['POST'])
@@ -251,10 +268,11 @@ def index_():
                 else:
                     login_user(user, remember=True)
                     return '/game'
-    return status.HTTP_500_INTERNAL_SERVER_ERROR
+    abort(500)
 
 @main.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect('/')
+

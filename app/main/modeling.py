@@ -84,25 +84,27 @@ class Modeling():
         sum_Mult_Demand_Europe = 0
 
         if not isDemo:
+            profit_acc = 0
             for solution in self.Current_period_solutions:
                 sum_Mult_Demand_NA += solution.mult_Demand_NA
                 sum_Mult_Demand_Asia += solution.mult_Demand_Asia
                 sum_Mult_Demand_Europe += solution.mult_Demand_Europa
+                profit_acc += solution.Profit
             for solution in self.Current_period_solutions:
                 try:
-                    solution.Demand_NA = int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA
+                    solution.Demand_NA = round(int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA)
                 except:
                     solution.Demand_NA = 0
                 solution.Sales_NA = min([solution.Demand_NA, float(solution.NAFactory)])
 
                 try:
-                    solution.Demand_Europa = int(self.Game.sizeEurope) * solution.mult_Demand_Europa / sum_Mult_Demand_Europe
+                    solution.Demand_Europa = round(int(self.Game.sizeEurope) * solution.mult_Demand_Europa / sum_Mult_Demand_Europe)
                 except:
                     solution.Demand_Europa = 0
                 solution.Sales_Europa = min([solution.Demand_Europa, float(solution.EuropeFactory)])
 
                 try:
-                    solution.Demand_Asia = int(self.Game.sizeAsia) * solution.mult_Demand_Asia / sum_Mult_Demand_Asia
+                    solution.Demand_Asia = round(int(self.Game.sizeAsia) * solution.mult_Demand_Asia / sum_Mult_Demand_Asia)
                 except:
                     solution.Demand_Asia = 0
 
@@ -113,6 +115,7 @@ class Modeling():
                 if solution.Budget is not None:
                     solution.Profit = ((float(solution.cost)) - (float(solution.Prime_cost))) * (
                     float(solution.Sales)) - (float(solution.Budget))
+                    solution.Acc_Profit = profit_acc + solution.Profit
 
                 else:
                     solution.Profit = 0
@@ -123,7 +126,7 @@ class Modeling():
 
             for solution in self.Current_period_solutions:
                 try:
-                    solution.Demand_NA = int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA
+                    solution.Demand_NA = round(int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA)
                 except:
                     solution.Demand_NA = 0
                 solution.Sales_NA = min([solution.Demand_NA, float(solution.NAFactory)])
@@ -133,7 +136,6 @@ class Modeling():
                 if solution.Budget is not None:
                     solution.Profit = ((float(solution.cost)) - (float(solution.Prime_cost))) * (
                     float(solution.Sales)) - (float(solution.Budget))
-                    solution.Acc_Profit += solution.Profit
                 else:
                     solution.Profit = 0
 

@@ -15,7 +15,7 @@
 				<div class="page-header">
 					{%if isAdmin %}
 					<div class="pull-right">
-						<button class="btn btn-default" data-target="editPageModal"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button class="btn btn-default" data-toggle="modal"  data-target="#editPageModal"><span class="glyphicon glyphicon-pencil"></span></button>
 					</div>
 					{% endif %}
 				  <h1>{{page.title}}</h1>
@@ -31,48 +31,26 @@
 	</div>
 </main>
 
+
 <div class="modal fade" id="editPageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h4 class="modal-title" id="myModalLabel">Подтверждение</h4>
+		<h4 class="modal-title" id="myModalLabel">Редактирование</h4>
 	  </div>
-	  <form method="post" action="/partner/add" enctype="multipart/form-data">
+	  <form method="post" action="/static/edit/{{ page.id }}">
 		  <div class="modal-body">
 			<div class="form-group">
 				<label for="description">Описание</label>
-				<input type="text" class="form-control" id="description" placeholder="Описание" name="description" required>
-			</div>
-			<div class="form-group">
-				<label for="file">Обложка</label>
-				<input type="file" id="file" name="file" required>
+				<input type="text" class="form-control" id="description" placeholder="Описание" value="{{ page.text }}" name="description" required>
 			</div>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-			<button type="submit" class="btn btn-primary">Добавить</button>
+			<button type="submit" class="btn btn-primary">Изменить</button>
 		  </div>
 	  </form>
-	</div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="newPartnerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-	<div class="modal-content">
-	  <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h4 class="modal-title" id="myModalLabel">Подтверждение</h4>
-	  </div>
-	  <div class="modal-body">
-		Вы точно хотите удалить запись?
-	  </div>
-	  <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-		<button type="submit" class="btn btn-primary">Удалить</button>
-	  </div>
 	</div>
   </div>
 </div>
