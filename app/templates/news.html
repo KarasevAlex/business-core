@@ -9,7 +9,7 @@
 			<div class="col-md-9">
 				{%if isAdmin %}
 				<div class="page-header">
-				  <button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newNewsModal"><span class="glyphicon glyphicon-plus"></span> Добавить новость</button>
+                    <button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newNewsModal"><span class="glyphicon glyphicon-plus"></span> Добавить новость</button>
 				  <h1>Новости</h1>
 				</div>
 				{% endif %}
@@ -26,14 +26,28 @@
 				</div>
 				{% endfor%}
 				<ul class="pagination">
-				  <li><a href="#">&laquo;</a></li>
-				  <li class="active"><a href="#">1</a></li>
-				  <li><a href="#">2</a></li>
-				  <li><a href="#">3</a></li>
-				  <li><a href="#">4</a></li>
-				  <li><a href="#">5</a></li>
-				  <li><a href="#">&raquo;</a></li>
-				</ul>
+                    <li{% if not pagination.has_prev %} class="disabled"{% endif %}>
+                    <a href="{% if pagination.has_prev %}/news/page/{{pagination.page - 1}}{% else %}#{% endif %}"> &laquo;
+                    </a> </li>
+                        {% for p in pagination.iter_pages() %}
+                            {% if p %}
+                                {% if p == pagination.page %}
+                    <li class="active">
+                    <a href="/news/page/{{p}}">{{ p }}</a>
+                    </li>
+                    {% else %}
+                    <li>
+                    <a href="/news/page/{{p}}">{{ p }}</a>
+                    </li>
+                                {% endif %}
+                            {% else %}
+                    <li class="disabled"><a href="#">&hellip;</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    <li{% if not pagination.has_next %} class="disabled"{% endif %}> <a href="{% if pagination.has_next %}/news/page/{{pagination.page + 1 }}{% else %}#{% endif %}">
+                    &raquo;
+                    </a> </li>
+                </ul>
 			</div>
 		</div>
 	</div>

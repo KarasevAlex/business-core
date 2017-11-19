@@ -5,7 +5,7 @@
     <nav  class="navbar navbar-default" role="navigation">
         <div class="container clearfix">
             <ul class="navbar-nav pull-left nav">
-                <li class="dropdown">
+                <li class="dropdown {{ about_page }}">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                       О компании <span class="caret"></span>
                     </a>
@@ -18,15 +18,15 @@
                       <li><a href="/partners">Партнеры</a></li>
                     </ul>
                 </li>
-                <li class="active"><a href="">Услуги / Цены</a></li>
-                <li><a href="/news">Новости</a></li>
-                <li><a href="/galleries">Галерея</a></li>
-                <li><a href="/demo">Демо</a></li>
-                <li><a href="/сontacts">Контакты</a></li>
+                <li class="{{ cost_page }}"><a href="">Услуги / Цены</a></li>
+                <li class="{{ news_page }}"><a href="/news/page/1">Новости</a></li>
+                <li class="{{ galleries_page }}"><a href="/galleries/page/1">Галерея</a></li>
+                <li class="{{ demo_page }}"><a href="/demo">Демо</a></li>
+                <li class="{{ contacts_page }}"><a href="/сontacts">Контакты</a></li>
             </ul>
             {% if isAdmin %}
                 <a href="/logout" class="btn btn-default pull-right">Выход</a>
-                <a href="/game" class="btn btn-primary pull-right">Сессия</a>
+                <a href="/game/page/1" class="btn btn-primary pull-right">Сессия</a>
             {% else %}
                 <button class="pull-right btn btn-default" data-toggle="modal" data-target="#enterModal">Войти</button>
             {% endif %}

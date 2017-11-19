@@ -115,12 +115,12 @@ $(document).ready(function () {
 
 		});
 		is_duration.click(function(e){
-			finish.prop('disabled', true);
-			duration.prop('disabled', false);
+			finish.prop('readonly', true);
+			duration.prop('readonly', false);
 		});
 		is_finish.click(function(e){
-			duration.prop('disabled', true);
-			finish.prop('disabled', false);
+			duration.prop('readonly', true);
+			finish.prop('readonly', false);
 		});
 		period.submit(function(e){
 			var d = duration.val();

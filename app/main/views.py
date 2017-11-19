@@ -23,16 +23,17 @@ def create_database():
 def index():
     return redirect('/team')
 
-@main.route('/game', methods=['POST', 'GET'])
+@main.route('/game/page/<int:page>', methods=['POST', 'GET'])
 @login_required
 @admin_required
-def index2():
+def index2(page):
     if request.method == "POST":
         Games.create(request.form)
-    games = Games.query.all()
+    pagination = Games.query.order_by(Games.date_start.desc()).paginate(
+            page, per_page=5, error_out=False)
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
-                           main=render_template('admin-list.html', games=games),
+                           main=render_template('admin-list.html', games=pagination.items,pagination=pagination),
                            footer=render_template('footer.html'))
 
 @main.route('/game/<int:id>/<int:period_id>')
@@ -144,7 +145,7 @@ def user_game(period_result):
                            script=chart.render())
 
 
-@main.route('/play/<int:period_result>',methods=['POST'])
+@main.route('/play/<int:period_result>', methods=['POST'])
 @login_required
 @gamer_required
 def set_game_solution(period_result):
@@ -153,36 +154,60 @@ def set_game_solution(period_result):
         model.generateGame(current_user, request.form)
     return redirect('/play/%s' % period_result)
 
-@main.route('/news')
-def news_page():
+@main.route('/news/page/<int:page>')
+def news_page(page):
+    pagination = News.query.order_by(News.timestamp.desc()).paginate(
+        page, per_page=5, error_out=False)
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
+                           header=render_template('header.html',
+                                                  form=Login_form(),
+                                                  isAdmin=current_user.isAdmin(),
+                                                  news_page="active"
+                                                  ),
                            main=render_template('news.html',
                                                 isAdmin=current_user.isAdmin(),
                                                 form=News_form(),
-                                                news=News.query.all()),
+                                                news=pagination.items, pagination=pagination),
                            footer=render_template('footer.html'))
 
-@main.route('/galleries')
-def galleries_page():
+@main.route('/galleries/page/<int:page>')
+def galleries_page(page):
+    pagination = API.gallaries_get_dict(page)
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
-                           main=render_template('gallery.html', gallaries=API.gallaries_get_dict()),
+                           header=render_template('header.html',
+                                                  form=Login_form(),
+                                                  isAdmin=current_user.isAdmin(),
+                                                  galleries_page="active"
+                                                  ),
+                           main=render_template('gallery.html',
+                                                gallaries=pagination.items,
+                                                pagination=pagination),
                            footer=render_template('footer.html'))
 
-@main.route('/galleries/<int:id>')
-def gallery_page(id):
+@main.route('/galleries/<int:id>/page/<int:page>')
+def gallery_page(id, page):
+    pagination = Photos.query.filter_by(gallery_id=id).paginate(
+        page, per_page=6, error_out=False)
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
+                           header=render_template('header.html',
+                                                  form=Login_form(),
+                                                  isAdmin=current_user.isAdmin(),
+                                                  galleries_page="active"
+                                                  ),
                            main=render_template('album.html',
                                                 gallary=Gallery.query.filter_by(id=id).first(),
-                                                photos=Photos.query.filter_by(gallery_id=id).all()),
+                                                photos=pagination.items,
+                                                pagination=pagination),
                            footer=render_template('footer.html'))
 
 @main.route('/сontacts')
 def contatst_page():
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
+                           header=render_template('header.html',
+                                                  form=Login_form(),
+                                                  isAdmin=current_user.isAdmin(),
+                                                  contacts_page="active"
+                                                  ),
                            main=render_template('contacts.html'),
                            footer=render_template('footer.html'))
 
@@ -195,7 +220,11 @@ def get_excel(id):
 @main.route('/demo')
 def demo():
     return render_template('layout.html',
-                           header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
+                           header=render_template('header.html',
+                                                  form=Login_form(),
+                                                  isAdmin=current_user.isAdmin(),
+                                                  demo_page="active"
+                                                  ),
                            main=render_template('demo-session.html', isResult=False),
                            footer=render_template('footer.html'))
 
@@ -219,26 +248,13 @@ def demo_result():
                            script=chart.render())
 
 
-
-
-@main.route('/period/<int:id>', methods=['POST'])
-def change_period(id):
-    try:
-        period = Period.query.filter_by(id=id).first()
-        period.changePeriod(request.form['begin'], request.form['period'], request.form['end'])
-        db.session.add(period)
-        return redirect('/game/%s' % period.game_id)
-    except:
-        return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
-                               main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
-                               footer=render_template('footer.html'))
-
 @main.route('/team')
 def team_page():
     try:
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form()),
+                               header=render_template('header.html',
+                                                      form=Login_form(),
+                                                      about_page="active"),
                                main=render_template('index.html',
                                                     members=Team.query.all(),
                                                     isAdmin=current_user.isAdmin()))
@@ -252,7 +268,10 @@ def team_page():
 def partners_page():
     try:
         return render_template('layout.html',
-                               header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
+                               header=render_template('header.html',
+                                                      form=Login_form(),
+                                                      isAdmin=current_user.isAdmin(),
+                                                      about_page="active"),
                                main=render_template('partners.html',
                                                     partners=Partner.query.all(),
                                                     isAdmin=current_user.isAdmin()),
@@ -269,7 +288,10 @@ def static_page(page):
     if page in pages:
         page = StaticPages.query.filter_by(page_url=page).first()
         return render_template('layout.html',
-                       header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
+                       header=render_template('header.html',
+                                              form=Login_form(),
+                                              isAdmin=current_user.isAdmin(),
+                                              about_page="active"),
                        main=render_template('static.html', page=page,
                                             isAdmin=current_user.isAdmin()),
                        footer=render_template('footer.html'))

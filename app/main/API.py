@@ -78,7 +78,7 @@ def add_news():
         author_id=current_user.id)
     db.session.add(temp)
     db.session.commit()
-    return redirect('/news')
+    return redirect('/news/page/1')
 
 @main.route('/games/remove/<int:id>',  methods=['POST'])
 @admin_required
@@ -129,6 +129,19 @@ def change_period_status():
     except:
         return json.dumps(False)
 
+@main.route('/period/<int:id>', methods=['POST'])
+def change_period(id):
+    try:
+        period = Period.query.filter_by(id=id).first()
+        period.changePeriod(request.form['begin'], request.form['period'], request.form['end'])
+        db.session.add(period)
+        return redirect('/game/%s/1' % period.game_id)
+    except:
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
+                               main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
+                               footer=render_template('footer.html'))
+
 @main.route('/gallaries/photo/delete')
 def gallaries_photo_delete():
     photos_id = request.form['delete']
@@ -148,9 +161,9 @@ def gallaries_add():
             photo = Photos(gallery_id=gallery.id, path=filename)
             db.session.add(photo)
 
-    return redirect('/galleries')
+    return redirect('/galleries/page/1')
 
-def gallaries_get_dict():
+def gallaries_get_dict(page):
     LastPost = db.aliased(Photos, name='last')
     last_id = (
         db.session.query(LastPost.id)
@@ -160,7 +173,9 @@ def gallaries_get_dict():
             .correlate(Gallery)
             .as_scalar()
     )
-    return db.session.query(Gallery, Photos).outerjoin(Photos, Photos.id == last_id).all()
+    return db.session.query(Gallery, Photos).outerjoin(Photos, Photos.id == last_id).paginate(
+            page, per_page=4, error_out=False)
+
 
 @main.route('/gallery/remove/<int:id>', methods=['POST','GET'])
 def gallery_remove(id):
@@ -267,7 +282,7 @@ def index_():
                     return '/play/1'
                 else:
                     login_user(user, remember=True)
-                    return '/game'
+                    return '/game/page/1'
     abort(500)
 
 @main.route('/logout')

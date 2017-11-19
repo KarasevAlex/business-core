@@ -20,19 +20,33 @@
                                 <a class="glyphicon glyphicon-arrow-down js-down"></a>
                             </div>
                             <img src="/static/img/picturs/{{ gallary[1].path }}" alt="" class="img-responsive img-thumbnail">
-                            <h4><a href="/galleries/{{ gallary[0].id }}">{{ gallary[0].title }}</a></h4>
+                            <h4><a href="/galleries/{{ gallary[0].id }}/page/1">{{ gallary[0].title }}</a></h4>
                         </div>
                     {% endfor %}
                 </div>
-				<ul class="pagination">
-				  <li><a href="#">&laquo;</a></li>
-				  <li class="active"><a href="#">1</a></li>
-				  <li><a href="#">2</a></li>
-				  <li><a href="#">3</a></li>
-				  <li><a href="#">4</a></li>
-				  <li><a href="#">5</a></li>
-				  <li><a href="#">&raquo;</a></li>
-				</ul>
+                <ul class="pagination">
+                    <li{% if not pagination.has_prev %} class="disabled"{% endif %}>
+                    <a href="{% if pagination.has_prev %}/galleries/page/{{pagination.page - 1}}{% else %}#{% endif %}"> &laquo;
+                    </a> </li>
+                        {% for p in pagination.iter_pages() %}
+                            {% if p %}
+                                {% if p == pagination.page %}
+                    <li class="active">
+                    <a href="/galleries/page/{{p}}">{{ p }}</a>
+                    </li>
+                    {% else %}
+                    <li>
+                    <a href="/galleries/page/{{p}}">{{ p }}</a>
+                    </li>
+                                {% endif %}
+                            {% else %}
+                    <li class="disabled"><a href="#">&hellip;</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    <li{% if not pagination.has_next %} class="disabled"{% endif %}> <a href="{% if pagination.has_next %}/galleries/page/{{pagination.page + 1 }}{% else %}#{% endif %}">
+                    &raquo;
+                    </a> </li>
+                </ul>
 			</div>
 		</div>
 	</div>
