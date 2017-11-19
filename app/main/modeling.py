@@ -89,7 +89,6 @@ class Modeling():
                 sum_Mult_Demand_NA += solution.mult_Demand_NA
                 sum_Mult_Demand_Asia += solution.mult_Demand_Asia
                 sum_Mult_Demand_Europe += solution.mult_Demand_Europa
-                profit_acc += solution.Profit
             for solution in self.Current_period_solutions:
                 try:
                     solution.Demand_NA = round(int(self.Game.sizeNA) * solution.mult_Demand_NA / sum_Mult_Demand_NA)
@@ -115,7 +114,7 @@ class Modeling():
                 if solution.Budget is not None:
                     solution.Profit = ((float(solution.cost)) - (float(solution.Prime_cost))) * (
                     float(solution.Sales)) - (float(solution.Budget))
-                    solution.Acc_Profit = profit_acc + solution.Profit
+                    solution.Acc_Profit = Solutions.getAccProfit(solution.gamer_id)
 
                 else:
                     solution.Profit = 0

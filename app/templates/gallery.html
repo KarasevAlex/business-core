@@ -8,17 +8,22 @@
 			</div>
 			<div class="col-md-9">
 				<div class="page-header">
-					<button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newAlbumModal"><span class="glyphicon glyphicon-plus"></span> Добавить альбом</button>
+                    {% if current_user.isAdmin()%}
+                        <button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newAlbumModal"><span class="glyphicon glyphicon-plus"></span> Добавить альбом</button>
+                    {% endif %}
+
 				  <h1>Фотографии последних событий</h1>
 				</div>
 				<div class="row">
                     {% for gallary in gallaries %}
                         <div class="col-md-6 js-album js-item">
-                            <div class="album-manage">
-                                <button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal" data-item-id="{{ gallary[0].id }}" data-item-name="{{ gallary[0].title }}">&times;</button>
-                                <a class="glyphicon glyphicon-arrow-up js-up"></a>
-                                <a class="glyphicon glyphicon-arrow-down js-down"></a>
-                            </div>
+                            {% if current_user.isAdmin()%}
+                                <div class="album-manage">
+                                    <button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal" data-item-id="{{ gallary[0].id }}" data-item-name="{{ gallary[0].title }}">&times;</button>
+                                    <a class="glyphicon glyphicon-arrow-up js-up"></a>
+                                    <a class="glyphicon glyphicon-arrow-down js-down"></a>
+                                </div>
+                            {% endif %}
                             <img src="/static/img/picturs/{{ gallary[1].path }}" alt="" class="img-responsive img-thumbnail">
                             <h4><a href="/galleries/{{ gallary[0].id }}/page/1">{{ gallary[0].title }}</a></h4>
                         </div>

@@ -13,7 +13,11 @@
 			</div>
 
 			<p class="pull-right info">Период: <span>{{activePeriod.period_number}}</span></p>
-			<p class="pull-right info">Осталось: <span>00:00:00</span></p>
+				<p class="pull-right info js-timer" data-finish-time="{{activePeriod.period_end}}">			Осталось:
+					<span class="js-hours">00</span>:
+					<span class="js-minutes">00</span>:
+					<span class="js-seconds">00</span>
+				</p>
 
 		</div>
 		<div class="clearfix">
@@ -32,7 +36,7 @@
 			<form action="/play/{{activePeriod.period_number}}" method="post" id="resolve-period">
 				<input class="form-control" type="hidden" value="{{ activePeriod.id }}" name="period">
 				<input class="form-control" type="hidden" value="{{ activePeriod.period_number }}" name="period_number">
-				<input class="form-control budget" type="hidden" value="" name="budget">
+				<input class="form-control budget" type="hidden" value="0" name="budget">
 				<div class="row visible-md visible-lg">
 					<div class="col-md-2 col-md-offset-4 center-text"><h4>Текущий период</h4></div>
 					<div class="col-md-2 center-text"><h4>Прошлый период</h4></div>
@@ -48,7 +52,7 @@
 					Цена
 					</div>
 					<div class="col-md-2">
-						<input class="form-control" name="cost" type="text">
+						<input class="form-control" name="cost" value="{{ game.cost_default }}" min="{{ game.cost_min }}" max="{{ game.cost_max }}" type="number">
 					</div>
 					{% if previouSolution is not none %}
 						<div class="col-md-2 previous">{{ previousSolution.cost }}</div>
@@ -73,7 +77,7 @@
 						</div>
 						Снижение себестоимости</div>
 					<div class="col-md-2">
-						<input class="form-control niokrSS" name="niokrSS"  type="text" v-model="niokrSS" v-on:blur="sizeSS">
+						<input class="form-control niokrSS" name="niokrSS" value="{{ game.niokrSS_default }}" min="{{ game.niokrSS_min }}" max="{{ game.niokrSS_max }}"  type="number" v-model="niokrSS" v-on:blur="sizeSS">
 					</div>
 					{% if previousSolution is not none %}
 						<div class="col-md-2 previous">{{ previousSolution.niokrSS }}</div>
@@ -97,7 +101,7 @@
 						</div>
 						Повышение качества</div>
 					<div class="col-md-2">
-						<input class="form-control niokrQuality" name="niokrQuality"  type="text" v-model="niokrQuality" v-on:blur="sizeQuality">
+						<input class="form-control niokrQuality" name="niokrQuality"  type="number" v-model="niokrQuality" v-on:blur="sizeQuality">
 					</div>
 					{% if previousSolution is not none %}
 						<div class="col-md-2 previous">{{ previousSolution.niokrQuality }}</div>
@@ -108,7 +112,7 @@
 					<div class="col-md-2 previous quality" v-html="quality">0</div>
 				</div>
 			{%else%}
-				<input type="hidden" name="niokrQuality" class="form-control" value="{{ game.niokrQuality_default }}" v-model="niokrQuality" v-on:blur="sizeQuality">
+				<input type="hidden" name="niokrQuality" class="form-control" value="{{ game.niokrQuality_default }}" min="{{ game.niokrQuality_min }}" max="{{ game.niokrQuality_max }}" v-model="niokrQuality" v-on:blur="sizeQuality">
 			{% endif %}
 				<div class="row">
 					<div class="col-md-1"><h4 class="resolve-item">Объёмы рынков</h4></div>
@@ -120,7 +124,7 @@
 					<div class="col-md-1 previous">{{game.sizeNA}}</div>
 					<div class="col-md-3 resolve-item">Северная Америка</div>
 					<div class="col-md-2">
-						<input class="form-control" name="NAFactory"  type="text" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
+						<input class="form-control" name="NAFactory" value="{{ game.NAFactory_default }}" min="{{ game.NAFactory_min }}" max="{{ game.NAFactory_max }}"  type="number" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
 					</div>
 					{% if previousSolution is not none %}
 					<div class="col-md-2 previous lastNA">{{ previousSolution.NAFactory }}</div>
@@ -141,7 +145,7 @@
 					<div class="col-md-1 previous">{{game.sizeEurope}}</div>
 					<div class="col-md-3 resolve-item">Европа</div>
 					<div class="col-md-2">
-						<input class="form-control" name="EuropeFactory" type="text" v-on:blur="changeFactory(factories.Europe)" v-model="factories.Europe.val">
+						<input class="form-control" name="EuropeFactory" value="{{ game.EuropeFactory_default }}" min="{{ game.EuropeFactory_min }}" max="{{ game.EuropeFactory_max }}" type="number" v-on:blur="changeFactory(factories.Europe)" v-model="factories.Europe.val">
 					</div>
 					{% if previousSolution is not none %}
 						<div class="col-md-2 previous lastEurope">{{ previousSolution.EuropeFactory }}</div>
@@ -161,7 +165,7 @@
 					<div class="col-md-1 previous">{{game.sizeAsia}}</div>
 					<div class="col-md-3 resolve-item">Азия</div>
 					<div class="col-md-2">
-						<input class="form-control" name="AsiaFactory" type="text" v-on:blur="changeFactory(factories.Asia)" v-model="factories.Asia.val">
+						<input class="form-control" name="AsiaFactory" value="{{ game.AsiaFactory_default }}" min="{{ game.AsiaFactory_min }}" max="{{ game.AsiaFactory_max }}" type="number" v-on:blur="changeFactory(factories.Asia)" v-model="factories.Asia.val">
 					</div>
 					{% if previousSolution is not none %}
 						<div class="col-md-2 previous lastAsia">{{ previousSolution.AsiaFactory }}</div>
@@ -183,7 +187,7 @@
 				<div class="row">
 					<div class="col-md-3 col-md-offset-1 resolve-item">Северная Америка</div>
 					<div class="col-md-2">
-						<input class="form-control promotionNA" name="NAPromotion" type="text" v-model="promotion.NA" v-on:blur="sizeBudget">
+						<input class="form-control promotionNA" name="NAPromotion" value="{{ game.NAPromotion_default }}" min="{{ game.NAPromotion_min }}" max="{{ game.NAPromotion_max }}"  type="number" v-model="promotion.NA" v-on:blur="sizeBudget">
 					</div>
 
 					{% if previousSolution is not none %}
@@ -201,7 +205,7 @@
 				<div class="row">
 					<div class="col-md-3 col-md-offset-1 resolve-item">Европа</div>
 					<div class="col-md-2">
-						<input class="form-control promotionEurope" name="EuropePromotion" type="text" v-model="promotion.Europe" v-on:blur="sizeBudget">
+						<input class="form-control promotionEurope" name="EuropePromotion" value="{{ game.EuropePromotion_default }}" min="{{ game.EuropePromotion_min }}" max="{{ game.EuropePromotion_max }}"  type="number" v-model="promotion.Europe" v-on:blur="sizeBudget">
 					</div>
 					{% if previousSolution is not none %}
 						<div class="col-md-2 previous">{{ previousSolution.EuropePromotion }}</div>
@@ -218,7 +222,7 @@
 				<div class="row">
 					<div class="col-md-3 col-md-offset-1 resolve-item">Азия</div>
 					<div class="col-md-2">
-						<input class="form-control promotionAsia" name="AsiaPromotion"  type="text" v-model="promotion.Asia" v-on:blur="sizeBudget">
+						<input class="form-control promotionAsia" name="AsiaPromotion" value="{{ game.AsiaPromotion_default }}" min="{{ game.AsiaPromotion_min }}" max="{{ game.AsiaPromotion_max }}"  type="number" v-model="promotion.Asia" v-on:blur="sizeBudget">
 					</div>
 					{% if previousSolution is not none %}
 						<div class="col-md-2 previous">{{ previousSolution.AsiaPromotion }}</div>
@@ -235,7 +239,7 @@
 					<div class="col-md-2 previous" id="spent-budget-val" v-html="spentBudgetVal"></div>
 					<div class="col-md-2 previous">0</div>
 					<div class="col-md-2 resolve-item">Доступный бюджет</div>
-					<div class="col-md-2 previous allBudget">100</div>
+					<div class="col-md-2 previous allBudget">{{ game.teamBudget }}</div>
 				</div>
 				<div class="alert alert-warning" v-if="spentBudgetVal < allBudget">
 					<h4>ПРЕДУПРЕЖДЕНИЕ!</h4>
@@ -254,10 +258,6 @@
           {% endif %}
 		  </div>
 		  <div class="tab-pane" id="solutions">
-			<div class="clearfix">
-				<a href="" class="pull-right glyphicon glyphicon-print print"></a>
-				<a href="" class="pull-right excel"></a>
-			</div>
 			<div class="table-wrapper table-responsive">
 				<table class="table table-condensed table-striped table-hover">
 					{% if results is not none %}
@@ -323,13 +323,13 @@
 							<tr>
 								<th>Себестоимость</th>
 								{% for solution in results%}
-									<td>{{solution.Prime_cost}}</td>
+									<td>{{solution.Prime_cost | round(3)}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
 								<th>Качество</th>
 								{% for solution in results%}
-									<td>{{solution.mult_Quality}}</td>
+									<td>{{solution.mult_Quality| round(3)}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
@@ -365,7 +365,7 @@
 							<tr>
 								<th>Объем продаж в Азии</th>
 								{% for solution in results%}
-									<td>{{solution.Sales_Asia}}"</td>
+									<td>{{solution.Sales_Asia}}</td>
 								{% endfor %}
 							</tr>
 							<tr>
@@ -378,6 +378,12 @@
 								<th>Прибыль в отчетном периоде</th>
 								{% for solution in results%}
 									<td>{{solution.Profit}}</td>
+								{% endfor %}
+							</tr>
+                            <tr>
+								<th>Общий объем прибыли</th>
+								{% for solution in results%}
+									<td>{{solution.Acc_Profit}}</td>
 								{% endfor %}
 							</tr>
 

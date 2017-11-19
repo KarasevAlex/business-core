@@ -5,9 +5,9 @@ from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
 from ..database import User, Games, Period, Solutions, News, Partner, Team, StaticPages, Gallery, Photos
-from flask import render_template, request, flash, redirect
+from flask import render_template, request, flash, redirect, send_from_directory
 from flask_login import login_user, logout_user, login_required, current_user
-
+import os
 
 @main.route('/create_database', methods=['GET', 'POST'])
 def create_database():
@@ -295,3 +295,9 @@ def static_page(page):
                        main=render_template('static.html', page=page,
                                             isAdmin=current_user.isAdmin()),
                        footer=render_template('footer.html'))
+
+
+@main.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(main.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')

@@ -8,19 +8,23 @@
 			</div>
 			<div class="col-md-9">
 				<div class="page-header">
-				<button class="pull-right btn btn-primary" data-toggle="modal" data-target="#addPhotoModal"><span class="glyphicon glyphicon-plus"></span> Добавить фотографии</button>
-				  <h1>{{ gallary.title }}</h1>
+                    {% if current_user.isAdmin()%}
+                        <button class="pull-right btn btn-primary" data-toggle="modal" data-target="#addPhotoModal"><span class="glyphicon glyphicon-plus"></span> Добавить фотографии</button>
+                    {% endif %}
+                    <h1>{{ gallary.title }}</h1>
 				</div>
 				<div class="row">
                 {% for photo in photos %}
                     <div class="col-md-4 photo" data-photo-id="{{ photo.id }}" data-slick-index="{{ loop.index }}">
-						<div class="album-manage">
-							<button type="button" class="delete-photo js-delete-photo">&times;</button>
-							<button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
-						</div>
-						<div class="reestablish">
-							<button class="btn btn-default">Восстановить</button>
-						</div>
+                        {% if current_user.isAdmin()%}
+                            <div class="album-manage">
+                                <button type="button" class="delete-photo js-delete-photo">&times;</button>
+                                <button type="button" class="glyphicon glyphicon-paperclip js-main-photo main-photo">
+                            </div>
+                            <div class="reestablish">
+                                <button class="btn btn-default">Восстановить</button>
+                            </div>
+                        {% endif %}
 						<img src="/static/img/picturs/{{ photo.path }}" alt="" class="img-responsive img-thumbnail">
 					</div>
                 {% endfor %}

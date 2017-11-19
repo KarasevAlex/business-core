@@ -664,6 +664,14 @@ class Solutions(db.Model):
         return Solutions.query.filter_by(period_id=period.id).all()
 
     @staticmethod
+    def getAccProfit(gamer_id):
+        solutions = Solutions.query.filter_by(gamer_id=gamer_id).all()
+        Acc_Profit = 0
+        for solution in solutions:
+            Acc_Profit += solution.Profit
+        return Acc_Profit
+    @staticmethod
+
     def isSolutionAllowed(current_period, required_result):
         if (Games.query.filter_by(id=current_period.game_id).first()).isFinished:
             return True
@@ -695,6 +703,14 @@ class Team(db.Model):
     picture = db.Column(db.String(128))
     name = db.Column(db.String(128))
     discription = db.Column(db.Text)
+
+class Recomendations(db.Model):
+    __tablename__ = "recomendations"
+    id = db.Column(db.Integer, primary_key=True)
+    picture = db.Column(db.String(128))
+    name = db.Column(db.String(128))
+    discription = db.Column(db.Text)
+
 
 class Photos(db.Model):
     __tablename__ = "photos"

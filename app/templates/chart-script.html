@@ -149,7 +149,25 @@
                         }]
             },
         });
+        var acc_profit = document.getElementById('accrued-profit-chart').getContext('2d');
+        var acc_profit_chart = new Chart(acc_profit, {
+            type: 'bar',
 
+            data: {
+                labels:
+                    [{% for item in labels %}
+                        "{{item}}",
+                    {% endfor %}],
+                datasets: [{
+                    label:"{{ acc_profit_chart_dataset.label }}",
+                    backgroundColor: "{{acc_profit_chart_dataset.fillColor}}",
+                    data:[{% for data in acc_profit_chart_dataset.data %}
+                              {{data}},
+                              {% endfor %}]
+
+                        }]
+            },
+        });
 
         var promotion = document.getElementById('promotion-chart').getContext('2d');
         var promotion_chart = new Chart(promotion, {

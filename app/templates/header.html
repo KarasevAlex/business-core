@@ -24,9 +24,13 @@
                 <li class="{{ demo_page }}"><a href="/demo">Демо</a></li>
                 <li class="{{ contacts_page }}"><a href="/сontacts">Контакты</a></li>
             </ul>
-            {% if isAdmin %}
+            {% if current_user.is_authenticated %}
+                {% if isAdmin %}
+                    <a href="/game/page/1" class="btn btn-primary pull-right">Сессия</a>
+                {% else %}
+                    <a href="/play/1" class="btn btn-primary pull-right">Сессия</a>
+                {% endif %}
                 <a href="/logout" class="btn btn-default pull-right">Выход</a>
-                <a href="/game/page/1" class="btn btn-primary pull-right">Сессия</a>
             {% else %}
                 <button class="pull-right btn btn-default" data-toggle="modal" data-target="#enterModal">Войти</button>
             {% endif %}

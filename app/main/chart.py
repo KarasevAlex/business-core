@@ -10,6 +10,7 @@ class Chart:
     sales_chart_dataset = []
     profit_chart_dataset = {}
     promotion_chart_dataset = []
+    acc_profit_chart_dataset = {}
     def __init__(self):
         self.labels = []
         self.costSS_dataset = []
@@ -19,7 +20,7 @@ class Chart:
         self.sales_chart_dataset = []
         self.profit_chart_dataset = {}
         self.promotion_chart_dataset = []
-
+        self.acc_profit_chart_dataset = {}
     def generate(self, solution, users):
         self.solutions = solution
         self.users = users
@@ -70,6 +71,10 @@ class Chart:
         self.profit_chart_dataset['label'] = "Прибыль"
         self.profit_chart_dataset['data'] = []
         self.profit_chart_dataset['fillColor'] = "rgba(65, 131, 215, 1)"
+
+        self.acc_profit_chart_dataset['label'] = "Накопленная прибыль"
+        self.acc_profit_chart_dataset['data'] = []
+        self.acc_profit_chart_dataset['fillColor'] = "rgba(65, 131, 215, 1)"
         # Продвижение
 
         NAPromotion = {}
@@ -82,6 +87,7 @@ class Chart:
             costSS['data'].append(solution.Prime_cost)
             self.quality_chart_dataset['data'].append(solution.mult_Quality)
             self.profit_chart_dataset['data'].append(solution.Profit)
+            self.acc_profit_chart_dataset['data'].append(solution.Acc_Profit)
             demand_NA['data'].append(solution.Demand_NA)
 
             NAFactory['data'].append(solution.NAFactory)
@@ -166,6 +172,10 @@ class Chart:
         self.profit_chart_dataset['label'] = "Прибыль"
         self.profit_chart_dataset['data'] = []
         self.profit_chart_dataset['fillColor'] = "rgba(65, 131, 215, 1)"
+        self.acc_profit_chart_dataset['label'] = "Накопленная прибыль"
+        self.acc_profit_chart_dataset['data'] = []
+        self.acc_profit_chart_dataset['fillColor'] = "rgba(65, 131, 215, 1)"
+        # Продвижение
         # Продвижение
 
         NAPromotion = {}
@@ -186,6 +196,7 @@ class Chart:
             costSS['data'].append(solution.Prime_cost)
             self.quality_chart_dataset['data'].append(solution.mult_Quality)
             self.profit_chart_dataset['data'].append(solution.Profit)
+            self.acc_profit_chart_dataset['data'].append(solution.Acc_Profit)
             demand_NA['data'].append(solution.Demand_NA)
             demand_Europe['data'].append(solution.Demand_Europa)
             demand_Asia['data'].append(solution.Demand_Asia)
@@ -230,5 +241,6 @@ class Chart:
                                factories_chart_dataset=self.factories_chart_dataset,
                                sales_chart_dataset=self.sales_chart_dataset,
                                profit_chart_dataset=self.profit_chart_dataset,
+                               acc_profit_chart_dataset=self.acc_profit_chart_dataset,
                                promotion_chart_dataset=self.promotion_chart_dataset)
 
