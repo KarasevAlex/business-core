@@ -5,6 +5,7 @@
             // The type of chart we want to create
             type: 'bar',
 
+
             // The data for our dataset
             data: {
                 labels:
@@ -23,14 +24,15 @@
                     {% endfor %}]
             },
             // Configuration options go here
-            options: {}
+            options: {
+                scales: { yAxes: [{ticks: {beginAtZero:true}}]}
+            }
         });
         // Качество
 
         var quality = document.getElementById('quality-chart').getContext('2d');
         var quality_chart = new Chart(quality, {
             type: 'bar',
-
             data: {
                 labels:
                     [{% for item in labels %}
@@ -45,13 +47,15 @@
 
                         }]
             },
+                    options: {
+                scales: { yAxes: [{ticks: {beginAtZero:true}}]}
+            }
         });
 
         var demand = document.getElementById('demand-chart').getContext('2d');
         var demand_chart = new Chart(demand, {
             // The type of chart we want to create
             type: 'bar',
-
             // The data for our dataset
             data: {
                 labels:
@@ -70,15 +74,15 @@
                     {% endfor %}]
             },
             // Configuration options go here
-            options: {}
-        });
+            options: {
+                scales: { yAxes: [{ticks: {beginAtZero:true}}]}
+            }        });
 
 
         var factories = document.getElementById('factories-chart').getContext('2d');
         var factories_chart = new Chart(factories, {
             // The type of chart we want to create
             type: 'bar',
-
             // The data for our dataset
             data: {
                 labels:
@@ -97,8 +101,9 @@
                     {% endfor %}]
             },
             // Configuration options go here
-            options: {}
-        });
+            options: {
+                scales: { yAxes: [{ticks: {beginAtZero:true}}]}
+            }        });
 
 
 
@@ -106,7 +111,6 @@
         var sales_chart = new Chart(sales, {
             // The type of chart we want to create
             type: 'bar',
-
             // The data for our dataset
             data: {
                 labels:
@@ -125,15 +129,15 @@
                     {% endfor %}]
             },
             // Configuration options go here
-            options: {}
-        });
+            options: {
+                scales: { yAxes: [{ticks: {beginAtZero:true}}]}
+            }        });
 
 
 
         var profit = document.getElementById('profit-chart').getContext('2d');
         var profit_chart = new Chart(profit, {
             type: 'bar',
-
             data: {
                 labels:
                     [{% for item in labels %}
@@ -147,13 +151,12 @@
                               {% endfor %}]
 
                         }]
-            },
+            }
         });
         var promotion = document.getElementById('promotion-chart').getContext('2d');
         var promotion_chart = new Chart(promotion, {
             // The type of chart we want to create
             type: 'bar',
-
             // The data for our dataset
             data: {
                 labels:
@@ -172,8 +175,9 @@
                     {% endfor %}]
             },
             // Configuration options go here
-            options: {}
-        });
+            options: {
+                scales: { yAxes: [{ticks: {beginAtZero:true}}]}
+            }        });
         var acc_profit = document.getElementById('accrued-profit-chart').getContext('2d');
         var acc_profit_chart = new Chart(acc_profit, {
             type: 'bar',
