@@ -2,10 +2,10 @@
 	<div class="container">
 		<div class="clearfix">
 			<ul class="nav nav-tabs pull-left nav-justified">
-			{% if not isResult  %}
+
 				<li class="active"><a href="#periods" data-toggle="tab">Решения</a></li>
-			{% else %}
-				<li><a href="#solutions" data-toggle="tab">Решения</a></li>
+			{% if isResult  %}
+				<li><a href="#solutions" data-toggle="tab">Отчеты</a></li>
 				<li><a href="#graphics" data-toggle="tab">Графики</a></li>
 			{% endif %}
 
@@ -14,7 +14,6 @@
 		</div>
 		<!-- Tab panes -->
 		<div class="tab-content">
-			{% if not isResult  %}
 			<div class="tab-pane active" id="periods">
 			  	<form action="/demo/result" method="post" id="resolve-period">
 			  		<div class="row visible-md visible-lg">
@@ -30,7 +29,7 @@
 			  				Цена
 			  			</div>
 			  			<div class="col-md-2">
-			  				<input class="form-control" name="cost" type="text">
+			  				<input class="form-control" name="cost" type="number" min="3" max="10">
 			  			</div>
 			  		</div>
 			  		<div class="row">
@@ -43,7 +42,7 @@
 			  			</div>
 
 			  			<div class="col-md-2 resolve-item">Себестоимость</div>
-			  			<div class="col-md-2 previous ss" v-html="SS">4.000</div>
+			  			<div class="col-md-2 previous ss" v-html="SS">4.00</div>
 			  		</div>
 			  		<div class="row">
 			  			<div class="col-md-3 col-md-offset-1 resolve-item">Повышение качества</div>
@@ -99,8 +98,8 @@
 			  		<button class="btn btn-primary center-block" type="submit" v-bind:disabled="factories.isError || spentBudgetVal > allBudget">Принять решение</button>
 			  	</form>
 			  </div>
-			{% else %}
-			<div class="tab-pane active" id="solutions">
+			<div class="tab-pane" id="solutions">
+            {% if isResult %}
 			<form action="" id="change-table">
 				<div class="table-responsive ">
 					<table class="table table-condensed table-striped table-hover table-bordered">
@@ -142,7 +141,7 @@
 						<tr>
 							<th>Себестоимость</th>
 							{% for solution in previous_solution%}
-								<td>{{solution.Prime_cost | round(3)}}</td>
+								<td>{{solution.Prime_cost | round(2)}}</td>
 							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
@@ -150,7 +149,7 @@
 						<tr>
 							<th>Качество</th>
 							{% for solution in previous_solution%}
-								<td>{{solution.mult_Quality | round(3)}}</td>
+								<td>{{solution.mult_Quality | round(2)}}</td>
 							{% endfor %}
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
 							<!--&lt;!&ndash;<td></td>&ndash;&gt;-->
@@ -212,8 +211,14 @@
 				</table>
 				</div>
 			</form>
+            {% else %}
+                    <div class="alert alert-warning">
+                <h4> Отчеты  отсутствуют </h4>
+              </div>
+            {% endif %}
 		  </div>
 		  	<div class="tab-pane" id="graphics">
+                  {% if isResult %}
 			<ul class="nav nav-pills ">
 			  <li class="active"><a href="#costSS" data-toggle="tab">Цены с/с</a></li>
 			  <li><a href="#quality" data-toggle="tab">Качество</a></li>
@@ -222,7 +227,7 @@
 			  <li><a href="#factories" data-toggle="tab">Заводы</a></li>
 			  <li><a href="#sales" data-toggle="tab">Продажи</a></li>
 			  <li><a href="#profit" data-toggle="tab">Прибыль</a></li>
-			  <li><a href="#accrued-profit" data-toggle="tab">Накопленная прибыль</a></li>
+{#			  <li><a href="#accrued-profit" data-toggle="tab">Накопленная прибыль</a></li>#}
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="costSS"><canvas id="costSS-chart" width="600" height="400"></canvas></div>
@@ -232,10 +237,14 @@
 				<div class="tab-pane" id="factories"><canvas id="factories-chart" width="600" height="400"></canvas></div>
 				<div class="tab-pane" id="sales"><canvas id="sales-chart" width="600" height="400"></canvas></div>
 				<div class="tab-pane" id="profit"><canvas id="profit-chart" width="600" height="400"></canvas></div>
-				<div class="tab-pane" id="accrued-profit"><canvas id="accrued-profit-chart" width="600" height="400"></canvas></div>
+{#				<div class="tab-pane" id="accrued-profit"><canvas id="accrued-profit-chart" width="600" height="400"></canvas></div>#}
 			  </div>
+                  {% else %}
+                    <div class="alert alert-warning">
+                <h4> Графики  отсутствуют </h4>
+              </div>
+            {% endif %}
 		  </div>
-			{% endif %}
 
 		</div>
 	</div>

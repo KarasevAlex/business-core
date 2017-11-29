@@ -34,6 +34,7 @@ class Chart:
         self.labels.append("Игрок 1 (Вы)")
         self.labels.append("Игрок 2 (Бот)")
         self.setDataDemo()
+
     def setDataDemo(self):
         # Цены СС
         cost = {}
@@ -232,6 +233,7 @@ class Chart:
         self.promotion_chart_dataset.append(NAPromotion)
         self.promotion_chart_dataset.append(AsiaPromotion)
         self.promotion_chart_dataset.append(EuropePromotion)
+
 
     def render(self):
         return render_template('chart-script.html', labels=self.labels,

@@ -74,7 +74,8 @@ class Modeling():
         if solutions.niokrQuality < 0:
             solutions.niokrQuality = 0
         solutions.NAFactory = random.randint(30, 50)
-        solutions.NAPromotion = 100 - solutions.NAFactory - solutions.niokrSS - solutions.niokrQuality
+        solutions.NAPromotion = 100 - solutions.NAFactory - (solutions.NAFactory*(0.2)) - solutions.niokrSS - solutions.niokrQuality
+        solutions.Budget = 100
         return solutions
 
     def generateResult(self, isDemo=False):
