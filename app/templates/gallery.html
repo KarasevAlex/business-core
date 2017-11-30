@@ -16,7 +16,7 @@
 				</div>
 				<div class="row">
                     {% for gallary in gallaries %}
-                        <div class="col-md-6 js-album js-item">
+                        <div class="col-md-6 js-album js-item" data-id="{{gallary[0].id}}">
                             {% if current_user.isAdmin()%}
                                 <div class="album-manage">
                                     <button type="button" class="close" aria-hidden="true" data-toggle="modal" data-target="#deleteAlbumModal" data-item-id="{{ gallary[0].id }}" data-item-name="{{ gallary[0].title }}">&times;</button>

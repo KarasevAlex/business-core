@@ -3,9 +3,7 @@ function deleteItem(modal, delete_url){
 		var id;
 		$('.js-delete-modal').on('show.bs.modal', function (e) {
 			var $btn = $(e.relatedTarget);
-			console.log($btn)
 			$item = $btn.parents('.js-item');
-			console.log($item)
 		  	var $nameText = modal.find('#item-name-text');
 		  	var $idText = modal.find('#item-id-text');
 

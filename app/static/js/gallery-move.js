@@ -5,6 +5,17 @@ $(document).ready(function(){
 		if(next.length > 0){
 			target.detach();
 			next.after(target);
+			var id = target.data('id');
+			$.ajax({
+			    url: '/gallery/position/down/' + id,
+			    method: 'post',
+		        error: function(res){
+		            console.log(res);
+		        },
+		        success: function(res){
+		            console.log(res);
+		        }
+			});
 		} else 
 			return;
 	});
@@ -14,6 +25,17 @@ $(document).ready(function(){
 		if(prev.length > 0){
 			target.detach();
 			prev.before(target);
+			var id = target.data('id');
+			$.ajax({
+			    url: '/gallery/position/up/' + id,
+			    method: 'post',
+		        error: function(res){
+		            console.log(res);
+		        },
+		        success: function(res){
+		            console.log(res);
+		        }
+			});
 		} else 
 			return;
 	});

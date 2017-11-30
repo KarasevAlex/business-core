@@ -342,7 +342,7 @@
 							<small>ID игры - {{ game.id }}</small>
 						</a>
 					</h4>
-					<span class="game__time js-timer"  data-finish-time="{{game.period_end}}">
+					<span class="game__time js-timer"  data-finish-time="{{game.time_start|add:game.time_duration}}">
 						<span class="js-hours">00</span>:
 						<span class="js-minutes">00</span>:
 						<span class="js-seconds">00</span>
