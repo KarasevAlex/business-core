@@ -1,7 +1,7 @@
 <main>
 	<div class="container">
 		<div class="well clearfix session-panel">
-			<!--<a href="" class="btn btn-default pull-left">Текущий период</a>-->
+			<a href="/play/{{activePeriod.period_number}}" class="btn btn-default pull-left">Текущий период</a>
 			<div class="pull-left period-nav">
 				{% if requiredPeriod.period_number != 1 %}
 					<a href="/play/{{requiredPeriod.period_number-1}}" class="glyphicon glyphicon-chevron-left"></a>
@@ -85,7 +85,7 @@
 						<div class="col-md-2 previous">0</div>
 					{% endif %}
 					<div class="col-md-2 resolve-item">Себестоимость</div>
-					<div class="col-md-2 previous ss" v-html="SS">0</div>
+					<div class="col-md-2 previous ss" v-html="SS">{{ game.prime_cost_start }}</div>
 				</div>
 			{% else %}
 				<input type="hidden" name="niokrSS" class="form-control" value="{{ game.niokrSS_default }}" v-model="niokrSS" v-on:blur="sizeSS">
@@ -109,7 +109,7 @@
 						<div class="col-md-2 previous">0</div>
 					{% endif %}
 					<div class="col-md-2 resolve-item">Качество</div>
-					<div class="col-md-2 previous quality" v-html="quality">0</div>
+					<div class="col-md-2 previous quality" v-html="quality">1</div>
 				</div>
 			{%else%}
 				<input type="hidden" name="niokrQuality" class="form-control" value="{{ game.niokrQuality_default }}" min="{{ game.niokrQuality_min }}" max="{{ game.niokrQuality_max }}" v-model="niokrQuality" v-on:blur="sizeQuality">

@@ -423,7 +423,7 @@ class Period(db.Model):
     def generate(self, period_number, start_time, period_time, isActive=False):
         self.period_number = period_number
         self.period_start = start_time
-        self.period_end = (datetime.combine(datetime.now().date(), start_time) + period_time).time()
+        self.period_end = (datetime.combine(datetime.now().date(), start_time) + timedelta(hours=period_time.hour,minutes=period_time.minute,seconds=period_time.second)).time()
         self.period_duration = period_time
         self.isActive = isActive
 

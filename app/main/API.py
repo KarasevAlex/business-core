@@ -10,7 +10,7 @@ import uuid, os, json
 from flask_mail import Message
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import Login as Login_form
-
+from datetime import datetime, timedelta
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPG'])
 
@@ -87,6 +87,20 @@ def geme_remove(id):
     db.session.delete(Games.query.filter_by(id=id).one())
     return '', status.HTTP_200_OK
 
+@main.route('/game/<int:id>/period/add',  methods=['get'])
+def geme_period_add(id):
+    game = Games.query.filter_by(id=id).one()
+    last = Period.query.filter_by(game_id=id).order_by(db.desc(Period.period_number)).limit(1).one()
+
+    newPeriod = Period(game_id=game.id)
+    newPeriod.generate(
+                     period_number=last.period_number+1,
+                     start_time=last.period_end,
+                     period_time=game.time_duration)
+    db.session.add(newPeriod)
+    db.session.commit()
+    return redirect('/game/%s/1' % id)
+
 
 @main.route('/game/finish/<int:id>', methods=['POST'])
 def finish_game(id):
@@ -109,7 +123,10 @@ def solutions_change():
         solution.NAPromotion = form[str(solution.gamer_id)+'-NAPromotion']
         solution.EuropePromotion = form[str(solution.gamer_id)+'-EuropePromotion']
         solution.AsiaPromotion = form[str(solution.gamer_id)+'-AsiaPromotion']
+        solution.niokrSS = form[str(solution.gamer_id) + '-niokrSS']
+        solution.niokrQuality = form[str(solution.gamer_id) + '-niokrQuality']
         solution.count_personal_params(game)
+
     modeling = Modeling()
     modeling.adminRecount(form['period-id'],game)
     return redirect('/game/%s/%s' % (form['game-id'], form['period-number']))

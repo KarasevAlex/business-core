@@ -9,6 +9,8 @@ from flask import render_template, request, flash, redirect, send_from_directory
 from flask_login import login_user, logout_user, login_required, current_user
 import os
 
+
+
 @main.route('/create_database', methods=['GET', 'POST'])
 def create_database():
     try:
@@ -301,3 +303,21 @@ def static_page(page):
 def favicon():
     return send_from_directory(os.path.join(main.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+@main.route('/401')
+def custom_401():
+    return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
+                           main=render_template('error.html', title="Ошибка доступа"),
+                           footer=render_template('footer.html'))
+@main.route('/404')
+def custom_404():
+    return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
+                           main=render_template('error.html', title="Запрашиваемая страница не найдена"),
+                           footer=render_template('footer.html'))
+@main.route('/500')
+def custom_500():
+    return render_template('layout.html',
+                           header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
+                           main=render_template('error.html', title="Внутренняя ошибка сервера"),
+                           footer=render_template('footer.html'))
