@@ -43,7 +43,7 @@
 		  <div class="modal-body">
 			<div class="form-group">
 				<label for="description">Описание</label>
-				<input type="text" class="form-control" id="description" placeholder="Описание" value="{{ page.text }}" name="description" required>
+				<textarea type="text" class="form-control" id="description" placeholder="Описание" name="description" required>{{ page.text }}</textarea>
 			</div>
 		  </div>
 		  <div class="modal-footer">
@@ -54,3 +54,7 @@
 	</div>
   </div>
 </div>
+<script src="/static/js/jquery.cleditor.min.js"></script>
+<script>
+	$(document).ready(function () { $("#description").cleditor(); });
+</script>
