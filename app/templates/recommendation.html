@@ -1,0 +1,70 @@
+<main>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<ul class="nav nav-pills nav-stacked">
+				  <li><a href="/decription">Краткое описание</a></li>
+				  <li><a href="/team">Наша команда</a></li>
+				  <li><a href="/organizations">Образовательным учреждениям</a></li>
+				  <li><a href="/students">Учащимся</a></li>
+				  <li><a href="">Нас рекомендуют</a></li>
+				  <li><a href="/partners">Партнеры</a></li>
+				</ul>
+			</div>
+			<div class="col-md-9">
+				<div class="page-header">
+					{%if isAdmin %}
+					<button class="pull-right btn btn-primary" data-toggle="modal" data-target="#newMemberModal"><span class="glyphicon glyphicon-plus"></span> Добавить</button>
+					{% endif %}
+				  <h1>Нас рекомендуют</h1>
+				</div>
+				<div class="content-area">
+					<!--<button class=" btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button>-->
+					{% for member in members%}
+					<div class="media">
+					  <a class="pull-left" href="#">
+						<img class="media-object" style="height: 150px" src="/static/img/picturs/{{member.picture}}" alt="...">
+					  </a>
+					  <div class="media-body">
+						<h4 class="media-heading">{{member.name}}</h4>
+						<p>{{member.discription}}</p>
+					  </div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="newMemberModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="myModalLabel">Подтверждение</h4>
+	  </div>
+	  <form method="post" action="/recommendation/add" enctype="multipart/form-data">
+		  <div class="modal-body">
+			 <div class="form-group">
+				<label for="name">Название</label>
+				<input type="text" class="form-control" id="name" placeholder="Имя" name="name" required>
+			</div>
+			<div class="form-group">
+				<label for="description">Описание</label>
+				<textarea class="form-control" id="description" placeholder="Описание" name="description" required></textarea>
+			</div>
+			<div class="form-group">
+				<label for="file">Обложка</label>
+				<input type="file" id="file" name="file" required>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			<button type="submit" class="btn btn-primary">Добавить</button>
+		  </div>
+	  </form>
+	</div>
+  </div>
+</div>

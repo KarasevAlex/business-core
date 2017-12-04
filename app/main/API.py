@@ -58,7 +58,7 @@ def partners_remove(id):
 def member_add():
     filename = upload(request.files['file'])
     if filename is not None:
-        member = Team(picture=filename, name=request.form['name'], discription=request.form['description'])
+        member = Team(picture=filename, name=request.form['name'], type=0, discription=request.form['description'])
         db.session.add(member)
         return redirect('/team')
 
@@ -69,6 +69,16 @@ def member_remove(id):
     os.remove(mypath)
     db.session.delete(obj)
     return redirect('/team')
+
+@main.route('/recommendation/add', methods=['POST'])
+def recommendation_add():
+    filename = upload(request.files['file'])
+    if filename is not None:
+        member = Team(picture=filename, name=request.form['name'], type=1, discription=request.form['description'])
+        db.session.add(member)
+        return redirect('/team')
+
+
 
 @main.route('/news/add', methods=['POST'])
 def add_news():
@@ -218,7 +228,7 @@ def gallery_photo_remove(id):
     except:
         abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@main.route('/gallery/poster')
+@main.route('/gallery/poster', methods=['POST'])
 @admin_required
 def gallery_poster():
     try:
@@ -264,15 +274,20 @@ def partner_remove(id):
 
 @main.route('/send/mail')
 def send_mail():
-    msg = Message("Hello",
-                  sender="karasev_a_e@mail.ru",
-                  recipients=["karasev_a_e@mail.ru"])
-    mail.send(msg)
+    with mail.connect() as conn:
+        msg = Message("Hello",
+                      recipients=["karasev_a_e@mail.ru"])
+        conn.send(msg)
+
+    return "", 200
 
 
 @main.route('/static')
 def insert_static_page():
-    pages = {'decription': 'Краткое описание', 'organizations': 'Образовательным учереждениям', 'students': 'Учащимся'}
+    pages = {'decription': 'Краткое описание',
+             'organizations': 'Образовательным учереждениям',
+             'students': 'Учащимся',
+             'services': 'Цены и услуги'}
     for url in pages.keys():
          db.session.add(StaticPages(title=pages[url], page_url=url, text="hjgjhghg"))
     return '', 200

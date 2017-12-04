@@ -703,6 +703,9 @@ class Team(db.Model):
     picture = db.Column(db.String(128))
     name = db.Column(db.String(128))
     discription = db.Column(db.Text)
+    type = db.Column(db.Integer)
+#   0 для команды
+#   1 для рекомендаций
 
 class Recomendations(db.Model):
     __tablename__ = "recomendations"

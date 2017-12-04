@@ -258,7 +258,22 @@ def team_page():
                                                       form=Login_form(),
                                                       about_page="active"),
                                main=render_template('index.html',
-                                                    members=Team.query.all(),
+                                                    members=Team.query.filter_by(type=0).all(),
+                                                    isAdmin=current_user.isAdmin()))
+    except:
+        return render_template('layout.html',
+                               header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
+                               main=render_template('error.html', message="Произошла ошибка повторите запрос позже"),
+                               footer=render_template('footer.html'))
+@main.route('/recommendation')
+def recommendation_page():
+    try:
+        return render_template('layout.html',
+                               header=render_template('header.html',
+                                                      form=Login_form(),
+                                                      about_page="active"),
+                               main=render_template('recommendation.html',
+                                                    members=Team.query.filter_by(type=1).all(),
                                                     isAdmin=current_user.isAdmin()))
     except:
         return render_template('layout.html',
@@ -286,7 +301,7 @@ def partners_page():
 
 @main.route('/<string:page>')
 def static_page(page):
-    pages = ['decription', 'organizations', 'students']
+    pages = ['decription', 'organizations', 'students', 'services']
     if page in pages:
         page = StaticPages.query.filter_by(page_url=page).first()
         return render_template('layout.html',
@@ -297,6 +312,18 @@ def static_page(page):
                        main=render_template('static.html', page=page,
                                             isAdmin=current_user.isAdmin()),
                        footer=render_template('footer.html'))
+
+
+@main.route('/helps')
+def helps_page():
+    return render_template('layout.html',
+                   header=render_template('header.html',
+                                          form=Login_form(),
+                                          isAdmin=current_user.isAdmin(),
+                                          about_page="active"),
+                   main=render_template('header.html',
+                                        isAdmin=current_user.isAdmin()),
+                   footer=render_template('footer.html'))
 
 
 @main.route('/favicon.ico')

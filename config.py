@@ -10,6 +10,15 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     UPLOAD_FOLDER = '/static/img/picturs'
 
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'bcore.simulator@gmail.com'
+    MAIL_PASSWORD = '1qa2ws3ed4rf'
+    MAIL_DEFAULT_SENDER= 'bcore.simulator@gmail.com'
+    # administrator list
+    ADMINS = ['bcore.simulator@gmail.com']
 @staticmethod
 def init_app(app):
     pass
