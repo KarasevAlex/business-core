@@ -378,16 +378,14 @@ class Games(db.Model):
                 gamer.generate(i)
                 db.session.add(gamer)
 
-            delta = timedelta(hours=game.time_duration.hour,
-                              minutes=game.time_duration.minute,
-                              microseconds=game.time_duration.microsecond)
+
             end_time = game.time_start
             for i in range(1, int(game.period_number) + 1):
                 period = Period(game_id=game.id)
                 if i == 1:
-                    period.generate(i, start_time=end_time, period_time=delta, isActive=isFirstStart)
+                    period.generate(i, start_time=end_time, period_time=game.time_duration, isActive=isFirstStart)
                 else:
-                    period.generate(i, start_time=end_time, period_time=delta, isActive=isOversStart)
+                    period.generate(i, start_time=end_time, period_time=game.time_duration, isActive=isOversStart)
                 end_time = period.period_end
                 db.session.add(period)
 
