@@ -20,7 +20,7 @@
 				  		<li><a href="/students">Учащимся</a></li>
 					{% endif %}
 
-					<li><a href="">Нас рекомендуют</a></li>
+					<li><a href="/recommendation">Нас рекомендуют</a></li>
 					<li><a href="/partners">Партнеры</a></li>
 				</ul>
 			</div>
@@ -36,7 +36,7 @@
 				<div class="content-area">
 
 					<div class="row">
-						<p>{{page.text}}</p>
+						<p>{{ page.text | safe}}</p>
 					</div>
 				</div>
 			</div>

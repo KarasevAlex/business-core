@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # vim:fileencoding=utf-8
-
+from __future__ import division
 from . import db, loginManager
 from flask_login import UserMixin
 from datetime import datetime, timedelta
@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from random import choice
 from string import ascii_uppercase
 from flask_login import AnonymousUserMixin
+
 
 @loginManager.user_loader
 def load_user(user_id):
@@ -361,9 +362,10 @@ class Games(db.Model):
                 game.isSizeAsia = False
 
             # Расчет базовых параметоров
-            game.prime_cost_start = int(game.startSS1) / int(game.startSS2)
+
+            game.prime_cost_start = int(game.startSS1)/int(game.startSS2)
             game.prime_cost_base = int(game.startAttachmentsSS1) / int(game.startAttachmentsSS2)
-            game.quality_cost_base = int(game.startAttachmentsQuality1) / int(game.startAttachmentsQuality2)
+            game.quality_cost_base = int(game.startAttachmentsQuality1) / (int(game.startAttachmentsQuality2)*1.0)
             game.prime_cost_coef = int(game.exponentSS1) / int(game.exponentSS2)
             game.quality_cost_coef = int(game.exponentQuality1) / int(game.exponentQuality2)
             game.price_coef = int(game.baseFormulaCost1) / int(game.baseFormulaCost2)
@@ -397,7 +399,7 @@ class Games(db.Model):
 
             for user in users:
                 solution = Solutions.set_default(period_id=periods.id, game=game, gamer_id=user.id)
-                solution.count_personal_params(game)
+                solution.count_personal_params(game, isFirst=True)
                 db.session.add(solution)
 
         except ValueError as e:
@@ -582,7 +584,7 @@ class Solutions(db.Model):
         solution.Profit = 0
         return solution
 
-    def count_personal_params(self, game, isDemo = False):
+    def count_personal_params(self, game, isDemo = False, isFirst=False):
         self.Quality_Cost_Acc = int(game.quality_cost_base)
         self.Prime_Cost_Acc = int(game.prime_cost_base)
 
@@ -598,8 +600,11 @@ class Solutions(db.Model):
         self.mult_Price = 1 / (int(game.price_coef) ** (int(self.cost) - int(game.cost_min)))
         self.mult_Quality = (self.Prime_Cost_Acc / int(game.quality_cost_base)) ** (1 / int(game.quality_cost_coef))
 
-        self.Prime_cost = game.prime_cost_start + 1 - (self.Prime_Cost_Acc / game.prime_cost_base) ** (
-        1 / game.prime_cost_coef)
+        if isFirst:
+            self.Prime_cost = game.prime_cost_start
+        else:
+            self.Prime_cost = game.prime_cost_start + 1 - (self.Prime_Cost_Acc / game.prime_cost_base) ** (
+            1 / game.prime_cost_coef)
 
         self.mult_Demand_NA = self.mult_Quality * self.mult_Price * float(self.NAPromotion)
         if not isDemo:

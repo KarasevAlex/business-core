@@ -30,7 +30,7 @@
 			  				Цена
 			  			</div>
 			  			<div class="col-md-2">
-			  				<input class="form-control" name="cost" type="number" min="3" max="10">
+			  				<input class="form-control" name="cost"  value="5" type="number" min="3" max="10">
 			  			</div>
 			  		</div>
 			  		<div class="row">
@@ -39,7 +39,7 @@
 			  		<div class="row">
 			  			<div class="col-md-3 col-md-offset-1 resolve-item">Снижение себестоимости</div>
 			  			<div class="col-md-2">
-			  				<input class="form-control niokrSS" name="niokrSS" type="text" v-model="niokrSS" v-on:blur="sizeSS">
+			  				<input class="form-control niokrSS" name="niokrSS" type="number" v-model="niokrSS" v-on:blur="sizeSS">
 			  			</div>
 
 			  			<div class="col-md-2 resolve-item">Себестоимость</div>
@@ -48,7 +48,7 @@
 			  		<div class="row">
 			  			<div class="col-md-3 col-md-offset-1 resolve-item">Повышение качества</div>
 			  			<div class="col-md-2">
-			  				<input class="form-control niokrQuality" name="niokrQuality" type="text" v-model="niokrQuality" v-on:blur="sizeQuality">
+			  				<input class="form-control niokrQuality" name="niokrQuality" type="number" v-model="niokrQuality" v-on:blur="sizeQuality">
 			  			</div>
 			  			<div class="col-md-2 resolve-item">Качество</div>
 			  			<div class="col-md-2 previous quality" v-html="quality">1.000</div>
@@ -61,7 +61,7 @@
 			  			<div class="col-md-1 previous">100</div>
 			  			<div class="col-md-3 resolve-item">Северная Америка</div>
 			  			<div class="col-md-2">
-			  				<input class="form-control" name="NAFactory" type="text" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
+			  				<input class="form-control" name="NAFactory" type="number" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
 			  			</div>
 
 			  			<div class="col-md-2 resolve-item">Изменение размеров</div>
@@ -73,7 +73,7 @@
 			  		<div class="row">
 			  			<div class="col-md-3 col-md-offset-1 resolve-item">Северная Америка</div>
 			  			<div class="col-md-2">
-			  				<input class="form-control promotionNA" name="NAPromotion" type="text" v-model="promotion.NA" v-on:blur="sizeBudget">
+			  				<input class="form-control promotionNA" name="NAPromotion" type="number" v-model="promotion.NA" v-on:blur="sizeBudget">
 			  			</div>
 			  		</div>
 			  		<div class="row">

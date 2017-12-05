@@ -337,16 +337,22 @@
 					<div class="well clearfix js-game js-item">
 					<button type="button" class="close pull-right" aria-hidden="true" data-toggle="modal" data-target="#deleteGameModal" data-item-id="{{ game.id }}" data-item-name="{{ game.title }}">&times;</button>
 					<h4 class="game__name">
-						<a href="/game/{{game.id}}/1">
-							<span>{{ game.title }}</span> <br>
-							<small>ID игры - {{ game.id }}</small>
+						<a href="/game/{{game[0].id}}/1">
+							<span>{{ game[0].title }}</span> <br>
+							<small>ID игры - {{ game[0].id }}</small>
 						</a>
 					</h4>
-					<span class="game__time js-timer"  data-finish-time="{{game.period_end}}">
-						<span class="js-hours">00</span>:
-						<span class="js-minutes">00</span>:
-						<span class="js-seconds">00</span>
-					</span>
+                    {% if game[1] is none %}
+                        <span class="game__time">
+                        Отсутствуют активные периоды
+                        </span>
+                    {% else %}
+                        <span class="game__time js-timer"  data-finish-time="{{game[1].period_end}}">
+                            <span class="js-hours">00</span>:
+                            <span class="js-minutes">00</span>:
+                            <span class="js-seconds">00</span>
+                        </span>
+                    {% endif %}
 				</div>
 				{% endfor%}
 		        <ul class="pagination">

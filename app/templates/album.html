@@ -25,7 +25,8 @@
                                 <button class="btn btn-default">Восстановить</button>
                             </div>
                         {% endif %}
-						<img src="/static/img/picturs/{{ photo.path }}" alt="" class="img-responsive img-thumbnail">
+                        <img src="/static/img/picturs/{{ photo.path }}" alt="" class="img-responsive img-thumbnail">
+
 					</div>
                 {% endfor %}
 				</div>
@@ -85,13 +86,12 @@
 		  <div class="modal-body">
 			<div class="form-group">
                 <input type="hidden" name="id" value="{{ gallary.id }}" required>
-				<input type="text" name="title" required>
 			</div>
-			<input type="file" multiple>
+			<input type="file" name="file" multiple>
 		  </div>
 		  <div class="modal-footer">
 			<button type="reset" class="btn btn-default" data-dismiss="modal">Отменить</button>
-			<button type="submit" class="btn btn-primary">Создать</button>
+			<button type="submit" class="btn btn-primary">Добавить</button>
 		  </div>
 	  </form>
 	</div>

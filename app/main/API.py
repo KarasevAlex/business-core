@@ -10,7 +10,6 @@ import uuid, os, json
 from flask_mail import Message
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import Login as Login_form
-from datetime import datetime, timedelta
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'JPG'])
 
@@ -179,7 +178,8 @@ def gallaries_photo_delete():
 
 @main.route('/gallaries/add', methods=['POST'])
 def gallaries_add():
-    gallery = Gallery(title=request.form['title'])
+    count=Gallery.query.count()
+    gallery = Gallery(title=request.form['title'], order=count+1)
     db.session.add(gallery)
     db.session.commit()
     for file in request.files.getlist('file'):
@@ -200,9 +200,29 @@ def gallaries_get_dict(page):
             .correlate(Gallery)
             .as_scalar()
     )
-    return db.session.query(Gallery, Photos).outerjoin(Photos, Photos.id == last_id).paginate(
+    return db.session.query(Gallery, Photos).outerjoin(Photos, Photos.id == Gallery.poster).order_by(Gallery.order).paginate(
             page, per_page=4, error_out=False)
 
+@main.route('/gallery/position/down/<int:gall_id>', methods=['POST'])
+@admin_required
+def gallaries_position_down(gall_id):
+    current_albom = Gallery.query.filter_by(id=gall_id).one()
+    next_albom = Gallery.query.filter_by(order=current_albom.order + 1).one()
+    change_position(current_albom, next_albom)
+    return "", 200
+
+@main.route('/gallery/position/up/<int:gall_id>', methods=['POST'])
+@admin_required
+def gallaries_position_up(gall_id):
+    current_albom = Gallery.query.filter_by(id=gall_id).one()
+    next_albom = Gallery.query.filter_by(order=current_albom.order - 1).one()
+    change_position(current_albom, next_albom)
+    return "", 200
+
+def change_position(current_albom, next_albom):
+    tmp_position = current_albom.order
+    current_albom.order = next_albom.order
+    next_albom.order = tmp_position
 
 @main.route('/gallery/remove/<int:id>', methods=['POST','GET'])
 def gallery_remove(id):
@@ -231,24 +251,27 @@ def gallery_photo_remove(id):
 @main.route('/gallery/poster', methods=['POST'])
 @admin_required
 def gallery_poster():
-    try:
-        photo = Photos.query.filter_by(id=request.form['id'])
-        gal = Gallery.query.filter_by(id=photo.gallary_id).firts()
-        gal.Poster = photo.id
-        db.session.add(gal)
-        return '', status.HTTP_200_OK
-    except:
-        abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
+    # try:
+    re=request.form
+    photo = Photos.query.filter_by(id=request.form['id']).one()
+    gal = Gallery.query.filter_by(id=photo.gallery_id).one()
+    gal.poster = photo.id
+    db.session.add(gal)
+    return '', status.HTTP_200_OK
+    # except:
+    #     abort(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @main.route('/gallery/photo/add', methods=['POST'])
 @admin_required
 def gallery_photo_add():
-    filename = upload(request.files['file'])
-    if filename is not None:
-        photos = Photos(path=filename, gallery_id=request.form['id'])
-        db.session.add(photos)
-        return redirect('/galleries/%s' % request.files['id'])
+    for file in request.files.getlist('file'):
+        filename = upload(file)
+        if filename is not None:
+            photo = Photos(gallery_id=request.form['id'], path=filename)
+            db.session.add(photo)
+
+        return redirect('/galleries/%s/page/1' % request.form['id'])
 
 
 @main.route('/news/remove/<int:id>', methods=['POST'])
@@ -323,3 +346,16 @@ def logout():
     logout_user()
     return redirect('/')
 
+def collapse_games(games):
+    result = []
+    for item in games:
+        itm=[]
+        itm.append(item)
+        period = Period.getActivePeriod(item.id)
+        if period['succeed'] is True:
+            period = period['data']
+        else:
+            period = None
+        itm.append(period)
+        result.append(itm)
+    return result

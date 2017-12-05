@@ -24,8 +24,14 @@
                                     <a class="glyphicon glyphicon-arrow-down js-down"></a>
                                 </div>
                             {% endif %}
-                            <img src="/static/img/picturs/{{ gallary[1].path }}" alt="" class="img-responsive img-thumbnail">
-                            <h4><a href="/galleries/{{ gallary[0].id }}/page/1">{{ gallary[0].title }}</a></h4>
+
+                        {% if  gallary[1] is none %}
+						    <img src="/static/img/p3.jpg" alt="" class="img-responsive img-thumbnail">
+                        {% else %}
+                              <img src="/static/img/picturs/{{ gallary[1].path }}" alt="" class="img-responsive img-thumbnail">
+                        {% endif %}
+
+                            <h4><a href="/galleries/{{ gallary[0].id }}/page/1">{{ gallary[0].title }} </a></h4>
                         </div>
                     {% endfor %}
                 </div>

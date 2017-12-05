@@ -15,7 +15,6 @@ import os
 def create_database():
     try:
         db.create_all()
-        print('1')
         db.session.add(User(username='Admin', password='Admin', role=1))
         return "succed"
     except:
@@ -33,9 +32,10 @@ def index2(page):
         Games.create(request.form)
     pagination = Games.query.order_by(Games.date_start.desc()).paginate(
             page, per_page=5, error_out=False)
+    items = API.collapse_games(pagination.items)
     return render_template('layout.html',
                            header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
-                           main=render_template('admin-list.html', games=pagination.items,pagination=pagination),
+                           main=render_template('admin-list.html', games=items, pagination=pagination),
                            footer=render_template('footer.html'))
 
 @main.route('/game/<int:id>/<int:period_id>')
