@@ -3,12 +3,25 @@
 		<div class="row">
 			<div class="col-md-3">
 				<ul class="nav nav-pills nav-stacked">
-				  <li><a href="/decription">Краткое описание</a></li>
-				  <li><a href="/team">Наша команда</a></li>
-				  <li><a href="/organizations">Образовательным учреждениям</a></li>
-				  <li><a href="/students">Учащимся</a></li>
-				  <li><a href="">Нас рекомендуют</a></li>
-				  <li><a href="/partners">Партнеры</a></li>
+					{% if page_name == 'decription' %}
+				  		<li class="active"><a href="/decription">Краткое описание</a></li>
+					{% else %}
+						<li><a href="/decription">Краткое описание</a></li>
+					{% endif %}
+					<li><a href="/team">Наша команда</a></li>
+					{% if page_name == 'organizations' %}
+						<li class="active"><a href="/organizations">Образовательным учреждениям</a></li>
+					{% else %}
+						<li><a href="/organizations">Образовательным учреждениям</a></li>
+					{% endif %}
+					{% if page_name == 'students' %}
+						<li class="active"><a href="/students">Учащимся</a></li>
+					{% else %}
+				  		<li><a href="/students">Учащимся</a></li>
+					{% endif %}
+
+					<li><a href="">Нас рекомендуют</a></li>
+					<li><a href="/partners">Партнеры</a></li>
 				</ul>
 			</div>
 			<div class="col-md-9">
@@ -56,5 +69,7 @@
 </div>
 <script src="/static/js/jquery.cleditor.min.js"></script>
 <script>
-	$(document).ready(function () { $("#description").cleditor(); });
+$(document).ready(function () {
+	$('#editPageModal').on('shown.bs.modal', function () { $("#description").cleditor(); });
+});
 </script>

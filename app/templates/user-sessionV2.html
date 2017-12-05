@@ -64,7 +64,13 @@
 				<input type="hidden" name="cost" class="form-control" value="{{game.cost_default}}">
 			{% endif %}
 				<div class="row">
-					<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">НИОКР</h4></div>
+					<div class="col-md-3 col-md-offset-1">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции или повышения ее качества. Затраты носят накопительный характер. <a href="/helps">Подробнее…</a></p>
+						</div>
+						<h4 class="resolve-item">НИОКР</h4>
+					</div>
 				</div>
 			{% if game.niokrSS_active %}
 				<div class="row">
