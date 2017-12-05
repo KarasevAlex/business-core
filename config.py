@@ -16,7 +16,7 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = 'bcore.simulator@gmail.com'
     MAIL_PASSWORD = '1qa2ws3ed4rf'
-    MAIL_DEFAULT_SENDER= 'bcore.simulator@gmail.com'
+    MAIL_DEFAULT_SENDER = 'bcore.simulator@gmail.com'
     # administrator list
     ADMINS = ['bcore.simulator@gmail.com']
 @staticmethod

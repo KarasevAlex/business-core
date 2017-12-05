@@ -276,7 +276,6 @@ def partner_remove(id):
 def send_mail():
     with mail.connect() as conn:
         msg = Message("Hello",
-                      sender='',
                       recipients=["karasev_a_e@mail.ru"])
         conn.send(msg)
 
