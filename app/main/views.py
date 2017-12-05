@@ -303,14 +303,15 @@ def partners_page():
 def static_page(page):
     pages = ['decription', 'organizations', 'students', 'services']
     if page in pages:
-        page = StaticPages.query.filter_by(page_url=page).first()
+        page_obj = StaticPages.query.filter_by(page_url=page).first()
         return render_template('layout.html',
                        header=render_template('header.html',
                                               form=Login_form(),
                                               isAdmin=current_user.isAdmin(),
                                               about_page="active"),
-                       main=render_template('static.html', page=page,
-                                            isAdmin=current_user.isAdmin()),
+                       main=render_template('static.html', page=page_obj,
+                                            isAdmin=current_user.isAdmin(),
+                                            page_name=page),
                        footer=render_template('footer.html'))
 
 
@@ -321,7 +322,7 @@ def helps_page():
                                           form=Login_form(),
                                           isAdmin=current_user.isAdmin(),
                                           about_page="active"),
-                   main=render_template('header.html',
+                   main=render_template('helps.html',
                                         isAdmin=current_user.isAdmin()),
                    footer=render_template('footer.html'))
 

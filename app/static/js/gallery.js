@@ -59,10 +59,10 @@ $(document).ready(function(){
 		var photo_id = $(e.currentTarget).parents('.photo').data('photo-id');
 
 		$.ajax({
-			url: '/',
+			url: '/gallery/poster',
 			method: 'post',
 			data: {
-				photo_id: photo_id
+				id: photo_id
 			},
 			success: function(data){
 				$('.photo.main').removeClass('main');

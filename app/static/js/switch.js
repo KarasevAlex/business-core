@@ -42,8 +42,21 @@ $(document).ready(function () {
 		});
 	});
 
+	function parseData(str){
+	    var arr = str.split(':');
+		var endtime = new Date();
+		endtime.setHours(arr[0]);
+		endtime.setMinutes(arr[1]);
+		endtime.setSeconds(arr[2]);
+		return endtime;
+	}
+
 	$('.period__form').each(function(i, el){
 		var period = $(el);
+		var prev_period = null;
+		if(i != 0)
+		    prev_period = $($('.period__form')[i-1]).find('.js-finish-time');
+
 		var begin = period.find('.js-begin-time');
 		var duration = period.find('.js-duration-time');
 		var finish = period.find('.js-finish-time');
@@ -92,19 +105,21 @@ $(document).ready(function () {
 				result_hours--;
 				result_mins += 60;
 			}
-
+			if (result_hours < 0)
+                result_hours -= 24;
 			var result = timeToStr(result_hours, result_mins);
 
 			duration.val(result);
 		}
 
 		begin.change(function(e){
+		    if(parseData(prev_period.val()) > parseData(begin.val()))
+		        begin.val(prev_period.val());
+
 			if(is_duration.prop('checked')){
-				var val = +duration.val() + (+begin.val());
-				finish.val(val);
+				getFinish()
 			} else {
-				var val = +finish.val() - (+begin.val());
-				duration.val(val);
+				getDuration();
 			}
 		});
 		duration.blur(function(e){
