@@ -22,9 +22,9 @@
 					<!--<button class=" btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button>-->
 					{% for member in members%}
 					<div class="media">
-					  <a class="pull-left" href="#">
+					  <div class="pull-left ">
 						<img class="media-object" style="height: 150px" src="/static/img/picturs/{{member.picture}}" alt="...">
-					  </a>
+					  </div>
 					  <div class="media-body">
 						<h4 class="media-heading">{{member.name}}</h4>
 						<p>{{member.discription}}</p>
@@ -68,3 +68,9 @@
 	</div>
   </div>
 </div>
+<script src="/static/js/jquery.cleditor.min.js"></script>
+<script>
+$(document).ready(function () {
+	$('#newMemberModal').on('shown.bs.modal', function () { $("#description").cleditor(); });
+});
+</script>

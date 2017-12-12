@@ -76,7 +76,7 @@
 			</div>
 			<div class="form-group">
 				{{ form.text.label}}
-				{{ form.text(class_="form-control")}}
+				{{ form.text(class_="form-control", id="description")}}
 				<!--<textarea class="form-control"></textarea>-->
 			</div>
 		  </div>
@@ -110,8 +110,10 @@
   </div>
 </div>
 <script src="/static/js/jquery-ui.min.js"></script>
+<script src="/static/js/jquery.cleditor.min.js"></script>
 <script>
 	$(document).ready(function(){
 		$('#js-news-data').datepicker();
+		$('#newNewsModal').on('shown.bs.modal', function () { $("#description").cleditor(); });
 	});
 </script>
