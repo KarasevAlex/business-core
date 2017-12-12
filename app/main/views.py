@@ -5,7 +5,7 @@ from .modeling import Modeling
 from .decorators import admin_required, gamer_required
 from .forms import Login as Login_form, News as News_form
 from ..database import User, Games, Period, Solutions, News, Partner, Team, StaticPages, Gallery, Photos
-from flask import render_template, request, flash, redirect, send_from_directory
+from flask import render_template, request, flash, redirect, send_from_directory, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 import os
 
@@ -16,6 +16,12 @@ def create_database():
     try:
         db.create_all()
         db.session.add(User(username='Admin', password='Admin', role=1))
+        pages = {'decription': 'Краткое описание',
+                 'organizations': 'Образовательным учереждениям',
+                 'students': 'Учащимся',
+                 'services': 'Цены и услуги'}
+        for url in pages.keys():
+            db.session.add(StaticPages(title=pages[url], page_url=url, text="Базовый контент"))
         return "succed"
     except:
         return "fail"
@@ -120,7 +126,7 @@ def flush():
 @main.route('/play/<int:period_result>',methods=['GET'])
 @login_required
 @gamer_required
-def user_game(period_result):
+def user_game(period_result, current_solution=None):
     users = None
     previous_solution = None
     game = None
@@ -141,6 +147,7 @@ def user_game(period_result):
                            header=render_template('header.html', form=Login_form(),  isAdmin=current_user.isAdmin()),
                            main=render_template('user-sessionV2.html', activePeriod=activePeriod,
                                                 game=game, users=users,
+                                                current_solution=current_solution,
                                                 previousSolution=previous_solution,
                                                 results=requiredResult, requiredPeriod=requiredPeriod),
                            footer=render_template('footer.html'),
@@ -154,7 +161,8 @@ def set_game_solution(period_result):
     if Period.check_period_by_id(request.form['period']):
         model = Modeling()
         model.generateGame(current_user, request.form)
-    return redirect('/play/%s' % period_result)
+        current_solution = model.getCurrentSolution()
+    return redirect(url_for('.user_game', period_result=period_result, current_solution=current_solution))
 
 @main.route('/news/page/<int:page>')
 def news_page(page):
