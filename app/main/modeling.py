@@ -31,7 +31,7 @@ class Modeling():
                 if previous_solution.gamer_id == current_user.id:
                     previous_solution.update_solution(form)
                     previous_solution.count_personal_params(self.Game)
-
+                    self.Current_period_solution = previous_solution
         self.generateResult()
 
     def adminRecount(self, period_id, game):

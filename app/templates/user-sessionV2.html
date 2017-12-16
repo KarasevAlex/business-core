@@ -65,11 +65,13 @@
 			{% endif %}
 				<div class="row">
 					<div class="col-md-3 col-md-offset-1">
-						<span class="glyphicon glyphicon-info-sign help-btn"></span>
-						<div class="hide help-pane">
-							<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции или повышения ее качества. Затраты носят накопительный характер. <a href="/helps">Подробнее…</a></p>
-						</div>
-						<h4 class="resolve-item">НИОКР</h4>
+						<h4 class="resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции или повышения ее качества. Затраты носят накопительный характер. <a href="/helps">Подробнее…</a></p>
+							</div>
+							НИОКР
+						</h4>
 					</div>
 				</div>
 			{% if game.niokrSS_active %}
@@ -473,13 +475,17 @@
 	var Prime_Costcoef = {{ game.prime_cost_coef }};
     var Quality_Costbase = {{ game.quality_cost_base }};
     var Quality_Costcoef = {{ game.quality_cost_coef }};
-	{% if previousSolution is not none %}
+	{% if previousSolution %}
 	    var Quality_Cost_Acc = {{previousSolution.Quality_Cost_Acc}}
         var Prime_Cost_Acc = {{previousSolution.Prime_Cost_Acc}}
     {% else %}
         var Quality_Cost_Acc = Quality_Costbase;
         var Prime_Cost_Acc = Prime_Costbase;
     {%endif%}
+    {% if current_solution %}
+    	var current_solution = {{ current_solution  }};
+    {%endif%}
+	console.log(current_solution);
 </script>
 <script src="/static/js/user-session.js"></script>
 <script src="/static/js/timer.js"></script>
