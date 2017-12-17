@@ -161,8 +161,7 @@ def set_game_solution(period_result):
     if Period.check_period_by_id(request.form['period']):
         model = Modeling()
         model.generateGame(current_user, request.form)
-        current_solution = model.getCurrentSolution()
-    return redirect(url_for('.user_game', period_result=period_result, current_solution=current_solution))
+        return user_game(period_result=period_result, current_solution=model.getCurrentSolution())
 
 @main.route('/news/page/<int:page>')
 def news_page(page):
