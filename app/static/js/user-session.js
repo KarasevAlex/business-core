@@ -104,8 +104,8 @@ $(document).ready(function(){
 
 	//подсказки
 	var help = $('.help-btn');
-	help.click(function(e){
-		var target = $(e.currentTarget);
+	help.each(function(i,e){
+		var target = $(e);
 		var content = target.next('.help-pane').html();
 		target.webuiPopover({
 			placement: 'bottom-right',
