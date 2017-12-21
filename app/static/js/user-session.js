@@ -2,12 +2,7 @@ $(document).ready(function(){
 	var lastAsia = +$('.lastAsia').text();
 	var lastEurope = +$('.lastEurope').text();
 	var lastNA = +$('.lastNA').text();
-	var niokrSS = +$('.niokrSS').val();
-	var niokrQuality= +$(".niokrQuality").val();
-	var allBudget = +$('.allBudget').text(); 
-	var promotionNA = +$('.promotionNA').val();
-	var promotionEurope = +$('.promotionEurope').val() || 0;
-	var promotionAsia = +$('.promotionAsia').val() || 0;
+	var allBudget = +$('.allBudget').text();
 	var quality = +$('.quality').text();
 	var ss = +$('.ss').text();
 
@@ -18,29 +13,29 @@ $(document).ready(function(){
 	  		isError: false,
 	  		isChange: false,
 	  		Asia: {
-	  			change: 0,
-	  			val: 0,
+	  			change: +AsiaFactory - +lastAsia,
+	  			val: AsiaFactory,
 	  			lastVal: lastAsia
 	  		},
 	  		Europe: {
-	  			change: 0,
-	  			val: 0,
+	  			change: +EuropeFactory - +lastEurope,
+	  			val: EuropeFactory,
 	  			lastVal: lastEurope
 	  		},
 	  		NA: {
-	  			change: 0,
-	  			val: 0,
+	  			change: +NAFactory - +lastNA,
+	  			val: NAFactory,
 	  			lastVal: lastNA
 	  		}
 	  	},
 	  	niokrSS: niokrSS,
 	  	niokrQuality: niokrQuality,
 	  	promotion: {
-	  		Asia: promotionAsia,
-	  		NA: promotionNA,
-	  		Europe: promotionEurope
+	  		Asia: AsiaPromotion,
+	  		NA: NAPromotion,
+	  		Europe: EuropePromotion
 	  	},
-	  	spentBudgetVal: 0,
+	  	spentBudgetVal: spentBudgetVal,
 	  	allBudget: allBudget,
 	  	SS: ss,
 	  	quality: quality

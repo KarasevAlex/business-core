@@ -483,9 +483,30 @@
         var Prime_Cost_Acc = Prime_Costbase;
     {%endif%}
     {% if current_solution %}
-    	var current_solution = {{ current_solution  }};
+    	var AsiaFactory = {{ current_solution.AsiaFactory }};
+    	var NAFactory = {{ current_solution.NAFactory }};
+    	var EuropeFactory = {{ current_solution.EuropeFactory }};
+
+    	var NAPromotion = {{ current_solution.NAPromotion }};
+    	var AsiaPromotion = {{ current_solution.AsiaPromotion }};
+    	var EuropePromotion = {{ current_solution.EuropePromotion }};
+    	var niokrSS = {{ current_solution.niokrSS }};
+    	var niokrQuality = {{ current_solution.niokrQuality }};
+    	var spentBudgetVal = {{ current_solution.Budget }};
+	{% else %}
+		var AsiaFactory = 0;
+    	var NAFactory = 0;
+    	var EuropeFactory = 0;
+
+    	var NAPromotion = 0;
+    	var AsiaPromotion = 0;
+    	var EuropePromotion = 0;
+    	var spentBudgetVal = 0;
+    	var niokrSS = 0;
+    	var niokrQuality = 0;
+
     {%endif%}
-	console.log(current_solution);
+	//console.log(current_solution);
 </script>
 <script src="/static/js/user-session.js"></script>
 <script src="/static/js/timer.js"></script>
