@@ -381,7 +381,8 @@ class Games(db.Model):
                 db.session.add(gamer)
 
 
-            end_time = game.time_start
+            # end_time = game.time_start
+            end_time = datetime.combine(date=game.date_start, time=game.time_start)
             for i in range(1, int(game.period_number) + 1):
                 period = Period(game_id=game.id)
                 if i == 1:
@@ -413,8 +414,8 @@ class Period(db.Model):
     __tablename__ = 'periods'
     id = db.Column(db.Integer, primary_key=True)
     period_number = db.Column(db.Integer)
-    period_start = db.Column(db.Time)
-    period_end = db.Column(db.Time)
+    period_start = db.Column(db.DateTime)
+    period_end = db.Column(db.DateTime)
     period_duration = db.Column(db.Time)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     isActive = db.Column(db.Boolean)
@@ -423,7 +424,7 @@ class Period(db.Model):
     def generate(self, period_number, start_time, period_time, isActive=False):
         self.period_number = period_number
         self.period_start = start_time
-        self.period_end = (datetime.combine(datetime.now().date(), start_time) + timedelta(hours=period_time.hour,minutes=period_time.minute,seconds=period_time.second)).time()
+        self.period_end = start_time + timedelta(hours=period_time.hour,minutes=period_time.minute,seconds=period_time.second)
         self.period_duration = period_time
         self.isActive = isActive
 
@@ -446,7 +447,7 @@ class Period(db.Model):
         current_date = datetime.now().date()
         game = Games.query.filter_by(id=game_id).first()
         if current_date == game.date_start:
-            current_time = datetime.now().time()
+            current_time = datetime.now()
             periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number)
             if periods[0].period_start > current_time:
                 return {'succeed': False,
@@ -483,7 +484,7 @@ class Period(db.Model):
         return Period.query.filter_by(game_id=game_id, period_number=period_number).first()
 
     def isFinished(self):
-        current_time = datetime.now().time()
+        current_time = datetime.now()
         if current_time >= self.period_end:
             return True
         return False

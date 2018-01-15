@@ -322,14 +322,15 @@ def static_page(page):
                        footer=render_template('footer.html'))
 
 
-@main.route('/helps')
-def helps_page():
+@main.route('/helps/<int:game_id>/<string:helps>')
+def helps_page(game_id, helps):
+    game = Games.query.filter_by(id=game_id).one()
     return render_template('layout.html',
                    header=render_template('header.html',
                                           form=Login_form(),
                                           isAdmin=current_user.isAdmin(),
                                           about_page="active"),
-                   main=render_template('helps.html',
+                   main=render_template('helps.html', game=game,
                                         isAdmin=current_user.isAdmin()),
                    footer=render_template('footer.html'))
 
