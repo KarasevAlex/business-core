@@ -26,9 +26,7 @@
             </ul>
             {% if current_user.is_authenticated %}
                 {% if isAdmin %}
-                    <a href="/game/page/1" class="btn btn-primary pull-right">Сессия</a>
-                {% else %}
-                    <a href="/play/1" class="btn btn-primary pull-right">Сессия</a>
+                    <a href="/enter" class="btn btn-primary pull-right">Сессия</a>
                 {% endif %}
                 <a href="/logout" class="btn btn-default pull-right">Выход</a>
             {% else %}

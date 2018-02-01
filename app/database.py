@@ -684,14 +684,12 @@ class Solutions(db.Model):
 
     @staticmethod
     def isSolutionsAllowed(game_id, period_number):
-        game = Games.query.filter_by(id=game_id).one()
-        if game.isFinished:
+        last_finished = Period.getLastFinished(game_id)
+        curent_period = Period.getActivePeriodVer2(game_id)
+        if period_number < last_finished.period_number:
             return True
-        else:
-            last_finished = Period.getLastFinished(game_id=game_id)
-            if last_finished is not None:
-                if last_finished.period_number >= period_number:
-                    return True
+        elif period_number == last_finished.period_number and period_number < curent_period.period_number:
+            return True
         return False
 
 class Partner(db.Model):

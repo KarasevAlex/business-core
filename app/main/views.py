@@ -357,3 +357,12 @@ def custom_500():
                            header=render_template('header.html', form=Login_form(), isAdmin=current_user.isAdmin()),
                            main=render_template('error.html', title="Внутренняя ошибка сервера"),
                            footer=render_template('footer.html'))
+
+@main.route('/enter')
+@login_required
+def user_redirect():
+    if current_user.isAdmin:
+        return redirect('/game/page/1')
+    else:
+        return redirect('/play/1')
+    return redirect('/team')
