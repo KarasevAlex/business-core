@@ -1,4 +1,6 @@
 $(document).ready(function () { 
+	var full_time_format = 'gggg-MM-DD HH:mm:ss';
+	var time_format = 'HH:mm';
 	$('.js-start').click(function(e){
 		var start = $(e.currentTarget);
 		var stop = start.next('.js-stop');
@@ -15,8 +17,7 @@ $(document).ready(function () {
 
 			}, 
 			success: function(data){
-				start.prop('disabled', true);
-				stop.prop('disabled', false);
+				document.location.reload();
 			}
 		});
 	})
@@ -42,15 +43,6 @@ $(document).ready(function () {
 		});
 	});
 
-	function parseData(str){
-	    var arr = str.split(':');
-		var endtime = new Date();
-		endtime.setHours(arr[0]);
-		endtime.setMinutes(arr[1]);
-		endtime.setSeconds(arr[2]);
-		return endtime;
-	}
-
 	$('.period__form').each(function(i, el){
 		var period = $(el);
 		var prev_period = null;
@@ -64,60 +56,36 @@ $(document).ready(function () {
 		var is_finish = period.find('.js-is-finish-time');
 
 		var begin_time = moment(begin.data('value'));
-		var duration_time = moment(duration.data('value'));
+		var duration_time = moment(duration.data('value'), time_format);
 		var finish_time = moment(finish.data('value'));
 
-		function timeToStr(hours, minutes){
-			if(hours < 10)
-				hours = '0' + hours;
-			if(minutes < 10)
-				minutes = '0' + minutes;
-			return hours + ':' + minutes;
-		}
+		begin.val(begin_time.format(full_time_format));
+		duration.val(duration_time.format(time_format));
+		finish.val(finish_time.format(full_time_format));
 
 		function getFinish(){
-			var d = duration.val();
-			d = d.split(':');
+			var duration_val =  moment(duration.val(), time_format);
 
-			var b = begin.val();
-			b = b.split(':');
+			var begin_val =  moment(begin.val());
 
-			var result_mins = +b[1] + (+d[1]);
-			var result_hours = +b[0] + +(d[0]);
+			var finish_val = begin_val.add(duration_val);//moment(begin_val + duration_val);
 
-			result_hours += Math.floor(result_mins / 60);
-			result_mins = result_mins % 60;
-
-			if(result_hours >= 24)
-				result_hours -= 24;
-
-			var result = timeToStr(result_hours, result_mins);
-
-			finish.val(result);
+			finish.val(duration_val.format(full_time_format));
 		}
 		function getDuration(){
-			var f = finish.val();
-			f = f.split(':');
+			var finish_val = moment(finish.val());
 
-			var b = begin.val();
-			b = b.split(':');
+			var begin_val = moment(begin.val());
 
-			var result_mins = f[1] - b[1] ;
-			var result_hours = f[0] - b[0];
+			var duration_val = moment(finish_val - begin_val);
 
-			if(result_mins < 0){
-				result_hours--;
-				result_mins += 60;
-			}
-			if (result_hours < 0)
-                result_hours -= 24;
-			var result = timeToStr(result_hours, result_mins);
-
-			duration.val(result);
+			duration.val(duration_val.format(time_format));
 		}
 
 		begin.change(function(e){
-		    if(parseData(prev_period.val()) > parseData(begin.val()))
+			var prev = moment(prev_period.val());
+			var current = moment(begin.val())
+		    if(prev > current)
 		        begin.val(prev_period.val());
 
 			if(is_duration.prop('checked')){
@@ -126,10 +94,10 @@ $(document).ready(function () {
 				getDuration();
 			}
 		});
-		duration.blur(function(e){
+		duration.change(function(e){
 			getFinish()
 		});
-		finish.blur(function(e){
+		finish.change(function(e){
 			getDuration();
 
 		});
