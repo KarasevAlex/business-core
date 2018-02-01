@@ -34,53 +34,145 @@
 			  			</div>
 			  		</div>
 			  		<div class="row">
-			  			<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">НИОКР</h4></div>
+			  			<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции или повышения ее качества. Затраты носят накопительный характер. <a href="/helps#niokr">Подробнее…</a></p>
+							</div>
+							НИОКР
+						</h4></div>
 			  		</div>
 			  		<div class="row">
-			  			<div class="col-md-3 col-md-offset-1 resolve-item">Снижение себестоимости</div>
+			  			<div class="col-md-3 col-md-offset-1 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Себестоимость единицы продукции – объем затрат при изготовлении единицы продукции.</p>
+								<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции. При этом можно сразу увидеть прогноз себестоимости продукции, которого удастся достичь при определенном уровне затрат. Компания будет продавать продукцию по более низкой себестоимости в том же периоде, когда выполняются научно-исследовательские разработки. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
+									<a href="/helps#ss">Подробнее...</a></p>
+							</div>
+							Снижение себестоимости
+						</div>
 			  			<div class="col-md-2">
 			  				<input class="form-control niokrSS" name="niokrSS" type="number" v-model="niokrSS" v-on:blur="sizeSS">
 			  			</div>
 
-			  			<div class="col-md-2 resolve-item">Себестоимость</div>
+			  			<div class="col-md-2 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Себестоимость единицы продукции в предстоящем периоде. Значение представлено в тысячах рублей.
+									<a href="/helps#ss">Подробнее...</a></p>
+							</div>
+							Себестоимость
+						</div>
 			  			<div class="col-md-2 previous ss" v-html="SS">4.00</div>
 			  		</div>
 			  		<div class="row">
-			  			<div class="col-md-3 col-md-offset-1 resolve-item">Повышение качества</div>
+			  			<div class="col-md-3 col-md-offset-1 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Уровень качества влияет на привлекательность продукции Вашей компании для потребителя. Потребители более охотно готовы покупать продукцию более высокого качества.</p>
+								<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении повышения качества продукции. При этом можно сразу увидеть прогноз качества продукции, которого удастся достичь при определенном уровне затрат. Компания будет продавать продукцию более высокого качества в том же периоде, когда выполняются научно-исследовательские разработки. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
+									<a href="/helps#quality">Подробнее...</a></p>
+							</div>
+							Повышение качества
+						</div>
 			  			<div class="col-md-2">
 			  				<input class="form-control niokrQuality" name="niokrQuality" type="number" v-model="niokrQuality" v-on:blur="sizeQuality">
 			  			</div>
-			  			<div class="col-md-2 resolve-item">Качество</div>
+			  			<div class="col-md-2 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Уровень качества влияет на привлекательность продукции Вашей компании для потребителя.
+									<a href="/helps#quality">Подробнее...</a></p>
+							</div>
+							Качество
+						</div>
 			  			<div class="col-md-2 previous quality" v-html="quality">1.000</div>
 			  		</div>
 			  		<div class="row">
-			  			<div class="col-md-1"><h4 class="resolve-item">Объёмы рынков</h4></div>
-						<div class="col-md-3"><h4 class="resolve-item">Заводы</h4></div>
+			  			<div class="col-md-1"><h4 class="resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Объем рынков показывает, сколько продукции готовы купить потребители в каждом из регионов в предстоящем периоде. Значение представлено в тысячах штук.
+									<a href="/helps#volume">Подробнее...</a></p>
+							</div>
+							Объёмы рынков
+						</h4></div>
+						<div class="col-md-3"><h4 class="resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Вы устанавливаете конечное значение максимальной мощности завода. За один период возможно изменение размера только одного завода. Увеличение / сокращение размера завода приводит к дополнительным затратам. Также предприятие несет дополнительные накладные расходы на содержание завода. В течение периода возможно изменение размера только одного завода.
+									<a href="/helps#factory">Подробнее...</a></p>
+							</div>
+							Заводы
+						</h4></div>
 			  		</div>
 			  		<div class="row" v-bind:class="{ 'has-error': factories.isError }">
 			  			<div class="col-md-1 previous">100</div>
-			  			<div class="col-md-3 resolve-item">Северная Америка</div>
+			  			<div class="col-md-3 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Вы устанавливаете конечное значение максимальной мощности завода в Северной Америке. Значение устанавливается в тысячах штук. Допустим ввод только целых значений.
+									<a href="/helps#factory">Подробнее...</a></p>
+							</div>
+							Северная Америка
+						</div>
 			  			<div class="col-md-2">
 			  				<input class="form-control" name="NAFactory" type="number" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
 			  			</div>
 
-			  			<div class="col-md-2 resolve-item">Изменение размеров</div>
+			  			<div class="col-md-2 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Изменение максимальной мощности заводов. За один период возможно изменение размера только одного завода. Значение представлено в тысячах штук.
+									<a href="/helps#factory">Подробнее...</a></p>
+							</div>
+							Изменение размеров
+						</div>
 			  			<div class="col-md-2 previous" v-html="factories.NA.change">0</div>
 			  		</div>
 			  		<div class="row">
-			  			<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">Продвижение</h4></div>
+			  			<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Вы устанавливаете размер расходов на продвижение продукции. Затраты на продвижение включают рекламу и организацию продаж, что влияет на привлекательность и доступность продукции Вашей компании для потребителя.
+									<a href="/helps#promotion">Подробнее...</a></p>
+							</div>
+							Продвижение
+						</h4></div>
 			  		</div>
 			  		<div class="row">
-			  			<div class="col-md-3 col-md-offset-1 resolve-item">Северная Америка</div>
+			  			<div class="col-md-3 col-md-offset-1 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Вы устанавливаете размер расходов на продвижение продукции в Северной Америке. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
+									<a href="/helps#promotion">Подробнее...</a></p>
+							</div>
+							Северная Америка
+						</div>
 			  			<div class="col-md-2">
 			  				<input class="form-control promotionNA" name="NAPromotion" type="number" v-model="promotion.NA" v-on:blur="sizeBudget">
 			  			</div>
 			  		</div>
 			  		<div class="row">
                         <input name="budget" class="budget" type="hidden">
-			  			<div class="col-md-3 col-md-offset-1 resolve-item">Израсходованный бюджет</div>
+			  			<div class="col-md-3 col-md-offset-1 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Израсходованный бюджет отображает сумму, которую Вы потратите в соответствии с введенными решениями. Она не должна превышать Доступный бюджет. Значение представлено в миллионах рублей.
+									<a href="/helps#solutions">Подробнее...</a></p>
+							</div>
+							Израсходованный бюджет
+						</div>
 			  			<div class="col-md-2 previous" id="spent-budget-val" v-html="spentBudgetVal"></div>
-			  			<div class="col-md-2 resolve-item">Доступный бюджет</div>
+			  			<div class="col-md-2 resolve-item">
+							<span class="glyphicon glyphicon-info-sign help-btn"></span>
+							<div class="hide help-pane">
+								<p>Доступный бюджет – сумма, которую может потратить компания в предстоящем периоде на научно-исследовательские разработки, заводы и продвижение.
+									<a href="/helps#solutions">Подробнее...</a></p>
+							</div>
+							Доступный бюджет
+						</div>
 			  			<div class="col-md-2 previous allBudget">100</div>
 			  		</div>
 					<div class="alert alert-warning">
@@ -293,5 +385,16 @@
 
     var Quality_Cost_Acc = Quality_Costbase;
     var Prime_Cost_Acc = Prime_Costbase;
+
+    var AsiaFactory = 0;
+	var NAFactory = 0;
+	var EuropeFactory = 0;
+
+	var NAPromotion = 0;
+	var AsiaPromotion = 0;
+	var EuropePromotion = 0;
+	var spentBudgetVal = 0;
+	var niokrSS = 0;
+	var niokrQuality = 0;
 </script>
 <script src="/static/js/user-session.js"></script>

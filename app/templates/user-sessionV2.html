@@ -47,7 +47,7 @@
 						<span class="glyphicon glyphicon-info-sign help-btn"></span>
 						<div class="hide help-pane">
 							<p>Цена влияет на привлекательность продукции Вашей компании для потребителя.</p>
-							<p>Устанавливается единая цена для всех рынков. Вы можете установить цену в пределах от a до b [Параметры a и b были определены Администратором при создании игры]. Цена устанавливается в тысячах рублей. Допустим ввод только целых значений. <a href="">Подробнее…</a></p>
+							<p>Устанавливается единая цена для всех рынков. Вы можете установить цену в пределах от a до b [Параметры a и b были определены Администратором при создании игры]. Цена устанавливается в тысячах рублей. Допустим ввод только целых значений. <a href="/helps#cost">Подробнее…</a></p>
 						</div>
 					Цена
 					</div>
@@ -68,7 +68,7 @@
 						<h4 class="resolve-item">
 							<span class="glyphicon glyphicon-info-sign help-btn"></span>
 							<div class="hide help-pane">
-								<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции или повышения ее качества. Затраты носят накопительный характер. <a href="/helps">Подробнее…</a></p>
+								<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции или повышения ее качества. Затраты носят накопительный характер. <a href="/helps#niokr">Подробнее…</a></p>
 							</div>
 							НИОКР
 						</h4>
@@ -81,7 +81,7 @@
 						<div class="hide help-pane">
 							<p>Себестоимость единицы продукции – объем затрат при изготовлении единицы продукции.</p>
 							<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении снижения себестоимости продукции. При этом можно сразу увидеть прогноз себестоимости продукции, которого удастся достичь при определенном уровне затрат. Компания будет продавать продукцию по более низкой себестоимости в том же периоде, когда выполняются научно-исследовательские разработки. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
-							</p>
+								<a href="/helps#ss">Подробнее...</a></p>
 						</div>
 						Снижение себестоимости</div>
 					<div class="col-md-2">
@@ -92,7 +92,13 @@
 					{% else %}
 						<div class="col-md-2 previous">0</div>
 					{% endif %}
-					<div class="col-md-2 resolve-item">Себестоимость</div>
+					<div class="col-md-2 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Себестоимость единицы продукции в предстоящем периоде. Значение представлено в тысячах рублей.
+								<a href="/helps#ss">Подробнее...</a></p>
+						</div>
+						Себестоимость</div>
 					<div class="col-md-2 previous ss" v-html="SS">{{ game.prime_cost_start }}</div>
 				</div>
 			{% else %}
@@ -105,7 +111,7 @@
 						<div class="hide help-pane">
 							<p>Уровень качества влияет на привлекательность продукции Вашей компании для потребителя. Потребители более охотно готовы покупать продукцию более высокого качества.</p>
 							<p>Вы можете установить уровень затрат на научно-исследовательские разработки в направлении повышения качества продукции. При этом можно сразу увидеть прогноз качества продукции, которого удастся достичь при определенном уровне затрат. Компания будет продавать продукцию более высокого качества в том же периоде, когда выполняются научно-исследовательские разработки. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
-							</p>
+								<a href="/helps#quality">Подробнее...</a></p>
 						</div>
 						Повышение качества</div>
 					<div class="col-md-2">
@@ -116,21 +122,49 @@
 					{% else %}
 						<div class="col-md-2 previous">0</div>
 					{% endif %}
-					<div class="col-md-2 resolve-item">Качество</div>
+					<div class="col-md-2 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Уровень качества влияет на привлекательность продукции Вашей компании для потребителя.
+								<a href="/helps#quality">Подробнее...</a></p>
+						</div>
+						Качество
+					</div>
 					<div class="col-md-2 previous quality" v-html="quality">1</div>
 				</div>
 			{%else%}
 				<input type="hidden" name="niokrQuality" class="form-control" value="{{ game.niokrQuality_default }}" min="{{ game.niokrQuality_min }}" max="{{ game.niokrQuality_max }}" v-model="niokrQuality" v-on:blur="sizeQuality">
 			{% endif %}
 				<div class="row">
-					<div class="col-md-1"><h4 class="resolve-item">Объёмы рынков</h4></div>
-					<div class="col-md-3"><h4 class="resolve-item">Заводы</h4></div>
+					<div class="col-md-1"><h4 class="resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Объем рынков показывает, сколько продукции готовы купить потребители в каждом из регионов в предстоящем периоде. Значение представлено в тысячах штук.
+								<a href="/helps#volume">Подробнее...</a></p>
+						</div>
+						Объёмы рынков
+					</h4></div>
+					<div class="col-md-3"><h4 class="resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете конечное значение максимальной мощности завода. За один период возможно изменение размера только одного завода. Увеличение / сокращение размера завода приводит к дополнительным затратам. Также предприятие несет дополнительные накладные расходы на содержание завода. В течение периода возможно изменение размера только одного завода.
+								<a href="/helps#factory">Подробнее...</a></p>
+						</div>
+						Заводы
+					</h4></div>
 				</div>
 			{% if game.isSizeNA %}
 			{% if game.NAFactory_active%}
 				<div class="row" v-bind:class="{ 'has-error': factories.isError }">
 					<div class="col-md-1 previous">{{game.sizeNA}}</div>
-					<div class="col-md-3 resolve-item">Северная Америка</div>
+					<div class="col-md-3 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете конечное значение максимальной мощности завода в Северной Америке. Значение устанавливается в тысячах штук. Допустим ввод только целых значений.
+								<a href="/helps#factory">Подробнее...</a></p>
+						</div>
+						Северная Америка
+					</div>
 					<div class="col-md-2">
 						<input class="form-control" name="NAFactory" value="{{ game.NAFactory_default }}" min="{{ game.NAFactory_min }}" max="{{ game.NAFactory_max }}"  type="number" v-on:blur="changeFactory(factories.NA)" v-model="factories.NA.val">
 					</div>
@@ -151,7 +185,14 @@
 			{% if game.EuropeFactory_active %}
 				<div class="row" v-bind:class="{ 'has-error': factories.isError }">
 					<div class="col-md-1 previous">{{game.sizeEurope}}</div>
-					<div class="col-md-3 resolve-item">Европа</div>
+					<div class="col-md-3 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете конечное значение максимальной мощности завода в Европе. Значение устанавливается в тысячах штук. Допустим ввод только целых значений.
+								<a href="/helps#factory">Подробнее...</a></p>
+						</div>
+						Европа
+					</div>
 					<div class="col-md-2">
 						<input class="form-control" name="EuropeFactory" value="{{ game.EuropeFactory_default }}" min="{{ game.EuropeFactory_min }}" max="{{ game.EuropeFactory_max }}" type="number" v-on:blur="changeFactory(factories.Europe)" v-model="factories.Europe.val">
 					</div>
@@ -171,7 +212,14 @@
 			{% if game.AsiaFactory_active %}
 				<div class="row" v-bind:class="{ 'has-error': factories.isError }">
 					<div class="col-md-1 previous">{{game.sizeAsia}}</div>
-					<div class="col-md-3 resolve-item">Азия</div>
+					<div class="col-md-3 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете конечное значение максимальной мощности завода в Азии. Значение устанавливается в тысячах штук. Допустим ввод только целых значений.
+								<a href="/helps#factory">Подробнее...</a></p>
+						</div>
+						Азия
+					</div>
 					<div class="col-md-2">
 						<input class="form-control" name="AsiaFactory" value="{{ game.AsiaFactory_default }}" min="{{ game.AsiaFactory_min }}" max="{{ game.AsiaFactory_max }}" type="number" v-on:blur="changeFactory(factories.Asia)" v-model="factories.Asia.val">
 					</div>
@@ -180,7 +228,13 @@
 					{% else %}
 						<div class="col-md-2 previous lastAsia">0</div>
 					{% endif %}
-					<div class="col-md-2 resolve-item">Изменение размеров</div>
+					<div class="col-md-2 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Изменение максимальной мощности заводов. За один период возможно изменение размера только одного завода. Значение представлено в тысячах штук.
+								<a href="/helps#factory">Подробнее...</a></p>
+						</div>
+						Изменение размеров</div>
 					<div class="col-md-2 previous" v-html="factories.Asia.change">0</div>
 				</div>
 			{%else%}
@@ -188,12 +242,26 @@
 			{% endif %}
 			{% endif %}
 				<div class="row">
-					<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">Продвижение</h4></div>
+					<div class="col-md-3 col-md-offset-1"><h4 class="resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете размер расходов на продвижение продукции. Затраты на продвижение включают рекламу и организацию продаж, что влияет на привлекательность и доступность продукции Вашей компании для потребителя.
+								<a href="/helps#promotion">Подробнее...</a></p>
+						</div>
+						Продвижение
+					</h4></div>
 				</div>
 			{% if game.isSizeNA %}
 			{% if game.NAPromotion_active%}
 				<div class="row">
-					<div class="col-md-3 col-md-offset-1 resolve-item">Северная Америка</div>
+					<div class="col-md-3 col-md-offset-1 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете размер расходов на продвижение продукции в Северной Америке. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
+								<a href="/helps#promotion">Подробнее...</a></p>
+						</div>
+						Северная Америка
+					</div>
 					<div class="col-md-2">
 						<input class="form-control promotionNA" name="NAPromotion" value="{{ game.NAPromotion_default }}" min="{{ game.NAPromotion_min }}" max="{{ game.NAPromotion_max }}"  type="number" v-model="promotion.NA" v-on:blur="sizeBudget">
 					</div>
@@ -211,7 +279,13 @@
 			{% if game.isSizeEurope %}
 			{% if game.EuropePromotion_active %}
 				<div class="row">
-					<div class="col-md-3 col-md-offset-1 resolve-item">Европа</div>
+					<div class="col-md-3 col-md-offset-1 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете размер расходов на продвижение продукции в Европе. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
+								<a href="/helps#promotion">Подробнее...</a></p>
+						</div>
+						Европа</div>
 					<div class="col-md-2">
 						<input class="form-control promotionEurope" name="EuropePromotion" value="{{ game.EuropePromotion_default }}" min="{{ game.EuropePromotion_min }}" max="{{ game.EuropePromotion_max }}"  type="number" v-model="promotion.Europe" v-on:blur="sizeBudget">
 					</div>
@@ -228,7 +302,13 @@
 			{% if game.isSizeAsia %}
 			{% if game.AsiaPromotion_active %}
 				<div class="row">
-					<div class="col-md-3 col-md-offset-1 resolve-item">Азия</div>
+					<div class="col-md-3 col-md-offset-1 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Вы устанавливаете размер расходов на продвижение продукции в Азии. Значение устанавливается в миллионах рублей. Допустим ввод только целых значений.
+								<a href="/helps#promotion">Подробнее...</a></p>
+						</div>
+						Азия</div>
 					<div class="col-md-2">
 						<input class="form-control promotionAsia" name="AsiaPromotion" value="{{ game.AsiaPromotion_default }}" min="{{ game.AsiaPromotion_min }}" max="{{ game.AsiaPromotion_max }}"  type="number" v-model="promotion.Asia" v-on:blur="sizeBudget">
 					</div>
@@ -243,10 +323,22 @@
 			{% endif %}
 			{% endif %}
 				<div class="row">
-					<div class="col-md-3 col-md-offset-1 resolve-item">Израсходованный бюджет</div>
+					<div class="col-md-3 col-md-offset-1 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Израсходованный бюджет отображает сумму, которую Вы потратите в соответствии с введенными решениями. Она не должна превышать Доступный бюджет. Значение представлено в миллионах рублей.
+								<a href="/helps#solutions">Подробнее...</a></p>
+						</div>
+						Израсходованный бюджет</div>
 					<div class="col-md-2 previous" id="spent-budget-val" v-html="spentBudgetVal"></div>
 					<div class="col-md-2 previous">0</div>
-					<div class="col-md-2 resolve-item">Доступный бюджет</div>
+					<div class="col-md-2 resolve-item">
+						<span class="glyphicon glyphicon-info-sign help-btn"></span>
+						<div class="hide help-pane">
+							<p>Доступный бюджет – сумма, которую может потратить компания в предстоящем периоде на научно-исследовательские разработки, заводы и продвижение.
+								<a href="/helps#solutions">Подробнее...</a></p>
+						</div>
+						Доступный бюджет</div>
 					<div class="col-md-2 previous allBudget">{{ game.teamBudget }}</div>
 				</div>
 				<div class="alert alert-warning" v-if="spentBudgetVal < allBudget">
@@ -258,6 +350,11 @@
 					<p>Ваши затраты превышают допустимый бюджет.</p>
 				</div>
 				<button class="btn btn-primary center-block" type="submit" v-bind:disabled="factories.isError || spentBudgetVal > allBudget">Принять решение</button>
+				<span class="glyphicon glyphicon-info-sign help-btn"></span>
+				<div class="hide help-pane">
+					<p>Нажимая кнопку «Принять решение», Вы отправляете свое решение. До истечения времени периода корректировать и отправлять свое решение можно неограниченное количество раз.
+						<a href="/helps#button">Подробнее...</a></p>
+				</div>
 			</form>
           {% else %}
               <div class="alert alert-warning">
@@ -506,7 +603,6 @@
     	var niokrQuality = 0;
 
     {%endif%}
-	//console.log(current_solution);
 </script>
 <script src="/static/js/user-session.js"></script>
 <script src="/static/js/timer.js"></script>
