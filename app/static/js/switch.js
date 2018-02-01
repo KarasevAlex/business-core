@@ -63,6 +63,10 @@ $(document).ready(function () {
 		var is_duration = period.find('.js-is-duration-time');
 		var is_finish = period.find('.js-is-finish-time');
 
+		var begin_time = moment(begin.data('value'));
+		var duration_time = moment(duration.data('value'));
+		var finish_time = moment(finish.data('value'));
+
 		function timeToStr(hours, minutes){
 			if(hours < 10)
 				hours = '0' + hours;
