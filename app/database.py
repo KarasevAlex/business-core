@@ -430,7 +430,7 @@ class Period(db.Model):
 
     @staticmethod
     def check_period_by_id(period_id):
-        current_time = datetime.now().time()
+        current_time = datetime.now()
         period = Period.query.filter_by(id=period_id).first()
         if current_time >= period.period_start and current_time <= period.period_end:
             return True
@@ -483,7 +483,7 @@ class Period(db.Model):
         if first_period.isActive:
             last_finished = None
             for period in periods:
-                if current_date <= period.period_end and period.isActive:
+                if current_date >= period.period_end and period.isActive:
                     return period
         return None
 
@@ -688,7 +688,7 @@ class Solutions(db.Model):
         curent_period = Period.getActivePeriodVer2(game_id)
         if period_number < last_finished.period_number:
             return True
-        elif period_number == last_finished.period_number and period_number < curent_period.period_number:
+        elif period_number == last_finished.period_number and curent_period is not None and curent_period.period_number > period_number:
             return True
         return False
 
