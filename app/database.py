@@ -466,13 +466,24 @@ class Period(db.Model):
 
     @staticmethod
     def getActivePeriodVer2(game_id):
-        current_date = datetime.now().date()
-        game = Games.query.filter_by(id=game_id).first()
-        if current_date == game.date_start:
-            current_time = datetime.now().time()
-            periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number)
+        current_date = datetime.now()
+        periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number).all()
+        first_period = periods[0]
+        if first_period.isActive:
             for period in periods:
-                if current_time >= period.period_start and current_time <= period.period_end and period.isActive:
+                if current_date >= period.period_start and current_date <= period.period_end and period.isActive:
+                    return period
+        return None
+
+    @staticmethod
+    def getLastFinished(game_id):
+        current_date = datetime.now()
+        periods = Period.query.filter_by(game_id=game_id).order_by(Period.period_number).all()
+        first_period = periods[0]
+        if first_period.isActive:
+            last_finished = None
+            for period in periods:
+                if current_date <= period.period_end and period.isActive:
                     return period
         return None
 
@@ -493,16 +504,6 @@ class Period(db.Model):
         self.period_end = end
         self.period_duration = duration
         self.period_start = start
-
-    @staticmethod
-    def getLastFinished(game_id):
-        periods = Period.query.filter_by(game_id=game_id).all()
-        lastFinished = None
-        for period in periods:
-            if period.isFinished():
-                lastFinished = period
-        return lastFinished
-
 
 class Solutions(db.Model):
     __tablename__ = 'solutions'
@@ -600,13 +601,11 @@ class Solutions(db.Model):
 
         self.mult_Price = 1 / (int(game.price_coef) ** (int(self.cost) - int(game.cost_min)))
         self.mult_Quality = (self.Prime_Cost_Acc / int(game.quality_cost_base)) ** (1 / int(game.quality_cost_coef))
-
         if isFirst:
             self.Prime_cost = game.prime_cost_start
         else:
             self.Prime_cost = game.prime_cost_start + 1 - (self.Prime_Cost_Acc / game.prime_cost_base) ** (
             1 / game.prime_cost_coef)
-
         self.mult_Demand_NA = self.mult_Quality * self.mult_Price * float(self.NAPromotion)
         if not isDemo:
             self.mult_Demand_Europa = self.mult_Quality * self.mult_Price * float(self.EuropePromotion)
