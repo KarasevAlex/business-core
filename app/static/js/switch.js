@@ -1,5 +1,5 @@
 $(document).ready(function () { 
-	var full_time_format = 'gggg-MM-DD HH:mm:ss';
+	var full_time_format = 'gggg-MM-DD HH:mm';
 	var time_format = 'HH:mm';
 	$('.js-start').click(function(e){
 		var start = $(e.currentTarget);
@@ -64,21 +64,23 @@ $(document).ready(function () {
 		finish.val(finish_time.format(full_time_format));
 
 		function getFinish(){
-			var duration_val =  moment(duration.val(), time_format);
+			var duration_val =  moment.duration(duration.val(), time_format);
 
 			var begin_val =  moment(begin.val());
 
 			var finish_val = begin_val.add(duration_val);//moment(begin_val + duration_val);
 
-			finish.val(duration_val.format(full_time_format));
+			finish.val(finish_val.format(full_time_format));
 		}
 		function getDuration(){
 			var finish_val = moment(finish.val());
 
 			var begin_val = moment(begin.val());
 
-			var duration_val = moment(finish_val - begin_val);
-
+			var duration_val = finish_val
+				.subtract(begin_val.get('hours'), 'hours')
+				.subtract(begin_val.get('minutes'), 'minutes');
+			
 			duration.val(duration_val.format(time_format));
 		}
 
@@ -102,13 +104,16 @@ $(document).ready(function () {
 
 		});
 		is_duration.click(function(e){
-			finish.prop('readonly', true);
-			duration.prop('readonly', false);
+			finish.prop('disabled', true);
+			duration.prop('disabled', false);
 		});
 		is_finish.click(function(e){
-			duration.prop('readonly', true);
-			finish.prop('readonly', false);
+			duration.prop('disabled', true);
+			finish.prop('disabled', false);
 		});
+
+		if(is_duration.prop('checked'))
+			is_duration.trigger('click');
 		period.submit(function(e){
 			var d = duration.val();
 			var f = finish.val();
